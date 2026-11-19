@@ -1,0 +1,150 @@
+section.exterior {
+    background-color: #001215;
+    position: relative;
+    display: flex;
+
+    // padding-top: 1920px(253px) -> 1440px(250px) -> 1024px(258px) -> 768px(216px) -> 375px(97px)
+    padding-top: calc(253 / 1920 * 100vw); // 1920px以上
+
+    @media (max-width: 1920px) {
+        // 1920px(253px) -> 1440px(250px)
+        padding-top: calc(250px + (253 - 250) * ((100vw - 1440px) / (1920 - 1440)));
+    }
+
+    @media (max-width: 1440px) {
+        // 1440px(250px) -> 1024px(258px)
+        padding-top: calc(258px + (250 - 258) * ((100vw - 1024px) / (1440 - 1024)));
+    }
+
+    @media (max-width: 1024px) {
+        // 1024px(258px) -> 768px(216px)
+        padding-top: calc(216px + (258 - 216) * ((100vw - 768px) / (1024 - 768)));
+    }
+
+    @media (max-width: 768px) {
+        // 768px(216px) -> 375px(97px)
+        padding-top: calc(97px + (216 - 97) * ((100vw - 375px) / (768 - 375)));
+    }
+
+    @media (max-width: 375px) {
+        padding-top: 97px;
+    }
+
+    .exterior__visual {
+        width: calc(1178 / 1920 * 100vw); // 1920px以上
+
+        @media (max-width: 1920px) {
+            width: 1178px;
+        }
+
+        @media (max-width: 1440px) {
+            // 1440px(1178px) -> 1024px(889px)
+            width: calc(889px + (1178 - 889) * ((100vw - 1024px) / (1440 - 1024)));
+            aspect-ratio: 1178 / 728;
+        }
+
+        @media (max-width: 1024px) {
+            width: 100%;
+            aspect-ratio: 889 / 596;
+        }
+
+        @media (max-width: 768px) {
+            aspect-ratio: 768 / 437;
+        }
+
+        @media (max-width: 375px) {
+            aspect-ratio: 375 / 246;
+        }
+
+        img, picture { display: block; width: 100%; height: auto; }
+    }
+
+    .exterior__title-group-wrap {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+
+        @media (max-width: 1024px) {
+            position: absolute;
+            right: calc(57px + (128 - 57) * ((100vw - 768px) / (1024 - 768)));
+            bottom: calc(175px + (376 - 175) * ((100vw - 768px) / (1024 - 768)));
+        }
+
+        @media (max-width: 768px) {
+            right: calc(36px + (57 - 36) * ((100vw - 375px) / (768 - 375)));
+            bottom: calc(164px + (175 - 164) * ((100vw - 375px) / (768 - 375)));
+        }
+
+        @media (max-width: 375px) {
+            right: 36px;
+            bottom: 164px;
+        }
+
+        .exterior__title-group {
+            transform: translateY(-295px);
+            writing-mode: vertical-rl;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 8px;
+
+            @media (max-width: 1024px) {
+                transform: none;
+                gap: calc(11px + (8 - 11) * ((100vw - 375px) / (768 - 375)));
+            }
+
+            @media (max-width: 375px) { gap: 11px; }
+        }
+
+        .exterior__title-en {
+            font-family: "EB Garamond", serif;
+            font-weight: 400;
+            font-size: 20px;
+            letter-spacing: 0.06em;
+            line-height: 1.0;
+            text-align: right;
+
+            @media (max-width: 768px) {
+                font-size: calc(14px + (20 - 14) * ((100vw - 375px) / (768 - 375)));
+            }
+
+            @media (max-width: 375px) { font-size: 14px; }
+        }
+
+        .exterior__title-line {
+            display: flex;
+            align-items: center;
+            height: 540px;
+
+            @media (max-width: 1440px) {
+                height: calc(380px + (540 - 380) * ((100vw - 1024px) / (1440 - 1024)));
+            }
+
+            @media (max-width: 1024px) { height: 380px; }
+
+            @media (max-width: 768px) {
+                height: calc(165px + (380 - 165) * ((100vw - 375px) / (768 - 375)));
+            }
+
+            @media (max-width: 375px) { height: 165px; }
+
+            img { height: 100%; width: auto; }
+        }
+
+        .exterior__title-jp {
+            font-weight: 400;
+            font-size: 20px;
+            letter-spacing: 0.06em;
+            line-height: 1.1;
+            text-align: center;
+
+            @media (max-width: 768px) {
+                font-size: calc(14px + (20 - 14) * ((100vw - 375px) / (768 - 375)));
+            }
+
+            @media (max-width: 375px) { font-size: 14px; }
+        }
+    }
+}

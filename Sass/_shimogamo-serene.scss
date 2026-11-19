@@ -1,0 +1,225 @@
+section.serene {
+    position: relative;
+    width: 100%;
+    background-color: #001215;
+    color: #ffffff;
+    line-height: 1.6;
+
+    // padding: 1920px(290px) -> 1440px(350px) -> 1024px(213px) -> 560px(0)
+    padding-top: 290px;
+    padding-left: 125px;
+    padding-right: 125px;
+
+    @media (max-width: 1440px) { padding-top: 350px; }
+
+    @media (max-width: 1024px) {
+        padding-top: 213px;
+        padding-left: clamp(18px, calc(18px + (125 - 18) * ((100vw - 768px) / (1024 - 768))), 125px);
+        padding-right: clamp(16px, calc(16px + (125 - 16) * ((100vw - 768px) / (1024 - 768))), 125px);
+    }
+
+    @media (max-width: 768px) {
+        padding-left: 18px;
+        padding-right: 16px;
+    }
+
+    @media (max-width: 560px) {
+        padding-top: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .serene__bg {
+        position: absolute;
+        top: 110px;
+        left: 206px;
+        width: 44%;
+        height: 90%;
+        z-index: 0;
+
+        @media (max-width: 1440px) { top: 0; left: 0; width: 59%; }
+        @media (max-width: 1024px) { top: 130px; left: -137px; width: 83%; }
+
+        @media (max-width: 768px) {
+            top: clamp(55px, calc(55px + (153 - 55) * ((100vw - 375px) / (768 - 375))), 153px);
+            left: clamp(-116px, calc(-36px + (-116 - (-36)) * ((100vw - 375px) / (768 - 375))), -36px);
+            width: 86%;
+        }
+
+        @media (max-width: 375px) { top: 55px; left: -36px; width: 129%; }
+
+        img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    }
+
+    .serene__inner {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 1fr auto;
+
+        @media (max-width: 1440px) {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        @media (max-width: 560px) {
+            display: block;
+            position: relative;
+            height: 662px;
+        }
+    }
+
+    .serene__content-right {
+        width: auto;
+        padding-bottom: 0;
+        transform: translateX(32px);
+        grid-column: 2;
+        grid-row: 1 / -1;
+        display: grid;
+        grid-template-rows: subgrid;
+
+        @media (max-width: 1440px) { display: block; padding-bottom: 113px; }
+        @media (max-width: 1024px) { margin-bottom: 70px; transform: translateX(0); }
+
+        @media (max-width: 560px) {
+            position: absolute;
+            top: 19px;
+            right: 16px;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .serene__title-wrap {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: fit-content;
+            margin: 0 auto;
+            align-self: end;
+            grid-row: 1;
+
+            @media (max-width: 375px) { text-align: center; width: 100%; }
+
+            .serene__title-motif-wrap {
+                position: absolute;
+                z-index: -1;
+                width: 230px;
+                height: auto;
+                opacity: 0.6;
+
+                @media (max-width: 560px) { display: none; }
+
+                img.serene__title-motif {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            .serene__title-motif-wrap--upper {
+                top: -104px;
+                right: -112px;
+
+                @media (max-width: 375px) { top: -60px; right: -40px; }
+            }
+
+            .serene__title-motif-wrap--lower {
+                bottom: 6px;
+                left: -122px;
+                transform: rotate(-90deg);
+
+                @media (max-width: 375px) { bottom: -40px; left: -40px; }
+            }
+
+            img.serene__title-image {
+                display: block;
+                width: auto;
+                height: 452px;
+                object-fit: contain;
+                position: relative;
+                z-index: 1;
+
+                @media (max-width: 560px) {
+                    height: 420px;
+                    width: auto;
+                    max-width: none;
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    .serene__content-left {
+        flex: 1;
+        padding-bottom: 40px;
+        grid-column: 1;
+        grid-row: 1 / -1;
+        display: grid;
+        grid-template-rows: subgrid;
+
+        @media (max-width: 1440px) { display: block; }
+
+        @media (max-width: 560px) {
+            position: absolute;
+            bottom: 0;
+            left: 21px;
+            width: calc(100% - 42px);
+            padding-bottom: 45px;
+        }
+
+        .serene__headline-wrap {
+            margin-bottom: 17px;
+
+            @media (max-width: 375px) { margin-bottom: 12px; }
+
+            .serene__headline {
+                color: #F8F7F3;
+                font-weight: 400;
+                font-size: 32px;
+                line-height: 120%;
+                letter-spacing: -0.05em;
+                text-align: justify;
+
+                @media (max-width: 1024px) { font-size: 24px; }
+
+                @media (max-width: 768px) {
+                    font-size: clamp(20px, calc(20px + (24 - 20) * ((100vw - 375px) / (768 - 375))), 24px);
+                }
+
+                @media (max-width: 375px) { font-size: 20px; }
+            }
+        }
+
+        .serene__lead-wrap {
+            .serene__lead {
+                color: #F8F7F3;
+                font-family: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Hiragino Kaku Gothic ProN", "MS PMincho", serif;
+                font-size: 18px;
+                font-weight: 400;
+                line-height: 180%;
+                letter-spacing: 1.08px;
+
+                @media (max-width: 1024px) { font-size: 16px; letter-spacing: 0.96px; }
+
+                @media (max-width: 768px) {
+                    font-size: clamp(13px, calc(13px + (16 - 13) * ((100vw - 375px) / (768 - 375))), 16px);
+                    letter-spacing: clamp(0.78px, calc(0.78px + (0.96 - 0.78) * ((100vw - 375px) / (768 - 375))), 0.96px);
+                }
+
+                @media (max-width: 375px) { font-size: 13px; letter-spacing: 0.78px; }
+
+                br { display: none; }
+                br.under-1920 { display: block; }
+
+                @media (max-width: 1024px) { br.under-1024 { display: block; } }
+            }
+        }
+    }
+}

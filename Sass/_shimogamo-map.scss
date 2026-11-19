@@ -1,0 +1,29 @@
+section.map {
+    background-color: #001215;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        max-width: 1232px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    @media (max-width: 1024px) {
+        img {
+            width: 139.65vw;
+            max-width: none;
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}
+
+section.landscape {
+    background-color: #001215;
+
+    img {
+        width: 100%;
+        display: block;
+    }
+}

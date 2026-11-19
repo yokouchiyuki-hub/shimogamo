@@ -1,0 +1,160 @@
+$breakpoint-tab: 1320px;
+
+section.interior {
+    color: #ffffff;
+    background-color: #001215;
+
+    // padding-top: 1920px(290px) -> 1440px(330px) -> 1024px(219px) -> 375px(315px)
+    padding-top: 15.1vw;
+
+    @media (max-width: 1440px) {
+        padding-top: clamp(290px, calc(330px + (290 - 330) * ((100vw - 1440px) / (1920 - 1440))), 330px);
+    }
+
+    @media (max-width: $breakpoint-tab) {
+        padding-top: 219px;
+    }
+
+    @media (max-width: 375px) {
+        padding-top: clamp(219px, calc(315px + (219 - 315) * ((100vw - 375px) / (1024 - 375))), 315px);
+    }
+
+    .interior__inner {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    .interior__main-visual {
+        position: relative;
+        z-index: 20;
+        width: 1174px;
+        height: 387px;
+        padding-left: 30px;
+
+        @media (max-width: 1440px) {
+            width: clamp(808px, calc(808px + (1174 - 808) * ((100vw - 1024px) / (1440 - 1024))), 1174px);
+            height: clamp(336px, calc(336px + (387 - 336) * ((100vw - 1024px) / (1440 - 1024))), 387px);
+        }
+
+        @media (max-width: $breakpoint-tab) {
+            width: 78.9%;
+            height: auto;
+            aspect-ratio: 808 / 336;
+            margin-left: auto;
+            margin-right: 0;
+            padding-left: 0;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .interior__content-group {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        position: relative;
+        z-index: 1;
+        padding-left: clamp(40px, calc(40px + (219 - 40) * ((100vw - 1440px) / (1920 - 1440))), 219px);
+
+        @media (max-width: $breakpoint-tab) {
+            flex-direction: column-reverse;
+            align-items: stretch;
+            padding-left: 0;
+        }
+    }
+
+    .interior__motif {
+        position: absolute;
+        bottom: clamp(-90px, calc(-57px + (-90 - (-57)) * ((100vw - 1440px) / (1920 - 1440))), -57px);
+        left: clamp(70px, calc(70px + (110 - 70) * ((100vw - 1440px) / (1920 - 1440))), 110px);
+        width: clamp(250px, calc(250px + (395 - 250) * ((100vw - 1440px) / (1920 - 1440))), 395px);
+
+        @media (max-width: $breakpoint-tab) { display: none; }
+
+        img { width: 100%; height: auto; display: block; }
+    }
+
+    .interior__text-block {
+        position: absolute;
+        z-index: 15;
+        width: 349px;
+        top: 120px;
+        left: 205px;
+
+        @media (max-width: 1440px) {
+            top: 120px;
+            left: 126px;
+        }
+
+        @media (max-width: $breakpoint-tab) {
+            position: relative;
+            top: clamp(-83px, calc(-83px + (-30 - (-83)) * ((100vw - 768px) / (1024 - 768))), -30px);
+            left: auto;
+            width: 100%;
+            max-width: 770px;
+            margin: clamp(32px, calc(32px + (40 - 32) * ((100vw - 768px) / (1024 - 768))), 40px) auto 0;
+            padding: 0 24px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            top: clamp(-30px, calc(-30px + (0 - (-30)) * ((100vw - 375px) / (768 - 375))), 0px);
+        }
+
+        @media (max-width: 375px) {
+            margin-top: 0;
+            padding: 0 16px;
+        }
+    }
+
+    .interior__heading {
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 1.6;
+        letter-spacing: 0.06em;
+        margin-bottom: 24px;
+
+        @media (max-width: 768px) {
+            font-size: clamp(18px, calc(18px + (24 - 18) * ((100vw - 375px) / (768 - 375))), 24px);
+        }
+    }
+
+    .interior__description {
+        font-size: 0.94vw;
+        line-height: 1.8;
+        letter-spacing: 0.06em;
+        text-align: justify;
+
+        @media (max-width: 1440px) { font-size: 18px; }
+
+        @media (max-width: $breakpoint-tab) {
+            font-size: clamp(16px, calc(16px + (18 - 16) * ((100vw - 1024px) / (1440 - 1024))), 18px);
+        }
+
+        @media (max-width: 375px) {
+            font-size: clamp(13px, calc(13px + (16 - 13) * ((100vw - 375px) / (768 - 375))), 16px);
+        }
+    }
+
+    .interior__sub-visual {
+        width: clamp(982px, calc(1016px + (982 - 1016) * ((100vw - 1440px) / (1920 - 1440))), 1016px);
+        height: clamp(556px, calc(576px + (556 - 576) * ((100vw - 1440px) / (1920 - 1440))), 576px);
+        position: relative;
+        z-index: 5;
+        top: clamp(-43px, calc(-39px + (-43 - (-39)) * ((100vw - 1440px) / (1920 - 1440))), -39px);
+
+        @media (max-width: $breakpoint-tab) {
+            width: 100%;
+            height: auto;
+            top: 0;
+        }
+
+        img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    }
+}

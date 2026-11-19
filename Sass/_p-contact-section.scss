@@ -1,0 +1,169 @@
+$font-family-serif: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Hiragino Kaku Gothic ProN", "MS PMincho", serif;
+$font-family-sans: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+
+section.p-contact-section {
+    background: linear-gradient(180deg, #152b2f 0%, #060201 56.73%, #060201 98.08%);
+    color: #f8f7f3;
+    padding: 96px 20px 185px;
+
+    @media (max-width: 1024px) {
+        padding: 225px 20px 224px;
+    }
+
+    @media (max-width: 768px) {
+        // 375px時に(78, 60, 79)、768px時に(225, 20, 224)となるように線形補完
+        padding: 
+            clamp(78px, calc(78px + (225 - 78) * ((100vw - 375px) / (768 - 375))), 225px) 
+            clamp(20px, calc(60px + (20 - 60) * ((100vw - 375px) / (768 - 375))), 60px) 
+            clamp(79px, calc(79px + (224 - 79) * ((100vw - 375px) / (768 - 375))), 224px);
+    }
+
+    @media (max-width: 375px) {
+        // 375px以下は最小値で固定
+        padding: 78px 60px 79px;
+    }
+    text-align: center;
+
+    .p-contact-section__inner {
+        max-width: 600px; // Figma: 597.824px
+        margin: 0 auto;
+
+        .p-contact-section__content {
+            display: flex;
+            flex-direction: column;
+
+            .p-contact-section__heading {
+                font-family: $font-family-serif;
+                font-size: 14px; // Figma: 14px
+                letter-spacing: 0.02em; // Figma: 0.28px / 14px
+                margin-bottom: 11px; // Figma: gap 11px (1:528)
+                line-height: normal;
+
+                @media (max-width: 375px) {
+                    font-size: 12px; // Figma SP: 12px
+                    margin-bottom: 6px; // Figma SP: gap 6px
+                }
+            }
+
+            .p-contact-section__title {
+                font-family: $font-family-serif;
+                font-size: 24px; // Figma: 24px
+                font-weight: 400;
+                letter-spacing: 0.02em; // Figma: 0.48px / 24px
+                margin-bottom: 30px; // Figma: gap 30px (1:526)
+                line-height: normal;
+
+                @media (max-width: 375px) {
+                    font-size: 20px; // Figma SP: 20px
+                    margin-bottom: 16px; // Figma SP: gap 16px
+                }
+            }
+
+            .p-contact-section__body {
+                display: flex;
+                flex-direction: column;
+                gap: 42px; // Figma: gap 42px (1:531)
+                margin-bottom: 40px; // Figma: gap 40px (1:525)
+
+                @media (max-width: 375px) {
+                    gap: 24px; // Figma SP: gap 24px
+                }
+
+                .p-contact-section__text {
+                    font-family: $font-family-serif;
+                    font-size: 14px; // Figma: 14px
+                    letter-spacing: 0.02em; // 0.28px
+                    line-height: normal;
+
+                    @media (max-width: 375px) {
+                        font-size: 12px; // Figma SP: 12px
+                        line-height: 1.477em; // Figma SP
+                    }
+
+                    .u-sp-only {
+                        display: none;
+                        @media (max-width: 600px) {
+                            display: block;
+                        }
+                    }
+                }
+
+                .p-contact-section__sub-text {
+                    font-family: $font-family-serif;
+                    font-size: 12px; // Figma: 12px
+                    letter-spacing: 0.02em; // 0.24px
+                    line-height: 2;
+                    opacity: 0.8;
+
+                    @media ( max-width: 500px ) {
+                        font-size: 10px;
+                    }
+
+                    .u-pc-only {
+                        display: block;
+                        @media (max-width: 600px) {
+                            display: none;
+                        }
+                    }
+                    .u-sp-only {
+                        display: none;
+                        @media (max-width: 600px) {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+            .p-contact-section__links {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+
+                @media (max-width: 600px) {
+                    flex-direction: column;
+                    gap: 32px;
+                }
+
+                @media (max-width: 375px) {
+                    gap: 16px; // Figma SP: gap 16px
+                }
+
+                .p-contact-section__link-item {
+                    @media (max-width: 600px) {
+                        width: 100%;
+                    }
+
+                    .p-contact-section__link {
+                        display: inline-flex;
+                        align-items: center;
+                        color: #f8f7f3;
+                        text-decoration: underline;
+                        text-underline-offset: 4px;
+                        transition: opacity 0.3s;
+
+                        &:hover {
+                            opacity: 0.7;
+                        }
+
+                        .p-contact-section__link-label {
+                            font-family: $font-family-serif;
+                            font-size: 18px; // Figma: 18px
+                            letter-spacing: 0.02em; // 0.36px
+
+                            @media (max-width: 375px) {
+                                font-size: 14px; // Figma SP: 14px
+                            }
+                        }
+
+                        .p-contact-section__link-icon {
+                            width: 7px; // Figma: 6.824px
+                            height: auto;
+                            margin-left: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

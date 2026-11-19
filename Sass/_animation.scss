@@ -1,0 +1,36 @@
+.js-fade {
+  opacity: 0;
+  transform: translateY(60px);
+  transition:
+    opacity 0.8s ease-in-out,
+    transform 0.8s ease-in-out;
+}
+
+.js-fade.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+// 上からclip-pathで徐々に現れるアニメーション
+// 初期はopacityのみで透明化（clip-pathだと交差検知されない）
+// 発火後にclip-pathアニメーションで上から現れる
+.js-clip-reveal {
+  opacity: 0;
+}
+
+.js-clip-reveal.is-visible {
+  opacity: 1;
+  animation: clipReveal 2.2s ease-out forwards;
+}
+
+@keyframes clipReveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  99.9% {
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    clip-path: none;
+  }
+}

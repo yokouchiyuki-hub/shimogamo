@@ -1,0 +1,125 @@
+.first-view {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: #001215;
+
+    // 背景動画
+    &__video {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        z-index: 0;
+        background-size: cover;
+        background-position: center;
+
+        video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            border: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+
+            &.is-playing { opacity: 1; }
+        }
+    }
+
+    // ロゴ（画面中央上部）
+    &__logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        max-width: clamp(172px, calc(172px + (232 - 172) * ((100vw - 1440px) / (1920 - 1440))), 232px);
+
+        @media (max-width: 1440px) {
+            max-width: 172px;
+        }
+
+        @media (max-width: 768px) {
+            max-width: clamp(102px, calc(102px + (172 - 102) * ((100vw - 375px) / (768 - 375))), 172px);
+        }
+    }
+
+    // 左下テキスト
+    &__bottom-text {
+        position: absolute;
+        left: 2.08vw;
+        bottom: 2.08vw;
+        color: #fff;
+        line-height: 1.6;
+        z-index: 10;
+
+        @media (max-width: 1440px) {
+            left: clamp(20px, calc(20px + (40 - 20) * ((100vw - 375px) / (1440 - 375))), 40px);
+            bottom: clamp(20px, calc(20px + (40 - 20) * ((100vw - 375px) / (1440 - 375))), 40px);
+        }
+    }
+
+    &__bottom-text-en {
+        font-family: "EB Garamond", serif;
+        font-size: 0.73vw;
+        letter-spacing: 0.1em;
+        margin-bottom: 4px;
+
+        @media (max-width: 1440px) { font-size: 14px; }
+    }
+
+    &__bottom-text-jp {
+        font-size: 0.63vw;
+        font-weight: 300;
+        display: flex;
+        align-items: center;
+
+        @media (max-width: 1440px) {
+            font-size: clamp(10px, calc(10px + (12 - 10) * ((100vw - 375px) / (1440 - 375))), 12px);
+        }
+
+        .divider {
+            margin: 0 0.8em;
+            opacity: 0.7;
+            font-size: 0.52vw;
+
+            @media (max-width: 1440px) { font-size: 10px; }
+        }
+    }
+
+    // 右下 音声切替ボタン
+    &__sound-toggle {
+        position: absolute;
+        right: 2.08vw;
+        bottom: 2.08vw;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.3s;
+        padding: 0;
+
+        @media (max-width: 1440px) {
+            right: 20px;
+            bottom: 20px;
+        }
+
+        &:hover { background: rgba(255, 255, 255, 0.12); }
+    }
+
+    &__sound-icon {
+        width: 20px;
+        height: 20px;
+        color: #fff;
+    }
+}

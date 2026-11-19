@@ -1,0 +1,119 @@
+section.concept {
+    background-color: #001215;
+    color: #F8F7F3;
+    position: relative;
+
+    // padding: 1920px(216px) -> 1440px(216px) -> 1024px(132px) -> 768px(125px) -> 375px(128px)
+    padding: 216px 0; // 1441px以上
+
+    @media (max-width: 1440px) {
+        // 1440px(216px) -> 1024px(132px)
+        padding: calc(132px + (216 - 132) * ((100vw - 1024px) / (1440 - 1024))) 0;
+    }
+
+    @media (max-width: 1024px) {
+        // 1024px(132px) -> 768px(125px)
+        padding: calc(125px + (132 - 125) * ((100vw - 768px) / (1024 - 768))) 0;
+    }
+
+    @media (max-width: 768px) {
+        // 768px(125px) -> 375px(128px)
+        padding: calc(128px + (125 - 128) * ((100vw - 375px) / (768 - 375))) 0;
+    }
+
+    @media (max-width: 375px) {
+        padding: 128px 0;
+    }
+
+    &__container {
+        position: relative;
+        z-index: 1;
+
+        .tab-only {
+            display: none;
+            @media (max-width: 600px) { display: block; }
+        }
+    }
+
+    &__title {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 200%;
+        letter-spacing: 0.4em;
+        text-align: center;
+        margin-bottom: 50px;
+
+        @media (max-width: 1024px) {
+            // 1024px(18px) -> 768px(16px)
+            font-size: calc(16px + (18 - 16) * ((100vw - 768px) / (1024 - 768)));
+            line-height: calc(1.6 + (2.0 - 1.6) * ((100vw - 768px) / (1024 - 768)));
+        }
+
+        @media (max-width: 768px) {
+            font-size: 16px;
+            line-height: 160%;
+        }
+    }
+
+    &__text {
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        line-height: 260%;
+        letter-spacing: 0.4em;
+        text-align: center;
+
+        @media (max-width: 1440px) {
+            // 1440px(2.6) -> 1024px(2.0)
+            line-height: calc(2.0 + (2.6 - 2.0) * ((100vw - 1024px) / (1440 - 1024)));
+        }
+
+        @media (max-width: 1024px) {
+            // 1024px(18px/2.0) -> 768px(16px/1.6)
+            font-size: calc(16px + (18 - 16) * ((100vw - 768px) / (1024 - 768)));
+            line-height: calc(1.6 + (2.0 - 1.6) * ((100vw - 768px) / (1024 - 768)));
+        }
+
+        @media (max-width: 768px) {
+            font-size: 16px;
+            line-height: 160%;
+        }
+    }
+
+    &__motif {
+        position: absolute;
+        z-index: 0;
+        width: 460px;
+        top: 108px;
+        left: calc(50% - 332px);
+
+        @media (max-width: 1440px) {
+            // 1440px -> 1024px
+            width: calc(460px + (460 - 328) * ((100vw - 1024px) / (1440 - 1024)));
+            top: calc(14px + (108 - 14) * ((100vw - 1024px) / (1440 - 1024)));
+            left: calc(50% - calc(236px + (332 - 236) * ((100vw - 1024px) / (1440 - 1024))));
+        }
+
+        @media (max-width: 1024px) {
+            // 1024px -> 768px
+            width: calc(328px + (328 - 300) * ((100vw - 768px) / (1024 - 768)));
+            top: calc(5px + (14 - 5) * ((100vw - 768px) / (1024 - 768)));
+            left: calc(50% - calc(220px + (236 - 220) * ((100vw - 768px) / (1024 - 768))));
+        }
+
+        @media (max-width: 768px) {
+            // 768px -> 375px
+            width: calc(240px + (300 - 240) * ((100vw - 375px) / (768 - 375)));
+            top: calc(30px + (5 - 30) * ((100vw - 375px) / (768 - 375)));
+            left: calc(50% - calc(170px + (220 - 170) * ((100vw - 375px) / (768 - 375))));
+        }
+
+        @media (max-width: 375px) {
+            width: 240px;
+            top: 30px;
+            left: calc(50% - 170px);
+        }
+
+        img { width: 100%; height: auto; }
+    }
+}

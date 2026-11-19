@@ -1,0 +1,149 @@
+section.daily-life {
+    background-color: #001215;
+    color: #F8F7F3;
+    position: relative;
+
+    // padding-top: 1920px(270px) -> 1440px(247px) -> 1024px(91px) -> 768px(79px) -> 375px(74px)
+    padding-top: 14.0625vw; // 1920px以上
+
+    @media (max-width: 1920px) {
+        padding-top: clamp(247px, calc(247px + (270 - 247) * ((100vw - 1440px) / (1920 - 1440))), 270px);
+    }
+
+    @media (max-width: 1440px) {
+        padding-top: clamp(91px, calc(91px + (247 - 91) * ((100vw - 1024px) / (1440 - 1024))), 247px);
+    }
+
+    @media (max-width: 1024px) {
+        padding-top: clamp(74px, calc(74px + (91 - 74) * ((100vw - 768px) / (1024 - 768))), 91px);
+    }
+
+    @media (max-width: 768px) {
+        padding-top: clamp(74px, calc(74px + (79 - 74) * ((100vw - 375px) / (768 - 375))), 79px);
+    }
+
+    .daily-life__inner {
+        margin-left: auto;
+        margin-right: clamp(35px, calc(35px + (157 - 35) * ((100vw - 1440px) / (1920 - 1440))), 157px);
+
+        @media (max-width: 1440px) {
+            margin-right: clamp(0px, calc(0px + (35 - 0) * ((100vw - 1024px) / (1440 - 1024))), 35px);
+        }
+
+        padding-left: clamp(40px, calc(40px + (74 - 40) * ((100vw - 1024px) / (1440 - 1024))), 74px);
+
+        @media (max-width: 1024px) {
+            padding-left: 0;
+        }
+    }
+
+    .daily-life__container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        @media (max-width: 1024px) {
+            display: block;
+            position: relative;
+        }
+    }
+
+    .daily-life__content {
+        margin-right: clamp(21px, calc(21px + (103 - 21) * ((100vw - 1440px) / (1920 - 1440))), 103px);
+        position: relative;
+        z-index: 3;
+
+        @media (max-width: 1440px) {
+            margin-right: clamp(0px, calc(0px + (21 - 0) * ((100vw - 1024px) / (1440 - 1024))), 21px);
+        }
+
+        @media (max-width: 1024px) {
+            position: absolute;
+            z-index: 5;
+            margin-right: 0;
+            left: clamp(16px, calc(16px + (127 - 16) * ((100vw - 768px) / (1024 - 768))), 127px);
+            top: clamp(384px, calc(384px + (420 - 384) * ((100vw - 768px) / (1024 - 768))), 420px);
+        }
+
+        @media (max-width: 768px) {
+            left: clamp(16px, calc(16px + (21 - 16) * ((100vw - 375px) / (768 - 375))), 21px);
+            top: clamp(243px, calc(243px + (420 - 243) * ((100vw - 375px) / (768 - 375))), 420px);
+        }
+    }
+
+    .daily-life__title {
+        font-weight: 400;
+        line-height: 1.4;
+        letter-spacing: 0.05em;
+
+        font-size: 32px;
+
+        @media (max-width: 1440px) {
+            font-size: clamp(24px, calc(24px + (32 - 24) * ((100vw - 1024px) / (1440 - 1024))), 32px);
+        }
+
+        @media (max-width: 1024px) {
+            font-size: 24px;
+        }
+
+        margin-bottom: 24px;
+    }
+
+    .daily-life__text {
+        font-size: 18px;
+        line-height: 2;
+        letter-spacing: 0.06em;
+
+        @media (max-width: 1024px) {
+            font-size: 16px;
+        }
+    }
+
+    .daily-life__motif {
+        position: absolute;
+        z-index: -1;
+        pointer-events: none;
+
+        top: clamp(-60px, calc(-60px + (35 - (-60)) * ((100vw - 1024px) / (1920 - 1024))), 35px);
+        left: clamp(-140px, calc(-140px + (-80 - (-140)) * ((100vw - 1920px) / (1024 - 1920))), -80px);
+        width: clamp(500px, calc(500px + (547 - 500) * ((100vw - 1024px) / (1920 - 1024))), 547px);
+
+        @media (max-width: 1024px) {
+            top: clamp(-60px, calc(-60px + (0 - (-60)) * ((100vw - 1024px) / (768 - 1024))), 0px);
+            left: clamp(-80px, calc(-80px + (-70 - (-80)) * ((100vw - 1024px) / (768 - 1024))), -70px);
+            width: clamp(390px, calc(390px + (500 - 390) * ((100vw - 768px) / (1024 - 768))), 500px);
+        }
+
+        @media (max-width: 768px) {
+            top: 0px;
+            left: clamp(-70px, calc(-70px + (-30 - (-70)) * ((100vw - 768px) / (375 - 768))), -30px);
+            width: clamp(320px, calc(320px + (390 - 320) * ((100vw - 375px) / (768 - 375))), 390px);
+        }
+
+        img { width: 100%; height: auto; display: block; }
+    }
+
+    .daily-life__image-unit {
+        flex-shrink: 0;
+        width: 700px;
+
+        @media (max-width: 1920px) {
+            width: 700px;
+        }
+
+        @media (max-width: 1440px) {
+            width: clamp(556px, calc(556px + (700 - 556) * ((100vw - 1024px) / (1440 - 1024))), 700px);
+        }
+
+        @media (max-width: 1024px) {
+            width: clamp(512px, calc(512px + (556 - 512) * ((100vw - 768px) / (1024 - 768))), 556px);
+            margin-left: auto;
+        }
+
+        @media (max-width: 768px) {
+            width: clamp(260px, calc(260px + (512 - 260) * ((100vw - 375px) / (768 - 375))), 512px);
+        }
+
+        img { width: 100%; height: auto; display: block; }
+    }
+}

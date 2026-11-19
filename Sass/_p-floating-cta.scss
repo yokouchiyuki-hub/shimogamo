@@ -1,0 +1,66 @@
+/* ============================================================
+   追従CTA（画面右下・固定表示 / 内覧予約リンク）
+   PC/iPadとSPで画像を切り替え。
+   画像は @2x 書き出しなので表示サイズは実寸の 1/2。
+   ============================================================ */
+
+.p-floating-cta {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9999;
+    // PC/iPad画像: 195x97 → 表示 約98x49
+    width: 98px;
+    // conceptセクションの下端がビューポート内に入るまで非表示
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .3s ease, visibility .3s ease;
+
+    &.is-visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    @media (max-width: 768px) {
+        right: 12px;
+        bottom: 12px;
+        // SP画像: 174x88 → 表示 約87x44
+        width: 87px;
+    }
+}
+
+.p-floating-cta__link {
+    display: block;
+    text-decoration: none;
+    transition: opacity .25s ease;
+
+    &:hover {
+        opacity: .7;
+    }
+}
+
+.p-floating-cta__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* PC/iPad と SP で画像切替 */
+.p-floating-cta__img--pc {
+    display: block;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+.p-floating-cta__img--sp {
+    display: none;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+}

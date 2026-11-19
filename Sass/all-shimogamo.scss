@@ -1,0 +1,19 @@
+@import "shimogamo-base";
+@import "shimogamo-first_view";
+@import "shimogamo-concept";
+@import "shimogamo-exterior";
+@import "shimogamo-daily-life";
+@import "shimogamo-interior";
+@import "shimogamo-forest";
+@import "shimogamo-serene";
+@import "shimogamo-shrine";
+@import "shimogamo-photo-gallery";
+@import "shimogamo-map";
+// landscape は shimogamo-map.scss に含む
+@import "p-contact-section";
+@import "p-floating-cta";
+@import "animation";
+
+body {
+    background-color: #001215;
+}

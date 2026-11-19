@@ -1,0 +1,47 @@
+$color-bg:   #001215;
+$color-text: #F8F7F3;
+$font-serif:  "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Hiragino Kaku Gothic ProN", "MS PMincho", serif;
+$font-garamond: "EB Garamond", serif;
+$font-sans:  "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: $color-bg;
+    color: $color-text;
+    font-family: $font-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+// レスポンシブ改行ヘルパー
+.u-pc-only {
+    display: block;
+    @media (max-width: 600px) { display: none; }
+}
+.u-sp-only {
+    display: none;
+    @media (max-width: 600px) { display: block; }
+}
+.tab-only {
+    display: none;
+    @media (max-width: 600px) { display: block; }
+}
+.under-1024 {
+    display: none;
+    @media (max-width: 1024px) { display: block; }
+}
+.under-1920 {
+    display: block;
+}

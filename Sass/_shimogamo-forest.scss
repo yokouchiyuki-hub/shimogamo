@@ -1,0 +1,59 @@
+section.forest {
+    position: relative;
+    background-color: #001215;
+    margin-bottom: 100px;
+
+    .forest__img {
+        width: 100%;
+        display: block;
+    }
+
+    .forest__text {
+        position: absolute;
+        right: 8.09vw;
+        bottom: 6.15vw;
+        color: #fff;
+        font-family: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Hiragino Kaku Gothic ProN", "MS PMincho", serif;
+        font-weight: 400;
+        font-size: 0.94vw;
+        line-height: 180%;
+        letter-spacing: 0.06em;
+        text-align: justify;
+        width: 33.91vw;
+
+        @media (max-width: 1440px) {
+            font-size: 18px;
+            width: clamp(497px, calc(497px + (651 - 497) * ((100vw - 1440px) / (1920 - 1440))), 651px);
+            right: clamp(79px, calc(79px + (155 - 79) * ((100vw - 1440px) / (1920 - 1440))), 155px);
+            bottom: clamp(105px, calc(105px + (118 - 105) * ((100vw - 1440px) / (1920 - 1440))), 118px);
+        }
+
+        @media (max-width: 1024px) {
+            // 1024px(16px/413px/19px/-84px) -> 1440px(18px/497px/79px/105px)
+            font-size: clamp(16px, calc(16px + (18 - 16) * ((100vw - 1024px) / (1440 - 1024))), 18px);
+            width: clamp(413px, calc(413px + (497 - 413) * ((100vw - 1024px) / (1440 - 1024))), 497px);
+            right: clamp(19px, calc(19px + (79 - 19) * ((100vw - 1024px) / (1440 - 1024))), 79px);
+            bottom: clamp(-84px, calc(-84px + (105 - (-84)) * ((100vw - 1024px) / (1440 - 1024))), 105px);
+        }
+
+        @media (max-width: 768px) {
+            width: clamp(413px, calc(493px + (413 - 493) * ((100vw - 768px) / (1024 - 768))), 493px);
+            right: 19px;
+            bottom: clamp(-84px, calc(-72px + (-84 - (-72)) * ((100vw - 768px) / (1024 - 768))), -72px);
+        }
+
+        @media (max-width: 580px) {
+            text-align: center;
+            position: relative;
+            bottom: 0;
+            right: 0;
+            margin-top: 34px;
+            width: 82.4%;
+            margin-inline: auto;
+        }
+
+        @media (max-width: 375px) {
+            font-size: clamp(13px, calc(13px + (16 - 13) * ((100vw - 375px) / (580 - 375))), 16px);
+        }
+    }
+}
