@@ -1,0 +1,26 @@
+@use 'base' as *;
+
+.p-seasons {
+  padding: 0 0 fluid(110, 200);  // 375px(110) → 1440px(200)
+  &__head { margin: 0 $gutter fluid(40, 64); }
+  &__list { display: flex; gap: fluid(8, 16); padding: 0 $gutter; }  // 375px(8) → 1440px(16)
+  &__item {
+    flex: 1;
+    min-width: 0;
+    img { width: 100%; }
+    &:nth-child(odd) { margin-top: fluid(32, 80); }  // 奇数番目を下げる
+  }
+  @include mq(768) {
+    &__head { margin: 0 24px 32px; }
+    &__list {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 24px;
+      gap: 12px;
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+    }
+    &__item { flex: 0 0 60vw; scroll-snap-align: start; }
+  }
+}

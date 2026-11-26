@@ -1,0 +1,24 @@
+@use 'base' as *;
+
+.p-outline {
+  padding: 0 $gutter fluid(110, 200);  // 375px(110) → 1440px(200)
+  &__inner { max-width: 760px; margin: 0 auto; }
+  &__list {
+    border-top: 1px solid $c-text;
+    border-bottom: 1px solid $c-text;
+    > div {
+      display: grid;
+      grid-template-columns: 10em 1fr;
+      gap: 16px;
+      padding: 18px 0;
+      & + div { border-top: 1px solid $c-line; }
+    }
+    dt { font-size: 13px; color: $c-sub; }
+    dd { font-size: 14px; }
+  }
+  &__note { margin-top: 18px; font-size: 12px; color: $c-sub; line-height: 1.8; }
+  @include mq(768) {
+    padding: 0 24px fluid(110, 200);
+    &__list > div { grid-template-columns: 6.5em 1fr; gap: 12px; }
+  }
+}

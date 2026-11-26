@@ -1,0 +1,83 @@
+@use 'base' as *;
+
+// 見出し4点セット
+.p-head {
+  &__label {
+    font-family: $f-sans;
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+  &__en {
+    margin-top: 14px;
+    font-family: $f-en;
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: .02em;
+  }
+  &__ja {
+    writing-mode: vertical-rl;
+    font-family: $f-ja;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: .18em;
+    line-height: 1.9;
+    align-self: flex-start;
+    span { display: block; white-space: nowrap; }
+  }
+}
+
+.p-text {
+  max-width: 460px;
+  font-size: 15px;
+  line-height: 1.85;
+  letter-spacing: .04em;
+}
+
+.p-photo { position: relative; }
+.p-caption {
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: .04em;
+  color: $c-sub;
+}
+
+// MORE型リンク
+.p-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  font-family: $f-sans;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  &__line {
+    position: relative;
+    display: block;
+    width: fluid(120, 160);  // 375px(120) → 1440px(160)
+    height: 1px;
+    background: currentColor;
+    transition: width .5s cubic-bezier(.2, .6, .2, 1);
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 9px;
+      height: 1px;
+      background: currentColor;
+      transform-origin: right center;
+      transform: rotate(35deg);
+    }
+  }
+  &:hover &__line { width: calc(#{fluid(120, 160)} + 16px); }
+  &--lg {
+    font-family: $f-ja;
+    font-size: 16px;
+    letter-spacing: .1em;
+    text-transform: none;
+  }
+}

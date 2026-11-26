@@ -1,0 +1,73 @@
+@use 'base' as *;
+
+.p-fv {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 480px;
+  overflow: hidden;
+  color: #fff;
+  background: #2b2b2b;
+  &__poster, &__video, &__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+  &__poster img { width: 100%; height: 100%; object-fit: cover; }
+  &__video {
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .8s;
+    &.is-playing { opacity: 1; }
+  }
+  &__shade { background: rgba(0, 0, 0, .25); }
+  &__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: .6em;  // 末尾の字間ぶんを相殺
+    font-family: $f-sans;
+    font-weight: 300;
+    font-size: fluid(22, 34);  // 375px(22) → 1440px(34)
+    letter-spacing: .6em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  &__name {
+    position: absolute;
+    top: fluid(96, 140);  // 375px(96) → 1440px(140)
+    right: fluid(24, 120);  // 375px(24) → 1440px(120)
+    writing-mode: vertical-rl;
+    font-size: 26px;
+    letter-spacing: .3em;
+    line-height: 1.6;
+    span { display: block; white-space: nowrap; }
+  }
+  &__addr {
+    position: absolute;
+    left: fluid(20, 40);
+    bottom: fluid(24, 40);
+    font-family: $f-sans;
+    font-size: 11px;
+    letter-spacing: .08em;
+    line-height: 1.6;
+  }
+  &__status {
+    position: absolute;
+    right: 0;
+    bottom: fluid(24, 40);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 12px;
+    letter-spacing: .14em;
+    line-height: 1;
+  }
+  &__status-text { white-space: nowrap; }
+  &__status-line {
+    display: block;
+    width: fluid(40, 160);  // 375px(40) → 1440px(160)
+    height: 1px;
+    background: #fff;
+  }
+  @include mq(768) {
+    &__addr { bottom: 64px; }
+  }
+}

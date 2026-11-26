@@ -1,0 +1,19 @@
+@use 'base' as *;
+
+.p-wide {
+  position: relative;
+  margin-bottom: fluid(110, 200);  // 375px(110) → 1440px(200)
+  img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; }
+  &__caption {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-shadow: 0 0 8px rgba(0, 0, 0, .35);
+  }
+  @include mq(768) {
+    img { aspect-ratio: 3 / 2; }
+  }
+}

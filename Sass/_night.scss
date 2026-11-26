@@ -1,0 +1,35 @@
+@use 'base' as *;
+
+.p-night {
+  position: relative;
+  margin-bottom: fluid(110, 200);  // 375px(110) → 1440px(200)
+  img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .2);
+    pointer-events: none;
+  }
+  &__text {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding: 0 24px;
+    transform: translateY(-50%);
+    text-align: center;
+    color: #fff;
+    font-size: fluid(16, 24);  // 375px(16) → 1440px(24)
+    letter-spacing: .24em;
+    line-height: 1.9;
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    &__text.js-fade { transform: translateY(calc(-50% + 24px)); }
+    &__text.js-fade.is-visible { transform: translateY(-50%); }
+  }
+  @include mq(768) {
+    img { aspect-ratio: 3 / 4; }
+  }
+}

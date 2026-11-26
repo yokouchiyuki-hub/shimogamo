@@ -1,0 +1,52 @@
+@use 'base' as *;
+
+.l-footer {
+  position: relative;
+  padding: fluid(80, 140) $gutter 32px;  // 375px(80) → 1440px(140)
+  background: $c-foot;
+  color: $c-foot-text;
+  &__top { position: relative; display: flex; justify-content: center; min-height: 160px; align-items: center; }
+  &__name {
+    position: absolute;
+    top: 0;
+    right: 0;
+    writing-mode: vertical-rl;
+    font-size: 20px;
+    letter-spacing: .3em;
+    line-height: 1.6;
+    span { display: block; white-space: nowrap; }
+  }
+  &__logo {
+    padding-left: .6em;
+    font-family: $f-sans;
+    font-weight: 300;
+    font-size: fluid(20, 34);  // 375px(20) → 1440px(34)
+    letter-spacing: .6em;
+    line-height: 1;
+  }
+  &__bottom {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: 24px;
+    margin-top: fluid(60, 100);
+    padding-top: 24px;
+    border-top: 1px solid rgba(242, 240, 236, .35);
+    font-size: 11px;
+    letter-spacing: .06em;
+    line-height: 1.7;
+  }
+  &__nav ul { display: flex; gap: 20px; }
+  &__nav a { font-family: $f-en; font-size: 12px; letter-spacing: .12em; &:hover { opacity: .6; } }
+  &__copy { justify-self: end; font-family: $f-sans; }
+  @include mq(1024) { padding-left: 6vw; padding-right: 6vw; }
+  @include mq(768) {
+    padding-left: 24px;
+    padding-right: 24px;
+    &__bottom { grid-template-columns: 1fr; gap: 20px; }
+    &__nav ul { flex-wrap: wrap; gap: 12px 20px; }
+    &__copy { justify-self: start; }
+    // 追従CTAと重ならないように
+    padding-bottom: 88px;
+  }
+}

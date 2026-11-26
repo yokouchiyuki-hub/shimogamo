@@ -1,0 +1,34 @@
+@use 'base' as *;
+
+.p-glossary {
+  padding: 0 $gutter fluid(110, 200);  // 375px(110) → 1440px(200)
+  &__head {
+    display: flex;
+    gap: 40px;
+    margin-bottom: fluid(48, 80);
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: fluid(40, 64) fluid(32, 56);
+  }
+  &__item { padding-top: 22px; border-top: 1px solid $c-text; }
+  &__kanji { font-size: 20px; line-height: 1.5; letter-spacing: .1em; }
+  &__roman {
+    margin-top: 2px;
+    font-family: $f-en;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  &__desc { margin-top: 14px; font-size: 14px; line-height: 1.85; }
+  @include mq(1024) {
+    padding: 0 6vw fluid(110, 200);
+    &__list { grid-template-columns: repeat(2, 1fr); }
+  }
+  @include mq(768) {
+    padding: 0 24px fluid(110, 200);
+    &__head { justify-content: space-between; gap: 20px; }
+    &__list { grid-template-columns: 1fr; }
+  }
+}

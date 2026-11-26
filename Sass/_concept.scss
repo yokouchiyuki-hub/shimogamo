@@ -1,0 +1,41 @@
+@use 'base' as *;
+
+.p-concept {
+  padding: 0 0 fluid(110, 200);  // 375px(110) → 1440px(200)
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    padding-left: $gutter;
+  }
+  &__lead { width: 30vw; }
+  // 中央(画面幅の約48%)に縦書き
+  &__ja { margin-left: calc(48vw - #{$gutter} - 30vw); }
+  &__body {
+    display: flex;
+    align-items: flex-end;
+    gap: fluid(40, 100);  // 375px(40) → 1440px(100)
+    margin: fluid(60, 90) 0 0 35vw;
+    padding-right: $gutter;
+  }
+  &__photo {
+    margin: fluid(70, 110) 0 0 35vw;  // 375px(70) → 1440px(110)
+    img { width: 100%; }
+  }
+  .p-caption { padding-right: 16px; }
+
+  @include mq(1024) {
+    &__top, &__body { padding-left: 6vw; }
+    &__body { margin-left: 28vw; flex-direction: column; align-items: flex-start; gap: 36px; }  // タブレットは本文とリンクを縦積み
+    &__photo { margin-left: 28vw; }
+    &__lead { width: 36vw; }
+    &__ja { margin-left: calc(52vw - 6vw - 36vw); }
+  }
+  @include mq(768) {
+    &__top { flex-direction: column; padding: 0 24px; }
+    &__lead { width: auto; }
+    &__ja { align-self: flex-end; margin: 40px 0 0; }
+    &__body { flex-direction: column; align-items: flex-start; gap: 36px; margin: 40px 0 0; padding: 0 24px; }
+    &__photo { margin: 56px 0 0; }
+    .p-caption { padding-left: 24px; }
+  }
+}

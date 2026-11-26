@@ -1,0 +1,133 @@
+@use 'base' as *;
+
+%lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: $f-sans;
+  font-size: 11px;
+  letter-spacing: .06em;
+  button { opacity: .5; transition: opacity .3s; }
+  button[aria-pressed="true"] { opacity: 1; }
+}
+
+.l-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: $header-h;
+  color: #fff;
+  transition: background-color .5s, color .5s;
+  &.is-solid,
+  &.is-menu-open {
+    background: $c-bg;
+    color: $c-text;
+  }
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 100%;
+    padding: 0 fluid(20, 40);  // 375px(20) → 1440px(40)
+  }
+  &__logo {
+    justify-self: start;
+    font-family: $f-sans;
+    font-weight: 300;
+    font-size: 15px;
+    letter-spacing: .6em;
+    line-height: 1;
+  }
+  &__nav ul {
+    display: flex;
+    gap: fluid(16, 32, 1024, 1440);  // 1024px(16) → 1440px(32)
+  }
+  &__nav a {
+    font-family: $f-en;
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .9;
+    &:hover { opacity: .55; }
+  }
+  &__right {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  &__lang { @extend %lang-switch; }
+  &__book {
+    padding: 9px 18px;
+    border: 1px solid currentColor;
+    font-family: $f-ja;
+    font-size: 11px;
+    letter-spacing: .12em;
+    line-height: 1.4;
+    white-space: nowrap;
+    transition: background-color .3s, color .3s;
+    &:hover { background: $c-text; border-color: $c-text; color: $c-bg; }
+  }
+  &__burger {
+    display: none;
+    justify-self: end;
+    position: relative;
+    width: 44px;
+    height: 44px;
+  }
+  &__burger-line {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 1px;
+    background: currentColor;
+    transition: transform .4s, top .4s;
+    &:nth-child(1) { top: 18px; }
+    &:nth-child(2) { top: 26px; }
+  }
+  &__burger[aria-expanded="true"] &__burger-line {
+    &:nth-child(1) { top: 22px; transform: rotate(20deg); }
+    &:nth-child(2) { top: 22px; transform: rotate(-20deg); }
+  }
+
+  @include mq(1024) {
+    &__inner { grid-template-columns: 1fr auto; }
+    &__nav, &__right { display: none; }
+    &__burger { display: block; }
+    &__logo { font-size: fluid(13, 15, 375, 768); }  // 375px(13) → 768px(15)
+  }
+}
+
+.l-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: $header-h 24px 40px;
+  background: $c-bg;
+  color: $c-text;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s, visibility .5s;
+  &.is-open { opacity: 1; visibility: visible; }
+  &__nav ul { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  &__nav a {
+    font-family: $f-en;
+    font-size: 20px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  &__lang { @extend %lang-switch; font-size: 12px; }
+  &__book {
+    padding: 14px 28px;
+    border: 1px solid $c-text;
+    font-size: 13px;
+    letter-spacing: .12em;
+    line-height: 1.4;
+  }
+  @media (min-width: 1025px) { display: none; }
+}

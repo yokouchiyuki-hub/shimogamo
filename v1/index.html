@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>下鴨｜京都・下鴨邸宅地</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Adobe Typekit (garamond-premier-pro / neue-haas-grotesk-display) -->
+    <link rel="stylesheet" href="https://use.typekit.net/rdl5vgu.css">
+
+    <!-- Lenis (smooth scroll) -->
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" href="css/all-shimogamo.css">
+</head>
+
+<body>
+
+<main>
+
+    <!-- ====== ファーストビュー ====== -->
+    <section class="first-view">
+
+        <div class="first-view__video" id="js-fv-video">
+            <video id="js-fv-player" autoplay muted loop playsinline preload="auto"></video>
+        </div>
+
+        <!-- ロゴエリア -->
+        <!-- <div class="first-view__logo">
+            <img src="" alt="">
+        </div> -->
+
+        <div class="first-view__bottom-text">
+            <div class="first-view__bottom-text-en">Kyoto&ldquo;SHIMOGAMO&rdquo;</div>
+            <div class="first-view__bottom-text-jp">
+                京都・下鴨邸宅地 <span class="divider">｜</span> 先着申込受付中
+            </div>
+        </div>
+
+        <button class="first-view__sound-toggle" id="js-sound-toggle" aria-label="音声切替">
+            <svg class="first-view__sound-icon first-view__sound-icon--off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <line x1="23" y1="9" x2="17" y2="15"/>
+                <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+            <svg class="first-view__sound-icon first-view__sound-icon--on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none;">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+        </button>
+
+    </section>
+
+    <script>
+        (function() {
+            var video = document.getElementById('js-fv-player');
+
+            video.src = 'img/shimogamo_movie.mp4';
+            video.load();
+            var p = video.play();
+            if (p && typeof p.catch === 'function') { p.catch(function() {}); }
+
+            video.addEventListener('playing', function() {
+                video.classList.add('is-playing');
+            });
+
+            document.getElementById('js-sound-toggle').addEventListener('click', function() {
+                var iconOff = this.querySelector('.first-view__sound-icon--off');
+                var iconOn  = this.querySelector('.first-view__sound-icon--on');
+                if (video.muted) {
+                    video.muted = false;
+                    iconOff.style.display = 'none';
+                    iconOn.style.display  = 'block';
+                } else {
+                    video.muted = true;
+                    iconOff.style.display = 'block';
+                    iconOn.style.display  = 'none';
+                }
+            });
+        })();
+    </script>
+
+
+    <!-- ====== コンセプト ====== -->
+    <section class="concept">
+
+        <div class="concept__container">
+            <h2 class="concept__title">古都の静けさを纏い、<br class="tab-only">水の流れに耳を澄ます。</h2>
+
+            <p class="concept__text">
+                糺の森が守り伝える悠久の時の流れと、<br class="tab-only">瀬見の小川の清らかなせせらぎ。<br>
+                日本の美意識が凝縮されたこの地に、<br class="tab-only">引き算の哲学が息づく邸宅が誕生する。<br>
+                洗練と静謐が重なり合うところに、<br class="tab-only">真の豊かさはある。
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- ====== 外観 ====== -->
+    <section class="exterior">
+        <div class="exterior__visual js-fade">
+            <picture>
+                <img src="img/exterior.jpg" alt="下鴨邸宅 外観">
+            </picture>
+        </div>
+
+        <div class="exterior__title-group-wrap">
+            <div class="exterior__title-group js-clip-reveal">
+                <p class="exterior__title-en">SHIMOGAMO</p>
+                <div class="exterior__title-line">
+                    <img src="img/vector-line.png" alt="">
+                </div>
+                <h2 class="exterior__title-jp">下鴨邸宅</h2>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====== 暮らし ====== -->
+    <section class="daily-life">
+        <div class="daily-life__inner">
+            <div class="daily-life__container">
+                <div class="daily-life__content">
+                    <h2 class="daily-life__title">
+                        日々の営みに宿る、<br class="u-sp-only">京の風雅。
+                    </h2>
+                    <div class="daily-life__text-box">
+                        <p class="daily-life__text">
+                            千年の都、京都・下鴨。<br>
+                            この地が求めるのは、単なる住まいではなく、<br class="u-pc-only">
+                            住まう人の感性と歴史が静かに響き合う「邸宅」の佇まいです。
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="daily-life__image-unit js-fade">
+                    <img src="img/interior_1.jpg" alt="京都・下鴨の邸宅イメージ">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====== インテリア ====== -->
+    <section class="interior">
+        <div class="interior__inner">
+
+            <div class="interior__main-visual js-fade">
+                <img src="img/Hase_living1.jpg" alt="洗練されたリビング">
+            </div>
+
+            <div class="interior__content-group">
+                <div class="interior__text-block">
+                    <h3 class="interior__heading">静謐と機能美が<br>交わる空間。</h3>
+                    <p class="interior__description">
+                        自然素材の温もりと現代建築の精緻さが調和した室内空間。一点一点を選び抜いた素材と、職人の手仕事が生み出す静寂の美は、住まう人の日常に深い充足をもたらします。
+                    </p>
+                </div>
+
+                <div class="interior__sub-visual js-fade">
+                    <img src="img/Hase_living2.jpg" alt="細部にこだわったキッチン">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ====== 糺の森 ====== -->
+    <section class="forest">
+        <img class="forest__img js-fade" src="img/Hase_balcony.jpg" alt="糺の森">
+        <p class="forest__text">
+            邸宅のすぐそこに広がる糺の森は、下鴨神社の境内を包む原生林。樹齢数百年の木々が天蓋を成し、木漏れ日と鳥の声が日常の喧騒を静かに溶かしていきます。この森の気配を感じながら目覚める朝が、ここに暮らす人だけの特権となります。
+        </p>
+    </section>
+
+
+    <!-- ====== 静謐 ====== -->
+    <section class="serene">
+        <div class="serene__inner">
+
+            <div class="serene__content-left">
+                <div class="serene__headline-wrap">
+                    <h2 class="serene__headline">
+                        森の奥行きと、川の静けさ。<br>
+                        そのすべてが、日常になる。
+                    </h2>
+                </div>
+
+                <div class="serene__lead-wrap">
+                    <p class="serene__lead">
+                        下鴨神社の杜に守られ、<br class="under-1024">瀬見の小川の清流を呼吸するように暮らす。<br class="under-1920">
+                        観光の賑わいが去った後に訪れる穏やかな森の静寂が、<br class="under-1024">あなたの生き方をより深く、豊かに整えてくれます。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====== 下鴨神社 ====== -->
+    <section class="shimogamo-shrine">
+        <div class="shimogamo-shrine__inner">
+
+            <div class="shimogamo-shrine__visual">
+                <div class="shimogamo-shrine__image js-fade">
+                    <img src="img/exterior.jpg" alt="下鴨邸宅 外観">
+                </div>
+
+                <div class="shimogamo-shrine__label js-clip-reveal">
+                    <span class="shimogamo-shrine__label-jp">下鴨</span>
+                    <span class="shimogamo-shrine__label-line">
+                        <img src="img/vector-line.png" alt="">
+                    </span>
+                    <span class="shimogamo-shrine__label-en">SHIMOGAMO</span>
+                </div>
+            </div>
+
+            <div class="shimogamo-shrine__body">
+                <p class="shimogamo-shrine__text">
+                    古代より京都の守護として鎮座し、世界遺産に登録された下鴨神社。<br>
+                    まだ人影のない夜明け前の境内を歩けば、この都市の深奥にある静謐な時間が、住まう人の日常に揺るぎない品格を与えてくれます。
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ====== フォトギャラリー ====== -->
+    <section class="photo-gallery">
+        <div class="photo-gallery__inner">
+            <ul class="photo-gallery__list">
+                <li class="photo-gallery__item photo-gallery__item--1">
+                    <img src="img/Yuigahama.jpg" alt="瀬見の小川">
+                </li>
+                <li class="photo-gallery__item photo-gallery__item--2">
+                    <img src="img/Torii.jpg" alt="下鴨神社 鳥居">
+                </li>
+                <li class="photo-gallery__item photo-gallery__item--3">
+                    <img src="img/Daibutsu.jpg" alt="糺の森">
+                </li>
+                <li class="photo-gallery__item photo-gallery__item--4">
+                    <img src="img/Chozu.jpg" alt="手水舎">
+                </li>
+                <li class="photo-gallery__item photo-gallery__item--5">
+                    <img src="img/Botan_flower.jpg" alt="京の花">
+                </li>
+            </ul>
+        </div>
+    </section>
+
+
+    <!-- ====== 地図 ====== -->
+    <section class="map">
+        <img src="img/map.png" alt="下鴨 周辺地図">
+    </section>
+
+    <section class="landscape">
+        <img src="img/fuji-sea.jpg" alt="京都の四季" style="width: 100%;">
+    </section>
+
+
+    <!-- ====== お問い合わせ ====== -->
+    <section class="p-contact-section">
+        <div class="p-contact-section__inner">
+            <div class="p-contact-section__content">
+
+                <h2 class="p-contact-section__heading">先着申込受付中・内覧ご予約承り中</h2>
+
+                <p class="p-contact-section__title">Kyoto&ldquo;SHIMOGAMO&rdquo;</p>
+
+                <div class="p-contact-section__body">
+                    <p class="p-contact-section__text">内覧・購入のご相談は<br class="u-sp-only">下記よりお問い合わせください。</p>
+
+                    <p class="p-contact-section__sub-text">
+                        また、プリンシパルホームでは、<br class="u-sp-only">
+                        新築・リノベーションのご相談も承っております。<br class="u-pc-only"><br class="u-sp-only">
+                        まずは、お気軽にお問い合わせください。
+                    </p>
+                </div>
+
+                <div class="p-contact-section__links">
+                    <div class="p-contact-section__link-item">
+                        <a href="#" class="p-contact-section__link">
+                            <span class="p-contact-section__link-label">内覧予約はこちら</span>
+                            <img src="img/arrow.png" alt="" class="p-contact-section__link-icon">
+                        </a>
+                    </div>
+
+                    <div class="p-contact-section__link-item">
+                        <a href="#" class="p-contact-section__link">
+                            <span class="p-contact-section__link-label">カタログ請求</span>
+                            <img src="img/arrow.png" alt="" class="p-contact-section__link-icon">
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+<!-- ====== 追従CTA ====== -->
+<div class="p-floating-cta">
+    <a href="#" class="p-floating-cta__link" aria-label="内覧予約はこちら">
+        <img src="img/cta-pc.png" alt="内覧予約" class="p-floating-cta__img p-floating-cta__img--pc">
+        <img src="img/cta-sp.png"       alt="内覧予約" class="p-floating-cta__img p-floating-cta__img--sp">
+    </a>
+</div>
+
+
+<!-- JS -->
+<script src="js/animation.js"></script>
+
+<script>
+    const lenis = new Lenis();
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+</script>
+
+</body>
+</html>

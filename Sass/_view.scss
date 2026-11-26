@@ -1,0 +1,23 @@
+@use 'base' as *;
+
+.p-view {
+  padding: 0 0 fluid(110, 200);  // 375px(110) → 1440px(200)
+  &__head {
+    display: flex;
+    gap: 40px;
+    margin: 0 $gutter fluid(48, 80);
+  }
+  &__photo {
+    margin: 0 $gutter;
+    img { width: 100%; }
+  }
+  &__text {
+    max-width: 340px;
+    margin: 32px $gutter 0 auto;
+  }
+  @include mq(768) {
+    &__head { margin: 0 24px 40px; justify-content: space-between; gap: 20px; }
+    &__photo { margin: 0; .p-caption { padding: 0 24px; } }
+    &__text { margin: 32px 24px 0; }
+  }
+}
