@@ -1,62 +1,82 @@
 @use 'base' as *;
 
+// 一文の誘い(中央揃え)
 .p-contact {
   overflow: hidden;
   &__mark {
     position: absolute;
-    bottom: 5%;
+    bottom: 4%;
     right: 4vw;
-    height: 60vh;
+    height: 44vh;
     opacity: .05;
     pointer-events: none;
     img { width: auto; height: 100%; }
   }
-  &__inner { position: relative; }
-  &__body { margin-left: 18vw; }
+  &__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  // 漢字エンブレムは右上へ(見出しと重ならない)
+  &__emblem {
+    position: absolute;
+    top: 0;
+    right: 0;
+    align-items: flex-end;
+    // 見出しと重ならないよう、狭い幅では上に出す
+    @include mq(1200) {
+      position: static;
+      align-self: flex-end;
+      margin-bottom: 24px;
+    }
+  }
+  &__head { display: flex; flex-direction: column; align-items: center; padding-top: fluid(0, 24); }
+  .p-head__label { justify-content: center; }
+  &__en {
+    margin-top: 20px;
+    max-width: 14em;
+    font-family: $f-en;
+    font-size: fluid(36, 64);  // 375px(36) → 1440px(64)
+    font-weight: 400;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  &__ja { margin-top: 16px; font-size: 16px; letter-spacing: .14em; color: var(--sub); }
+  &__body { display: flex; flex-direction: column; align-items: center; margin-top: fluid(40, 72); }  // 375px(40) → 1440px(72)
+  .p-text { align-items: center; max-width: 34em; }
+  &__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: fluid(32, 48); }
+  // 線だけのボタン(ゴースト)
+  &__btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 300px;
+    height: 60px;
+    border: 1px solid $c-kinari;
+    color: $c-kinari;
+    line-height: 1.2;
+    transition: background-color .3s, color .3s;
+    &:hover { background: $c-kinari; color: $c-sumi; }
+    &-en { font-family: $f-en; font-size: 20px; letter-spacing: .04em; }
+    &-ja { font-size: 11px; letter-spacing: .14em; }
+  }
   &__sub {
-    margin-top: 28px;
+    margin-top: fluid(32, 48);
     max-width: 34em;
     font-size: 12.5px;
     line-height: 1.9;
     color: var(--sub);
     [data-lang="en"] { font-family: $f-en; font-size: 16px; line-height: 1.55; }
   }
-  &__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 48px;
-  }
-  &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 320px;
-    height: 64px;
-    padding: 0 16px;
-    border: 1px solid $c-shu;
-    background: $c-shu;
-    color: #fff;
-    font-size: 16px;
-    letter-spacing: .12em;
-    text-align: center;
-    line-height: 1.3;
-    transition: background-color .3s, border-color .3s;
-    &:hover { background: #8F3320; border-color: #8F3320; }
-    [data-lang="en"] { font-family: $f-sans; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
-    &--line {
-      background: transparent;
-      color: $c-kinari;
-      &:hover { background: $c-shu; border-color: $c-shu; color: #fff; }
-    }
-  }
-  @include mq(1024) { &__body { margin-left: 8vw; } }
   @include mq(768) {
     // マークは本文の下(余白の中)に置く
-    padding-bottom: calc(#{fluid(96, 180)} + 200px);
-    &__mark { top: auto; right: 50%; bottom: 32px; height: 150px; transform: translateX(50%); opacity: .045; }
-    &__body { margin-left: 0; }
-    &__links { flex-direction: column; }
+    padding-bottom: calc(#{fluid(96, 160)} + 200px);
+    &__mark { right: 50%; bottom: 32px; height: 150px; transform: translateX(50%); opacity: .045; }
+    &__links { flex-direction: column; width: 100%; }
     &__btn { width: 100%; }
   }
 }

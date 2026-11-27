@@ -1,0 +1,23 @@
+@use 'base' as *;
+
+// 間(ま)の章: 写真のない、文字だけの余白
+.p-ma {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: fluid(28, 48);  // 375px(28) → 1440px(48)
+  min-height: 70vh;
+  padding: fluid(64, 120) var(--gutter);  // 375px(64) → 1440px(120)
+  text-align: center;
+  @include mq(768) { min-height: 60vh; }
+  &__line { display: block; width: 1px; height: 64px; background: rgba($c-sumi, .3); }
+  &__en {
+    max-width: 18em;
+    font-family: $f-en;
+    font-size: fluid(28, 48);  // 375px(28) → 1440px(48)
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+  &__ja { margin-top: 16px; font-size: 15px; letter-spacing: .14em; color: var(--sub); }
+}

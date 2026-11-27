@@ -1,89 +1,102 @@
 @use 'base' as *;
-@use 'sass:list';
-
-// 写真の配置 (番号: 開始列, 終了列, 行, 上のずらし[375px, 1440px])
-// PC: 12カラムの編集的なグリッド
-$scene-pc: (
-  1: (1, 9, 1, 0, 0),
-  2: (9, 13, 1, 0, 0),
-  3: (5, 13, 2, 0, 0),
-  4: (1, 5, 2, 0, 0),
-  5: (1, 9, 3, 0, 0),
-  6: (9, 13, 3, 0, 0),
-  7: (1, 6, 4, 0, 0),
-  8: (6, 13, 4, 0, 0)
-);
-// タブレット: 大小を交互に
-$scene-tab: (
-  1: (1, 8, 1),
-  2: (8, 13, 1),
-  3: (6, 13, 2),
-  4: (1, 6, 2),
-  5: (1, 8, 3),
-  6: (8, 13, 3),
-  7: (1, 6, 4),
-  8: (6, 13, 4)
-);
 
 .p-scenes {
-  &__lead { max-width: 560px; margin: 0 0 fluid(48, 80); }
-  &__hint { display: none; }
+  &__lead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px 40px;
+    margin: 0 0 fluid(40, 72);  // 375px(40) → 1440px(72)
+  }
+  // 一時停止 / 再生
+  &__pause {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    font-family: $f-sans;
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    transition: background-color .3s, color .3s;
+    &:hover { background: var(--fg); color: var(--bg); }
+    [data-lang="ja"] { font-family: $f-ja; letter-spacing: .1em; text-transform: none; font-size: 12px; }
+    // 一時停止中は「再生」の文言に
+    &[aria-pressed="false"] [data-state="play"] { display: none; }
+    &[aria-pressed="true"] [data-state="pause"] { display: none; }
+  }
+  &__pause-icon {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-left: 3px solid currentColor;
+    border-right: 3px solid currentColor;
+    .p-scenes__pause[aria-pressed="true"] & { border: 0; border-left: 9px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; width: 0; height: 0; }
+  }
+}
+
+// 流れるギャラリー(2段。上段は左へ、下段は右へ)
+.p-marquee {
+  margin: 0 calc(var(--gutter) * -1);
+  &__row { overflow: hidden; & + & { margin-top: fluid(16, 32); } }
+  &__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-l 70s linear infinite;
+  }
+  &__row--r &__track { animation-name: marquee-r; animation-duration: 85s; }
+  &__item {
+    flex: none;
+    margin-right: 16px;  // 2回並べた全体の -50% で継ぎ目なくループさせるため、間隔は margin で持つ
+    img { width: auto; height: fluid(200, 360); }  // 375px(200) → 1440px(360)
+  }
+  &__no { font-family: $f-en; font-size: 13px; letter-spacing: .08em; color: var(--accent); margin-right: 10px; }
+  // キャプションは写真の幅でおさめる(幅に影響させない)
+  .p-caption { display: flex; align-items: baseline; width: 0; min-width: 100%; }
+  // 止める: マウスを乗せている間 / フォーカス中 / ボタン / 画面外
+  &__row:hover &__track,
+  &__row:focus-within &__track,
+  &.is-paused &__track,
+  &.is-offscreen &__track { animation-play-state: paused; }
+}
+@keyframes marquee-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marquee-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+// 動きを減らす設定: 動かさず、横スクロールで見られるようにする
+@media (prefers-reduced-motion: reduce) {
+  .p-marquee__row { overflow-x: auto; }
+  .p-marquee__track { animation: none; width: auto; }
+  .p-marquee__item[aria-hidden="true"] { display: none; }
+  .p-scenes__pause { display: none; }
+}
+
+// 接写の群れ(小さく、2列・段違い)
+.p-details {
+  margin-top: fluid(72, 120);  // 375px(72) → 1440px(120)
+  &__title {
+    font-family: $f-sans;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--sub);
+    [data-lang="ja"] { font-family: $f-ja; font-size: 14px; letter-spacing: .14em; text-transform: none; }
+    [data-lang="en"] { font-family: $f-en; font-size: 18px; font-style: italic; letter-spacing: .02em; text-transform: none; }
+  }
   &__list {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: fluid(16, 32);  // 375px(16) → 1440px(32)
-    row-gap: fluid(32, 48);  // 375px(32) → 1440px(48)
-    align-items: start;
+    display: flex;
+    justify-content: center;
+    gap: fluid(24, 48, 768, 1440);  // 768px(24) → 1440px(48)
+    margin-top: 24px;
   }
-  &__item { margin: 0; }
-  &__item img { width: 100%; }
-  &__caption { display: flex; gap: 10px; align-items: baseline; }
-  &__no { font-family: $f-en; font-size: 13px; letter-spacing: .08em; color: var(--accent); }
-
-  @each $n, $v in $scene-pc {
-    &__item--n#{$n} {
-      grid-column: #{list.nth($v, 1)} / #{list.nth($v, 2)};
-      grid-row: #{list.nth($v, 3)};
-      margin-top: fluid(list.nth($v, 4), list.nth($v, 5));
-    }
-  }
-
-  &__item--n7 { align-self: end; }
-
-  @include mq(1024) {
-    &__item--n7 { align-self: start; }
-    @each $n, $v in $scene-tab {
-      &__item--n#{$n} {
-        grid-column: #{list.nth($v, 1)} / #{list.nth($v, 2)};
-        grid-row: #{list.nth($v, 3)};
-        margin-top: 0;
-      }
-    }
-  }
+  &__item { width: 220px; &:nth-child(even) { margin-top: 48px; } }
+  &__item img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
   @include mq(768) {
-    &__lead { margin-top: 0; }
-    &__hint {
-      display: block;
-      margin-bottom: 14px;
-      font-family: $f-sans;
-      font-size: 11px;
-      letter-spacing: .14em;
-      color: var(--sub);
-    }
-    &__list {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin: 0 calc(var(--gutter) * -1);
-      padding: 0 var(--gutter);
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding-left: var(--gutter);
-      scrollbar-width: none;
-      &::-webkit-scrollbar { display: none; }
-    }
-    &__item { flex: none; scroll-snap-align: start; margin-top: 0; }
-    &__item--l { width: 80vw; }
-    &__item--p { width: 56vw; }
+    &__list { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; }
+    &__item { width: auto; &:nth-child(even) { margin-top: 0; } }
+    &__item:nth-child(even) { transform: translateY(40px); }
+    &__list { padding-bottom: 40px; }
   }
 }

@@ -86,11 +86,13 @@
   var fv = doc.querySelector('.p-fv');
   var contact = doc.getElementById('contact');
   var cta = doc.querySelector('.p-floating-cta');
+  var pagetop = doc.querySelector('.p-pagetop');
   var fvVisible = true;
   var contactVisible = false;
 
   function updateCta() {
     if (cta) cta.classList.toggle('is-show', !fvVisible && !contactVisible);
+    if (pagetop) pagetop.classList.toggle('is-show', !fvVisible);  // ページトップは Contact でも出す
   }
 
   if ('IntersectionObserver' in window) {
@@ -135,6 +137,7 @@
     var all = doc.querySelectorAll('.js-fade');
     for (var m = 0; m < all.length; m++) all[m].classList.add('is-visible');
     if (cta) cta.classList.add('is-show');
+    if (pagetop) pagetop.classList.add('is-show');
   }
 
   /* ---------- CONCEPT 写真の後読み ---------- */
@@ -238,6 +241,111 @@
     }
   }
 
+  /* ---------- ページトップ: 戻ったらヘッダーのロゴへフォーカス ---------- */
+  if (pagetop) {
+    pagetop.addEventListener('click', function () {
+      var logo = doc.querySelector('.l-header__logo');
+      var done = false;
+      var focusLogo = function () {
+        if (done) return;
+        done = true;
+        if (logo) logo.focus({ preventScroll: true });
+      };
+      addEventListener('scrollend', focusLogo, { once: true });
+      setTimeout(focusLogo, 1500);
+    });
+  }
+
+  /* ---------- Scenes: 流れるギャラリーの一時停止 / 画面外で停止 ---------- */
+  var marquee = doc.querySelector('[data-marquee]');
+  if (marquee) {
+    var marqueeBtn = doc.querySelector('[data-marquee-toggle]');
+    if (marqueeBtn) {
+      marqueeBtn.addEventListener('click', function () {
+        var paused = marqueeBtn.getAttribute('aria-pressed') !== 'true';
+        marqueeBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        marquee.classList.toggle('is-paused', paused);
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        marquee.classList.toggle('is-offscreen', !entries[0].isIntersecting);
+      }).observe(marquee);
+    }
+  }
+
+  /* ---------- Residence: 室内スライダー ---------- */
+  var slider = doc.querySelector('[data-slider]');
+  if (slider) {
+    var vp = slider.querySelector('[data-slider-viewport]');
+    var slides = slider.querySelectorAll('.p-slider__slide');
+    var nowEl = slider.querySelector('[data-slider-now]');
+    var playBtn = slider.querySelector('[data-slider-toggle]');
+    var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var sIdx = 0, sVisible = false, sUserPaused = false, sHover = false, sFocus = false, sTouch = false;
+    var sTimer = null, sTouchTimer = null, sTick = false;
+
+    var canPlay = function () { return !reduceMotion && sVisible && !sUserPaused && !sHover && !sFocus && !sTouch; };
+    var goTo = function (i) {
+      vp.scrollTo({ left: i * vp.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+    };
+    var nextSlide = function () { goTo((sIdx + 1) % slides.length); };
+    // 自動再生の予約(6秒ごと)。進み具合のバーは、クラスを切り替えて毎回やり直す
+    var schedule = function () {
+      clearTimeout(sTimer);
+      slider.classList.remove('is-playing', 'tick-a', 'tick-b');
+      if (!canPlay()) return;
+      sTick = !sTick;
+      slider.classList.add(sTick ? 'tick-a' : 'tick-b', 'is-playing');
+      sTimer = setTimeout(nextSlide, 6000);
+    };
+    var setActive = function (i) {
+      sIdx = i;
+      for (var n = 0; n < slides.length; n++) slides[n].classList.toggle('is-active', n === i);
+      nowEl.textContent = (i < 9 ? '0' : '') + (i + 1);
+      schedule();
+    };
+
+    if ('IntersectionObserver' in window) {
+      var slideIO = new IntersectionObserver(function (entries) {
+        for (var e = 0; e < entries.length; e++) {
+          if (entries[e].isIntersecting) setActive(Array.prototype.indexOf.call(slides, entries[e].target));
+        }
+      }, { root: vp, threshold: 0.6 });
+      for (var n = 0; n < slides.length; n++) slideIO.observe(slides[n]);
+      new IntersectionObserver(function (entries) {
+        sVisible = entries[0].isIntersecting;
+        schedule();
+      }, { threshold: 0.3 }).observe(slider);
+    } else {
+      slides[0].classList.add('is-active');
+    }
+
+    slider.querySelector('[data-slider-prev]').addEventListener('click', function () { goTo((sIdx + slides.length - 1) % slides.length); });
+    slider.querySelector('[data-slider-next]').addEventListener('click', function () { nextSlide(); });
+    playBtn.addEventListener('click', function () {
+      sUserPaused = !sUserPaused;
+      playBtn.setAttribute('aria-pressed', sUserPaused ? 'true' : 'false');
+      playBtn.setAttribute('aria-label', sUserPaused ? '再生 / Play' : '一時停止 / Pause');
+      schedule();
+    });
+    vp.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); goTo((sIdx + slides.length - 1) % slides.length); }
+    });
+    slider.addEventListener('mouseenter', function () { sHover = true; schedule(); });
+    slider.addEventListener('mouseleave', function () { sHover = false; schedule(); });
+    slider.addEventListener('focusin', function () { sFocus = true; schedule(); });
+    slider.addEventListener('focusout', function () { sFocus = false; schedule(); });
+    // タッチ操作の直後は止める(8秒後に再開)
+    slider.addEventListener('touchstart', function () {
+      sTouch = true;
+      clearTimeout(sTouchTimer);
+      schedule();
+      sTouchTimer = setTimeout(function () { sTouch = false; schedule(); }, 8000);
+    }, { passive: true });
+  }
+
   /* ---------- 砂紋 SVG の後読み(初回描画・LCP を邪魔しない) ---------- */
   afterLoadAndPaint(function () {
     var uses = doc.querySelectorAll('.c-rake use[data-href]');
@@ -253,6 +361,11 @@
     l.rel = 'stylesheet';
     l.href = 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=EB+Garamond:ital@0;1&display=swap';
     doc.head.appendChild(l);
+    // 漢字エンブレムの筆文字(9文字だけ)
+    var y = doc.createElement('link');
+    y.rel = 'stylesheet';
+    y.href = 'https://fonts.googleapis.com/css2?family=Yuji+Syuku&text=%E5%AE%B6%E5%B7%9D%E6%99%AF%E5%85%89%E9%96%93%E6%9C%A8%E8%A8%80%E9%81%93%E7%B8%81&display=swap';
+    doc.head.appendChild(y);
   });
 
   /* ---------- FV 動画 ---------- */

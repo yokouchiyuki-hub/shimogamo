@@ -7,9 +7,9 @@
   align-items: flex-start;
   gap: 6px;
   &__kanji {
-    font-family: $f-ja;
+    font-family: "Yuji Syuku", $f-ja;  // 筆文字(この9文字だけ後読み)
     font-weight: 400;
-    font-size: fluid(112, 220);  // 375px(112) → 1440px(220)
+    font-size: fluid(100, 198);  // 375px(100) → 1440px(198)
     line-height: 1;
   }
   &__roman {
@@ -20,7 +20,6 @@
     color: var(--sub);
     i { font-style: italic; }
   }
-  .l-sec--dark & &__kanji { font-weight: 500; }
   @include mq(768) {
     flex-direction: row;
     align-items: flex-end;

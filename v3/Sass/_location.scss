@@ -1,7 +1,7 @@
 @use 'base' as *;
 
 .p-location {
-  padding-bottom: calc(#{fluid(96, 180)} + #{fluid(48, 96)});
+  padding-bottom: calc(#{fluid(96, 160)} + #{fluid(48, 96)});
   &__body {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));

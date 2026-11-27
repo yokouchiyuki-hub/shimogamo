@@ -1,43 +1,8 @@
 @use 'base' as *;
 
 .p-residence {
-  &__living {
-    width: 88vw;
-    margin: 0 0 0 calc(var(--gutter) * -1);  // 写真を画面の左端まで抜く
-    img { width: 100%; }
-    .p-caption { padding-left: var(--gutter); }
-  }
-  // 現在の2階 LDK(実写)
-  &__now { margin-top: fluid(56, 96); }  // 375px(56) → 1440px(96)
-  &__now-title {
-    font-family: $f-sans;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--sub);
-    [data-lang="ja"] { font-family: $f-ja; font-size: 14px; letter-spacing: .14em; text-transform: none; }
-    [data-lang="en"] { font-family: $f-en; font-size: 18px; font-style: italic; letter-spacing: .02em; text-transform: none; }
-  }
-  &__now-grid {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: fluid(16, 32);  // 375px(16) → 1440px(32)
-    align-items: end;
-    margin-top: 20px;
-  }
-  &__now-main { grid-column: 1 / span 8; margin: 0; }
-  &__now-sub { grid-column: 9 / -1; margin: 0; }
-  &__now img { width: 100%; }
-
-  &__main {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 30vw;
-    column-gap: 6vw;
-    align-items: start;
-    margin-top: fluid(40, 72);  // 375px(40) → 1440px(72)
-  }
-  &__entrance img { width: 100%; }
+  // 見出しの直下に本文を置き、スライダー、和のかたちカードの順に詰める
+  &__intro + .p-slider { margin-top: fluid(40, 72); }          // 375px(40) → 1440px(72)
 
   // 和のかたち 4枚
   &__wa-title {
@@ -58,12 +23,10 @@
     margin-top: 20px;
   }
   &__card { border: 1px solid var(--line); }
-  &__card-photo {
-    img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }  // 4枚とも比率を揃える
-  }
+  &__card-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }  // 4枚とも比率を揃える
   &__card-note {
     padding: 8px fluid(16, 24) 0;  // 375px(16) → 1440px(24)
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.5;
     color: var(--sub);
     [data-lang="en"] { font-family: $f-en; font-size: 13px; font-style: italic; }
@@ -86,17 +49,73 @@
     &[data-lang="en"] { font-family: $f-en; font-size: fluid(15, 16.5); line-height: 1.55; }  // 375px(15) → 1440px(16.5)
   }
 
-  @include mq(1024) {
-    &__main { grid-template-columns: minmax(0, 1fr) 34vw; column-gap: 5vw; }
-    &__wa { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @include mq(768) {
-    &__living { width: 100vw; }
-    &__living .p-caption { padding-left: var(--gutter); }
-    &__now-main { grid-column: 1 / -1; }
-    &__now-sub { grid-column: 3 / -1; margin-top: 16px; }
-    &__main { grid-template-columns: 1fr; row-gap: 40px; }
-    &__entrance { width: 70%; justify-self: end; }
-  }
+  @include mq(1024) { &__wa { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @include mq(560) { &__wa { grid-template-columns: 1fr; } }
+}
+
+// 室内スライダー(横スクロール + scroll-snap)
+.p-slider {
+  width: min(1200px, 84vw);
+  margin-left: auto;
+  margin-right: auto;
+  @include mq(768) { width: auto; margin-left: calc(var(--gutter) * -1); margin-right: calc(var(--gutter) * -1); }
+  &__viewport {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+    &:focus-visible { outline-offset: 4px; }
+  }
+  &__track { display: flex; }
+  &__slide { flex: none; width: 100%; scroll-snap-align: start; }
+  &__slide figure { margin: 0; }
+  &__frame {
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
+    @include mq(768) { aspect-ratio: 4 / 3; }
+    picture { display: block; width: 100%; height: 100%; }
+    img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transition: transform 1.2s cubic-bezier(.2, .6, .2, 1); }
+  }
+  &__slide.is-active &__frame img { transform: none; }
+  &__slide .p-caption { padding: 0 var(--gutter-inner, 0); }
+  @include mq(768) { &__slide .p-caption { padding: 0 var(--gutter); } }
+  // 自動再生の進み具合
+  &__bar { height: 1px; margin-top: 20px; background: var(--line); }
+  &__progress {
+    display: block;
+    height: 100%;
+    background: var(--fg);
+    transform-origin: left center;
+    transform: scaleX(0);
+    .p-slider.is-playing.tick-a & { animation: slider-progress-a 6s linear forwards; }
+    .p-slider.is-playing.tick-b & { animation: slider-progress-b 6s linear forwards; }
+  }
+  &__ctrl { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; @include mq(768) { padding: 0 var(--gutter); } }
+  &__count { font-family: $f-en; font-size: 18px; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+  &__btns { display: flex; gap: 8px; }
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    transition: background-color .3s, color .3s;
+    &:hover { background: var(--fg); color: var(--bg); }
+  }
+  &__play-icon {
+    width: 10px;
+    height: 10px;
+    border-left: 3px solid currentColor;
+    border-right: 3px solid currentColor;
+    .p-slider__btn[aria-pressed="true"] & { border: 0; border-left: 9px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; width: 0; height: 0; }
+  }
+}
+@keyframes slider-progress-a { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes slider-progress-b { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .p-slider__bar, .p-slider__btn--play { display: none; }
+  .p-slider__frame img { transform: none; transition: none; }
 }

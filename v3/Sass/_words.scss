@@ -1,20 +1,17 @@
 @use 'base' as *;
 
+// 文字だけの概念の章(罫線だけで区切る)
 .p-words {
   &__list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: fluid(12, 24);  // 375px(12) → 1440px(24)
+    gap: fluid(40, 72) fluid(24, 64);  // 375px(40) → 1440px(72) / 375px(24) → 1440px(64)
   }
-  &__item {
-    background: rgba(#fff, .38);
-    border-top: 1px solid $c-shu;
-  }
-  &__body { padding: fluid(24, 36); }  // 375px(24) → 1440px(36)
-  &__photo img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  &__item { border-top: 1px solid var(--line); }
+  &__body { padding: fluid(24, 36) 0 0; }  // 375px(24) → 1440px(36)
   &__num { font-size: 13px; color: var(--accent); line-height: 1; }
-  &__kanji { margin-top: 20px; font-size: fluid(28, 40); line-height: 1.2; letter-spacing: .04em; }  // 375px(28) → 1440px(40)
-  &__roman { margin-top: 6px; font-family: $f-en; font-size: 18px; font-style: italic; line-height: 1.3; }
+  &__kanji { margin-top: 20px; font-size: fluid(32, 48); line-height: 1.2; letter-spacing: .04em; }  // 375px(32) → 1440px(48)
+  &__roman { margin-top: 8px; font-family: $f-en; font-size: 19px; font-style: italic; line-height: 1.3; }
   &__mean { margin-top: 4px; font-family: $f-en; font-size: 17px; line-height: 1.3; color: var(--sub); }
   &__desc {
     margin-top: 16px;

@@ -4,18 +4,18 @@
 // 地の色は --bg に持たせ、色名ラベルの色見本にも使う
 .l-sec {
   position: relative;
-  padding: fluid(96, 180) var(--gutter);  // 375px(96) → 1440px(180)
+  padding: fluid(96, 160) var(--gutter);  // 375px(96) → 1440px(160)
   background: var(--bg);
   color: var(--fg);
   &--light {
     --fg: #{$c-sumi};
-    --sub: #{rgba($c-sumi, .66)};
+    --sub: #{rgba($c-sumi, .74)};
     --line: #{$c-line-lt};
     --accent: #{$c-shu};
   }
   &--dark {
     --fg: #{$c-kinari};
-    --sub: #{rgba($c-kinari, .68)};
+    --sub: #{rgba($c-kinari, .76)};
     --line: #{$c-line-dk};
     --accent: #{$c-shu-lt};
     font-weight: 500;
@@ -97,6 +97,7 @@
     font-weight: 400;
     line-height: 1.15;
     letter-spacing: 0;
+    text-wrap: balance;
   }
   &__ja {
     grid-column: 3;
@@ -155,7 +156,7 @@
 .p-photo { position: relative; }
 .p-caption {
   margin-top: 12px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
   letter-spacing: .04em;
   color: var(--sub);
@@ -166,6 +167,10 @@
     letter-spacing: .01em;
   }
 }
+
+// 英語の <br> は PC だけで効かせる
+@include mq(768) { .u-pc { display: none; } }
+.p-lead { text-wrap: balance; }
 
 // MORE型リンク
 .p-link {
