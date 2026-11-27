@@ -54,7 +54,21 @@
     }
     .p-head__label { color: rgba(#fff, .8); }
     .p-head__num { color: #fff; }
-    .p-head__en { color: #fff; }
+    .p-head__en { color: #fff; max-width: 16em; font-size: fluid(22, 46); text-shadow: 0 1px 18px rgba(0, 0, 0, .45); }  // 375px(22) → 1440px(46)。明るい空の上でも読めるよう影を付ける
+    .p-band__lead { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+    // 3階の間取りを開く、線だけのボタン
+    .p-band__plan {
+      padding: 12px 22px;
+      border: 1px solid rgba(#fff, .7);
+      color: #fff;
+      font-family: $f-ja;
+      font-size: 14px;
+      letter-spacing: .12em;
+      line-height: 1.4;
+      transition: background-color .3s, color .3s;
+      &:hover { background: #fff; color: $c-sumi; }
+      [data-lang="en"] { font-family: $f-sans; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+    }
     .p-band__vja {
       writing-mode: vertical-rl;
       font-weight: 500;
@@ -116,6 +130,7 @@
   @include mq(768) {
     height: auto;
     aspect-ratio: 3 / 4;
+    &--view { aspect-ratio: auto; }  // 上の 3 / 4 に負けないよう、VIEW 帯は高さを中身(写真 + 下の文字)で決める
     &--view picture { height: 125vw; }
     &--view::after { height: 125vw; }
     &--view .p-band__foot { padding: 28px var(--gutter) 44px; }

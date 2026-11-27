@@ -238,3 +238,6 @@
     letter-spacing: .005em;
   }
 }
+
+// 文節のまとまりで改行する(見出しや短い文で、語の途中で折り返さないように)
+.u-phrase { display: inline-block; }

@@ -68,7 +68,6 @@
   }
   // 「ください。」だけの行を防ぐ: 日本語は文節で改行し、行の長さをそろえる
   &__body p, &__lead { text-wrap: balance; }
-  .u-phrase { display: inline-block; }  // 文節のまとまりで改行する
   &__sub {
     margin-top: fluid(32, 48);
     max-width: 40em;

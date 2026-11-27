@@ -141,7 +141,7 @@
         obs.unobserve(entries[p].target);
       }
     }, { rootMargin: '800px 0px' });
-    var preTargets = doc.querySelectorAll('.js-reveal, .p-marquee, [data-slider]');  // 流れるギャラリーとスライダーは、中の画像をすべて
+    var preTargets = doc.querySelectorAll('.js-reveal, .p-marquee, [data-slider], .p-plans__thumbs');  // 流れるギャラリーとスライダーは、中の画像をすべて
     for (var pt = 0; pt < preTargets.length; pt++) preIO.observe(preTargets[pt]);
 
     var fades = doc.querySelectorAll('.js-fade');
@@ -398,16 +398,21 @@
     var lbNow = lb.querySelector('[data-lb-now]');
     var lbTotal = lb.querySelector('[data-lb-total]');
     var lbMarquee = doc.querySelector('[data-marquee]');
-    var lbTriggers = Array.prototype.slice.call(doc.querySelectorAll('.p-concept__photo, .p-location__photo, .p-marquee__item figure, .p-details__item figure, .p-slider__frame, .p-residence__card-photo, .p-craft__shot'));
+    var lbTriggers = Array.prototype.slice.call(doc.querySelectorAll('.p-concept__photo, .p-location__photo, .p-marquee__item figure, .p-details__item figure, .p-slider__frame, .p-residence__card-photo, .p-craft__shot, .p-plans__thumb'));
     var lbGroups = {};
     var lbOrig = new Map();   // 各写真 -> 送りの中で使う本物の写真(マーキーの複製は元の写真へ)
     var lbGroup = null, lbIndex = 0, lbOpener = null, lbSwiped = false, lbToken = 0;
 
+    // グループは、既定ではセクションごと。間取りの各階の写真は、その階の写真だけ(data-lb-group)
+    var lbKey = function (t) {
+      var g = t.closest('[data-lb-group]');
+      return g ? g.getAttribute('data-lb-group') : t.closest('.l-sec').id;
+    };
     // グループ(セクションごと)を作る。マーキーの2回目の複製は元の写真に対応づける
     lbTriggers.forEach(function (t) {
       var dup = t.closest('[aria-hidden="true"]') && t.closest('.p-marquee__item');
       if (dup) return;
-      var id = t.closest('.l-sec').id;
+      var id = lbKey(t);
       (lbGroups[id] = lbGroups[id] || []).push(t);
       lbOrig.set(t, t);
     });
@@ -443,6 +448,8 @@
       return v.split(' ')[0];
     };
     var lbCaption = function (t) {
+      var own = t.getAttribute('data-lb-cap-' + root.lang);  // 撮影年月などを足した拡大用のキャプション
+      if (own) return own;
       var fc = t.querySelector('figcaption') || t.querySelector('.p-residence__card-note') || (t.parentNode && t.parentNode.querySelector && t.closest('.p-slider__slide') && t.closest('.p-slider__slide').querySelector('figcaption'));
       var out = '';
       if (fc) {
@@ -476,7 +483,7 @@
     var lbOpen = function (t) {
       if (doc.querySelector('.p-planmodal[open]')) return;
       var base = lbOrig.get(t) || t;
-      lbGroup = lbGroups[t.closest('.l-sec').id];
+      lbGroup = lbGroups[lbKey(t)];
       lbOpener = base;
       lbShow(lbGroup.indexOf(base));
       if (lbMarquee) lbMarquee.classList.add('is-lightbox');

@@ -40,6 +40,31 @@
     &:hover { background: $c-sumi; border-color: $c-sumi; color: $c-shironeri; }
     [data-lang="en"] { font-family: $f-sans; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
   }
+  // この階の写真(サムネイル)
+  &__photos { margin-top: fluid(20, 32); }
+  &__photos-title {
+    font-family: $f-sans;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--sub);
+    [data-lang="ja"] { font-family: $f-ja; font-size: 14px; letter-spacing: .14em; text-transform: none; }
+    [data-lang="en"] { font-family: $f-en; font-size: 17px; font-style: italic; letter-spacing: .02em; text-transform: none; }
+  }
+  &__thumbs {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 12px;
+    padding-bottom: 4px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  &__thumb-item { flex: none; }
+  &__thumb { margin: 0; }
+  &__thumb img { width: auto; height: 120px; border-radius: 0; @include mq(768) { height: 96px; } }  // 高さ PC 120px / SP 96px、横幅は比率なり
+  &__thumb .p-caption { margin-top: 6px; max-width: 12em; line-height: 1.4; }
   &__rooms {
     margin-top: fluid(16, 28);
     border-top: 1px solid var(--line);
