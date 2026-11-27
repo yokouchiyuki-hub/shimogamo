@@ -15,7 +15,7 @@
       transition: opacity .8s ease;
       html.wf-active &, html.wf-inactive & { opacity: 1; }
     }
-    font-size: fluid(100, 198);  // 375px(100) → 1440px(198)
+    font-size: fluid(100, 160);  // 375px(100) → 1440px(160)
     line-height: 1;
   }
   &__roman {

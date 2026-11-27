@@ -49,8 +49,8 @@
   to { transform: scale(1.08) translateY(3%); }
 }
 @keyframes emblem-drift {
-  from { transform: translateY(48px); }
-  to { transform: translateY(-48px); }
+  from { transform: translateY(24px); }
+  to { transform: translateY(-24px); }
 }
 @keyframes head-rise {
   from { opacity: 0; transform: translateY(24px); }

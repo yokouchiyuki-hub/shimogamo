@@ -15,11 +15,22 @@
   .l-sec--light & { color: rgba($c-sumi, .055); }
   .l-sec--dark & { color: rgba($c-kinari, .05); }
 
-  &__svg {
+  // 縦に引き伸ばさない: 縦横比を固定した「版」を、上端から1つ置く。
+  // セクションが版の2つぶん以上の高さのときだけ、2つ目を上下反転して下端に置く(間が空いてもよい)
+  container-type: size;
+  &__part {
     position: absolute;
     top: 0;
     left: -4%;  // 揺れても端が見えないよう、左右に余白を持たせる
     width: 108%;
+    aspect-ratio: 1 / 1.1;  // SP は 1 / 1.6
+    @include mq(768) { aspect-ratio: 1 / 1.6; }
+    &--end { top: auto; bottom: 0; transform: scaleY(-1); display: none; }
+  }
+  &__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
     fill: none;
     stroke: currentColor;
@@ -35,6 +46,10 @@
   // 反転は親に付ける(揺れの transform と打ち消し合わないように)
   &--flip { transform: scaleX(-1); }
 }
+
+// 版2つぶんの高さ(PC: 幅の約 2.38 倍 / SP: 約 3.46 倍)があるときだけ、2つ目を出す
+@media (min-width: 769px) { @container (max-aspect-ratio: 0.42) { .c-rake__part--end { display: block; } } }
+@media (max-width: 768px) { @container (max-aspect-ratio: 0.289) { .c-rake__part--end { display: block; } } }
 
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   .c-rake {

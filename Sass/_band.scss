@@ -62,6 +62,7 @@
       letter-spacing: .3em;
       line-height: 1.7;
       span { display: block; white-space: nowrap; }
+      html[lang="ja"] & { display: none; }  // 日本語表示では見出しと重複するので隠す
     }
     .p-band__foot {
       left: var(--gutter);

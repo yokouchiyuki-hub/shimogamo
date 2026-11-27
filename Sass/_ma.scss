@@ -20,4 +20,21 @@
     text-wrap: balance;
   }
   &__ja { margin-top: 16px; font-size: 15px; letter-spacing: .14em; color: var(--sub); }
+  // 日本語表示: 日本語を大きく、英語を下に小さく
+  &__text { display: flex; flex-direction: column; align-items: center; }
+  html[lang="ja"] &__ja {
+    order: -1;
+    margin-top: 0;
+    font-size: fluid(22, 36);  // 375px(22) → 1440px(36)
+    font-weight: 500;
+    letter-spacing: .1em;
+    line-height: 1.6;
+    color: var(--fg);
+  }
+  html[lang="ja"] &__en {
+    margin-top: 16px;
+    font-size: 16px;
+    letter-spacing: .02em;
+    color: var(--sub);
+  }
 }

@@ -43,7 +43,9 @@
     line-height: 1.15;
     text-wrap: balance;
   }
+  &__en [data-lang="ja"] { font-family: $f-ja; font-size: fluid(26, 44); font-weight: 500; letter-spacing: .08em; line-height: 1.5; }  // 375px(26) → 1440px(44)
   &__ja { margin-top: 16px; font-size: 16px; letter-spacing: .14em; color: var(--sub); }
+  html[lang="ja"] &__ja { display: none; }  // 日本語表示では大見出しと重複するので隠す
   &__body { display: flex; flex-direction: column; align-items: center; margin-top: fluid(40, 72); }  // 375px(40) → 1440px(72)
   .p-text { align-items: center; max-width: 34em; }
   &__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: fluid(32, 48); }

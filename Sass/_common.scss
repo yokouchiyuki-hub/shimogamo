@@ -62,7 +62,7 @@
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: start;
   column-gap: fluid(24, 72);  // 375px(24) → 1440px(72)
-  margin-bottom: fluid(40, 72);  // 375px(40) → 1440px(72)
+  margin-bottom: fluid(32, 56);  // 375px(32) → 1440px(56): 漢字エンブレムの下から本文・写真まで
   &__label {
     display: flex;
     align-items: center;
@@ -74,6 +74,14 @@
     text-transform: uppercase;
     line-height: 1.6;
     color: var(--sub);
+  }
+  // 日本語のラベルは明朝・字間広めで、英語より少し大きく
+  &__label [data-lang="ja"] {
+    font-family: $f-ja;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: none;
   }
   &__num {
     font-family: $f-ja;
@@ -98,6 +106,15 @@
     line-height: 1.15;
     letter-spacing: 0;
     text-wrap: balance;
+    // 日本語の大見出し: 明朝・横組み。英語より一回り小さく
+    [data-lang="ja"] {
+      display: block;
+      font-family: $f-ja;
+      font-size: fluid(26, 44);  // 375px(26) → 1440px(44)
+      font-weight: 500;
+      letter-spacing: .08em;
+      line-height: 1.5;
+    }
   }
   &__ja {
     grid-column: 3;
@@ -111,6 +128,9 @@
     span { display: block; white-space: nowrap; }
   }
   .c-emblem { grid-column: 2; grid-row: 1; }
+  // 日本語表示では大見出しと同じ文言が重なるので、縦書きは隠す(英語表示では和の装飾として見せる)
+  html[lang="ja"] & { grid-template-columns: minmax(0, 1fr) auto; }
+  html[lang="ja"] &__ja { display: none; }
 
   @include mq(768) {
     grid-template-columns: minmax(0, 1fr) auto;
