@@ -14,10 +14,7 @@ html[lang="ja"] {
   // ハンバーガーメニュー: 英語名を隠し、日本語名を主役に
   .l-menu__en { display: none; }
   .l-menu__ja { grid-column: 2 / -1; font-size: 21px; letter-spacing: .12em; opacity: 1; }
-  // 色名ラベル
-  .c-swatch [data-lang="ja"] { font-family: $f-ja; letter-spacing: .08em; }
-  // 漢字エンブレムの読み(ひらがな)
-  .c-emblem__roman [data-lang="ja"] { font-family: $f-ja; font-size: 16px; letter-spacing: .2em; }
+  // 色名ラベルと漢字エンブレムの読みは、日本語表示でも英語表記(Kinari-iro / ie — home)のまま(クライアント指定)
   // CONCEPT の概要・リンク
   .p-concept__facts dt [data-lang="ja"] { font-family: $f-ja; font-size: 12px; letter-spacing: .2em; }
   .p-link__label [data-lang="ja"] { font-family: $f-ja; font-size: 13px; letter-spacing: .14em; text-transform: none; }

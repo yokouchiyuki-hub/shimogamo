@@ -76,7 +76,9 @@
       letter-spacing: .3em;
       line-height: 1.7;
       span { display: block; white-space: nowrap; }
-      html[lang="ja"] & { display: none; }  // 日本語表示では見出しと重複するので隠す
+      .p-head__vt--en { font-family: $f-en; font-weight: 400; letter-spacing: .04em; line-height: 1.6; }  // 日本語表示では英文を縦に添える
+      // 上の span { display: block } が言語の出し分けより強くなるので、ここで改めて隠す
+      html[lang="ja"] & [data-lang="en"], html[lang="en"] & [data-lang="ja"] { display: none; }
     }
     .p-band__foot {
       left: var(--gutter);

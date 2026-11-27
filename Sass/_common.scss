@@ -127,10 +127,15 @@
     line-height: 1.9;
     span { display: block; white-space: nowrap; }
   }
+  // 縦書きの添え書き: 大見出しと逆の言語を置く(日本語表示=英文、英語表示=日本語)
+  &__vt--en {
+    font-family: $f-en;
+    font-size: 17px;
+    font-style: italic;
+    letter-spacing: .04em;
+    line-height: 1.6;
+  }
   .c-emblem { grid-column: 2; grid-row: 1; }
-  // 日本語表示では大見出しと同じ文言が重なるので、縦書きは隠す(英語表示では和の装飾として見せる)
-  html[lang="ja"] & { grid-template-columns: minmax(0, 1fr) auto; }
-  html[lang="ja"] &__ja { display: none; }
 
   @include mq(768) {
     grid-template-columns: minmax(0, 1fr) auto;

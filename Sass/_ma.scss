@@ -31,4 +31,6 @@
     line-height: 1.6;
     color: var(--fg);
   }
+  // 日本語表示: 英文は下に小さく添える
+  html[lang="ja"] &__en { font-size: 17px; font-style: italic; color: var(--sub); }
 }
