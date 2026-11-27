@@ -19,7 +19,7 @@
   &__josho-text { margin-top: 12px; font-size: 14px; line-height: 1.9; }
   &__josho-text[data-lang="en"] { font-family: $f-en; font-size: fluid(16, 18); line-height: 1.55; }  // 375px(16) → 1440px(18)
 
-  // 時系列タイムライン(左に縦線と朱の点)
+  // 時系列タイムライン(左に縦線と金の点)
   &__timeline { margin-top: 0; }
   &__stage {
     position: relative;
@@ -41,7 +41,7 @@
       width: 9px;
       height: 9px;
       border-radius: 50%;
-      background: $c-shu-lt;
+      background: $c-gold-lt;
     }
     &:last-child { padding-bottom: 0; }
     &:last-child::before { bottom: 0; }

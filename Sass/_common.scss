@@ -11,13 +11,13 @@
     --fg: #{$c-sumi};
     --sub: #{rgba($c-sumi, .74)};
     --line: #{$c-line-lt};
-    --accent: #{$c-shu};
+    --accent: #{$c-gold};
   }
   &--dark {
     --fg: #{$c-kinari};
     --sub: #{rgba($c-kinari, .76)};
     --line: #{$c-line-dk};
-    --accent: #{$c-shu-lt};
+    --accent: #{$c-gold-lt};
     font-weight: 500;
   }
   &--kinari { --bg: #{$c-kinari}; }

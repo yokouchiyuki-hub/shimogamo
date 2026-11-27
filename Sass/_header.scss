@@ -87,7 +87,7 @@
     line-height: 1.4;
     white-space: nowrap;
     transition: background-color .3s, color .3s;
-    &:hover { background: $c-shu; border-color: $c-shu; color: #fff; }
+    &:hover { background: $c-gold-lt; border-color: $c-gold-lt; color: $c-sumi; }
   }
   &__burger {
     display: none;
@@ -149,15 +149,15 @@
     gap: 0 8px;
     line-height: 1.4;
   }
-  &__num { font-size: 18px; font-weight: 500; color: $c-shu-lt; }
+  &__num { font-size: 18px; font-weight: 500; color: $c-gold-lt; }
   &__en { font-family: $f-en; font-size: 21px; letter-spacing: .06em; }
   &__ja { font-size: 12px; letter-spacing: .1em; opacity: .7; white-space: nowrap; }
   &__lang { @extend %lang-switch; font-size: 12px; }
   &__book {
     padding: 14px 28px;
-    border: 1px solid $c-shu;
-    background: $c-shu;
-    color: #fff;
+    border: 1px solid $c-gold-lt;
+    background: $c-gold-lt;
+    color: $c-sumi;  // 金の地には墨の文字(白だとコントラストが足りない)
     font-size: 13px;
     letter-spacing: .12em;
     line-height: 1.4;
