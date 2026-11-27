@@ -2,15 +2,6 @@
 
 .p-contact {
   overflow: hidden;
-  // 青海波の地紋(全面・ごく薄く)
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: seigaiha($c-sumi, $c-kinari, .07);
-    background-size: fluid(48, 72) auto;  // 375px(48) → 1440px(72)
-    pointer-events: none;
-  }
   &__mark {
     position: absolute;
     bottom: 5%;

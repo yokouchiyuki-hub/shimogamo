@@ -109,6 +109,17 @@
       }).observe(contact);
     }
 
+    // 砂紋: CSS のスクロール連動アニメーション非対応のブラウザ用(画面に15%入ったら引く)
+    if (!(window.CSS && CSS.supports && CSS.supports('animation-timeline: view()'))) {
+      var rakes = doc.querySelectorAll('.c-rake');
+      var rakeIO = new IntersectionObserver(function (entries, obs) {
+        for (var r = 0; r < entries.length; r++) {
+          if (entries[r].isIntersecting) { entries[r].target.classList.add('is-raked'); obs.unobserve(entries[r].target); }
+        }
+      }, { threshold: 0.15 });
+      for (var q = 0; q < rakes.length; q++) rakeIO.observe(rakes[q]);
+    }
+
     var fades = doc.querySelectorAll('.js-fade');
     var fadeIO = new IntersectionObserver(function (entries, obs) {
       for (var j = 0; j < entries.length; j++) {
@@ -226,6 +237,15 @@
       planTabs[t].addEventListener('click', function (e) { selectPlanTab(e.currentTarget, false); });
     }
   }
+
+  /* ---------- 砂紋 SVG の後読み(初回描画・LCP を邪魔しない) ---------- */
+  afterLoadAndPaint(function () {
+    var uses = doc.querySelectorAll('.c-rake use[data-href]');
+    for (var u = 0; u < uses.length; u++) {
+      uses[u].setAttribute('href', uses[u].getAttribute('data-href'));
+      uses[u].removeAttribute('data-href');
+    }
+  });
 
   /* ---------- Webフォント ---------- */
   afterLoadAndPaint(function () {
