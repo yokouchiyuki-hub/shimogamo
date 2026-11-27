@@ -1,0 +1,33 @@
+@use 'base' as *;
+
+// 日本語表示のとき、飾りの英文字を日本語に置き換える(英語を隠すものは、HTML 側で data-lang="en" を付けてある)。
+// 置き換えた文字は明朝・字間広めで、大文字化はしない。英語表示の見た目は変えない。
+html[lang="ja"] {
+  // ナビ(ヘッダー・フッター)
+  .l-header__nav a [data-lang="ja"],
+  .l-footer__nav a [data-lang="ja"] {
+    font-family: $f-ja;
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: none;
+  }
+  // ハンバーガーメニュー: 英語名を隠し、日本語名を主役に
+  .l-menu__en { display: none; }
+  .l-menu__ja { grid-column: 2 / -1; font-size: 21px; letter-spacing: .12em; opacity: 1; }
+  // 色名ラベル
+  .c-swatch [data-lang="ja"] { font-family: $f-ja; letter-spacing: .08em; }
+  // 漢字エンブレムの読み(ひらがな)
+  .c-emblem__roman [data-lang="ja"] { font-family: $f-ja; font-size: 16px; letter-spacing: .2em; }
+  // CONCEPT の概要・リンク
+  .p-concept__facts dt [data-lang="ja"] { font-family: $f-ja; font-size: 12px; letter-spacing: .2em; }
+  .p-link__label [data-lang="ja"] { font-family: $f-ja; font-size: 13px; letter-spacing: .14em; text-transform: none; }
+  // 和のかたちカード・Words の読み(ひらがな)
+  .p-residence__card-roman [data-lang="ja"],
+  .p-words__roman [data-lang="ja"] { font-family: $f-ja; font-size: 15px; font-style: normal; letter-spacing: .16em; }
+  // ページトップ
+  .p-pagetop [data-lang="ja"] { font-family: $f-ja; font-size: 10px; letter-spacing: .1em; }
+  // アクセスの地図: 英語の地名と SITE を隠す(N は方位なので残す)
+  .p-access__svg text.en:not(.n) { display: none; }
+  // Contact のボタン: 日本語を大きく1行だけ
+  .p-contact__btn-ja { font-size: 17px; letter-spacing: .16em; }
+}
