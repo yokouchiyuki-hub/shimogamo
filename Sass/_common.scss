@@ -131,9 +131,15 @@
   &__vt--en {
     font-family: $f-en;
     font-size: 17px;
-    font-style: italic;
-    letter-spacing: .04em;
+    font-style: normal;
+    letter-spacing: .01em;
     line-height: 1.6;
+  }
+  // 日本語表示: 英文の添え書きは縦書きにせず、横書き2行で添える(左そろえ)
+  html[lang="ja"] &__ja {
+    writing-mode: horizontal-tb;
+    align-self: center;
+    letter-spacing: .01em;
   }
   .c-emblem { grid-column: 2; grid-row: 1; }
 
@@ -141,6 +147,10 @@
     grid-template-columns: minmax(0, 1fr) auto;
     &__ja { grid-column: 2; grid-row: 1; font-size: 16px; }
     .c-emblem { grid-column: 1 / -1; grid-row: 2; margin-top: 28px; }
+    // 日本語表示の英文(横書き)は、見出しを窮屈にしないよう、見出しの下に1段で置く
+    html[lang="ja"] & { grid-template-columns: minmax(0, 1fr); }
+    html[lang="ja"] &__ja { grid-column: 1; grid-row: 2; align-self: start; margin-top: 12px; font-size: 15px; }
+    html[lang="ja"] & .c-emblem { grid-row: 3; }
   }
 }
 

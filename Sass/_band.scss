@@ -51,6 +51,8 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 24px;
+      // SP の日本語表示: 英文の添え書きは見出しの下に置く
+      @include mq(768) { html[lang="ja"] & { flex-direction: column; gap: 12px; } }
     }
     .p-head__label { color: rgba(#fff, .8); }
     .p-head__num { color: #fff; }
@@ -76,7 +78,8 @@
       letter-spacing: .3em;
       line-height: 1.7;
       span { display: block; white-space: nowrap; }
-      .p-head__vt--en { font-family: $f-en; font-weight: 400; letter-spacing: .04em; line-height: 1.6; }  // 日本語表示では英文を縦に添える
+      .p-head__vt--en { font-family: $f-en; font-weight: 400; letter-spacing: .01em; line-height: 1.6; }  // 日本語表示では英文を横書きで添える
+      html[lang="ja"] & { writing-mode: horizontal-tb; font-size: fluid(15, 18); text-align: left; }  // 375px(15) → 1440px(18)
       // 上の span { display: block } が言語の出し分けより強くなるので、ここで改めて隠す
       html[lang="ja"] & [data-lang="en"], html[lang="en"] & [data-lang="ja"] { display: none; }
     }
