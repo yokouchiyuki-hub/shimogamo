@@ -1,12 +1,6 @@
 @use 'base' as *;
 
 .p-access {
-  padding: 0 $gutter fluid(110, 200);  // 375px(110) → 1440px(200)
-  &__head {
-    display: flex;
-    gap: 40px;
-    margin-bottom: fluid(48, 80);
-  }
   &__body {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
@@ -16,35 +10,46 @@
   &__svg { width: 100%; height: auto; font-family: $f-sans; }
   &__svg text {
     font-size: 11px;
-    fill: $c-text;
+    fill: $c-sumi;
     paint-order: stroke;
-    stroke: $c-bg;
+    stroke: $c-shironezumi;
     stroke-width: 4px;
     stroke-linejoin: round;
     letter-spacing: .04em;
     &.ja { font-family: $f-ja; font-size: 12px; }
     &.en { font-family: $f-sans; font-size: 11px; }
   }
-  &__map-note { margin-top: 12px; font-size: 11px; color: $c-sub; line-height: 1.7; }
-  &__addr { font-size: 16px; letter-spacing: .1em; margin-bottom: 28px; }
+  &__map-note { margin-top: 12px; }
+  &__addr { font-size: 16px; letter-spacing: .1em; margin-bottom: 28px; [data-lang="en"] { font-family: $f-en; font-size: 22px; letter-spacing: .01em; } }
   &__list {
-    border-top: 1px solid $c-text;
-    border-bottom: 1px solid $c-text;
+    border-top: 1px solid $c-sumi;
+    border-bottom: 1px solid $c-sumi;
     > div {
       display: grid;
       grid-template-columns: 8em 1fr;
       gap: 16px;
       padding: 20px 0;
-      & + div { border-top: 1px solid $c-line; }
+      & + div { border-top: 1px solid var(--line); }
     }
-    dt { font-size: 13px; color: $c-sub; line-height: 1.85; }
-    dd { font-size: 14px; line-height: 1.85; }
+    dt { font-size: 13px; color: var(--sub); line-height: 1.85; [data-lang="en"] { font-family: $f-sans; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; } }
+    dd { font-size: 14px; line-height: 1.85; [data-lang="en"] { font-family: $f-en; font-size: 18px; line-height: 1.5; } }
   }
-  @include mq(1024) { padding: 0 6vw fluid(110, 200); }
+  // 所在地・階数・販売状況
+  &__outline { margin-top: fluid(64, 104); }
+  &__outline-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    > div { padding: 22px fluid(16, 40); & + div { border-left: 1px solid var(--line); } &:first-child { padding-left: 0; } }
+    dt { font-family: $f-sans; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--sub); }
+    dd { margin-top: 6px; font-size: 16px; line-height: 1.6; [data-lang="en"] { font-family: $f-en; font-size: 20px; line-height: 1.4; } }
+  }
+  &__outline .p-note { margin-top: 16px; }
+
   @include mq(768) {
-    padding: 0 24px fluid(110, 200);
-    &__head { justify-content: space-between; gap: 20px; }
     &__body { grid-template-columns: 1fr; gap: 48px; }
     &__list > div { grid-template-columns: 6.5em 1fr; gap: 12px; }
+    &__outline-list { grid-template-columns: 1fr; > div { padding: 16px 0; & + div { border-left: 0; border-top: 1px solid var(--line); } } }
   }
 }

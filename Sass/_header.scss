@@ -14,40 +14,48 @@
 .l-header {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 100;
+  z-index: 1000;  // ヘッダーは常に最前面
   height: $header-h;
   color: #fff;
   transition: background-color .5s, color .5s;
   &.is-solid,
   &.is-menu-open {
-    background: $c-bg;
-    color: $c-text;
+    background: $c-kinari;
+    color: $c-sumi;
+    box-shadow: 0 1px 0 rgba($c-sumi, .14);
   }
   &__inner {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: auto 1fr auto;
+    column-gap: 24px;
     align-items: center;
     height: 100%;
     padding: 0 fluid(20, 40);  // 375px(20) → 1440px(40)
   }
   &__logo {
     justify-self: start;
-    font-family: $f-sans;
-    font-weight: 300;
-    font-size: 15px;
-    letter-spacing: .6em;
-    line-height: 1;
+    display: block;
+    line-height: 0;
+    img { width: auto; height: 44px; }  // 元画像は170px。これ以上大きくしない
   }
+  // 透明時は白、is-solid / メニュー展開時は墨
+  &__logo-bk { display: none; }
+  &.is-solid &__logo-wt,
+  &.is-menu-open &__logo-wt { display: none; }
+  &.is-solid &__logo-bk,
+  &.is-menu-open &__logo-bk { display: block; }
   &__nav ul {
     display: flex;
-    gap: fluid(16, 32, 1024, 1440);  // 1024px(16) → 1440px(32)
+    justify-content: center;
+    gap: fluid(14, 30, 1024, 1440);  // 1024px(14) → 1440px(30)
   }
   &__nav a {
-    font-family: $f-en;
-    font-size: 13px;
-    letter-spacing: .12em;
+    font-family: $f-sans;
+    font-size: 11px;
+    letter-spacing: .14em;
     text-transform: uppercase;
     opacity: .9;
+    white-space: nowrap;
     &:hover { opacity: .55; }
   }
   &__right {
@@ -57,6 +65,19 @@
     gap: 22px;
   }
   &__lang { @extend %lang-switch; }
+  &__plan {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: $f-ja;
+    font-size: 11px;
+    letter-spacing: .12em;
+    line-height: 1;
+    white-space: nowrap;
+    [data-lang="en"] { font-family: $f-sans; letter-spacing: .14em; }
+    &:hover { opacity: .6; }
+    &--sp { display: none; }
+  }
   &__book {
     padding: 9px 18px;
     border: 1px solid currentColor;
@@ -66,7 +87,7 @@
     line-height: 1.4;
     white-space: nowrap;
     transition: background-color .3s, color .3s;
-    &:hover { background: $c-text; border-color: $c-text; color: $c-bg; }
+    &:hover { background: $c-shu; border-color: $c-shu; color: #fff; }
   }
   &__burger {
     display: none;
@@ -90,41 +111,53 @@
     &:nth-child(2) { top: 22px; transform: rotate(-20deg); }
   }
 
+  // 1025〜1200px はナビが詰まるので、内覧ボタンは追従CTAに任せる
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    &__book { display: none; }
+  }
   @include mq(1024) {
-    &__inner { grid-template-columns: 1fr auto; }
+    &__inner { grid-template-columns: 1fr auto auto; column-gap: 0; }
+    &__plan--sp { display: inline-flex; margin-right: 6px; }
+    &__logo img { height: 36px; }
     &__nav, &__right { display: none; }
     &__burger { display: block; }
-    &__logo { font-size: fluid(13, 15, 375, 768); }  // 375px(13) → 768px(15)
   }
 }
 
 .l-menu {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 990;  // メニューはヘッダーのすぐ下
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  padding: $header-h 24px 40px;
-  background: $c-bg;
-  color: $c-text;
+  gap: fluid(24, 40, 375, 768);  // 375px(24) → 768px(40)
+  padding: $header-h 24px 32px;
+  overflow-y: auto;
+  background: $c-sumi;
+  color: $c-kinari;
   opacity: 0;
   visibility: hidden;
   transition: opacity .5s, visibility .5s;
   &.is-open { opacity: 1; visibility: visible; }
-  &__nav ul { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  &__nav ul { display: flex; flex-direction: column; gap: fluid(10, 16, 375, 768); }  // 375px(10) → 768px(16)
   &__nav a {
-    font-family: $f-en;
-    font-size: 20px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
+    display: grid;
+    grid-template-columns: 2em 8.5em auto;
+    align-items: baseline;
+    gap: 0 8px;
+    line-height: 1.4;
   }
+  &__num { font-size: 18px; font-weight: 500; color: $c-shu-lt; }
+  &__en { font-family: $f-en; font-size: 21px; letter-spacing: .06em; }
+  &__ja { font-size: 12px; letter-spacing: .1em; opacity: .7; white-space: nowrap; }
   &__lang { @extend %lang-switch; font-size: 12px; }
   &__book {
     padding: 14px 28px;
-    border: 1px solid $c-text;
+    border: 1px solid $c-shu;
+    background: $c-shu;
+    color: #fff;
     font-size: 13px;
     letter-spacing: .12em;
     line-height: 1.4;

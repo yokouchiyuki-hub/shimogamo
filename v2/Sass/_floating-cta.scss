@@ -1,0 +1,25 @@
+@use 'base' as *;
+
+.p-floating-cta {
+  position: fixed;
+  right: fluid(16, 32);
+  bottom: fluid(16, 32);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 20px;
+  background: $c-bg;
+  border: 1px solid $c-text;
+  color: $c-text;
+  line-height: 1.2;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity .5s, visibility .5s, transform .5s;
+  &.is-show { opacity: 1; visibility: visible; transform: none; }
+  &__ja { font-size: 13px; letter-spacing: .14em; }
+  &__en { font-family: $f-sans; font-size: 9px; letter-spacing: .12em; }
+  &:hover { background: $c-text; color: $c-bg; }
+}

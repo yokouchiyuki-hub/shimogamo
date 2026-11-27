@@ -1,0 +1,80 @@
+@use "sass:string";
+
+// ---------- variables ----------
+$c-bg: #E3DFD9;
+$c-text: #3C3C3C;
+$c-sub: #6B6B6B;
+$c-foot: #5C5C5C;
+$c-foot-text: #F2F0EC;
+$c-line: rgba(60, 60, 60, .35);
+
+$f-ja: "Shippori Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
+$f-en: "EB Garamond", "Times New Roman", serif;
+$f-sans: "Helvetica Neue", Arial, sans-serif;
+
+$gutter: 8vw;
+$header-h: 72px;
+
+// ---------- mixins / functions ----------
+// desktop-first: max-width
+@mixin mq($w) {
+  @media (max-width: #{$w}px) { @content; }
+}
+
+// 区間 $from(px) → $to(px) で $min → $max を線形補完
+@function fluid($min, $max, $from: 375, $to: 1440) {
+  $lo: $min;
+  $hi: $max;
+  @if $min > $max {
+    $lo: $max;
+    $hi: $min;
+  }
+  @return string.unquote("clamp(#{$lo}px, calc(#{$min}px + (#{$max} - #{$min}) * ((100vw - #{$from}px) / (#{$to} - #{$from}))), #{$hi}px)");
+}
+
+// ---------- reset ----------
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  margin: 0;
+  background: $c-bg;
+  color: $c-text;
+  font-family: $f-ja;
+  font-size: 15px;
+  line-height: 1.85;
+  letter-spacing: .04em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; }
+img, picture, video, svg { display: block; max-width: 100%; }
+img { height: auto; }
+[id] { scroll-margin-top: $header-h; }
+
+:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
+
+// ---------- language ----------
+html[lang="ja"] [data-lang="en"],
+html[lang="en"] [data-lang="ja"] { display: none; }
+
+// ---------- fade ----------
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .js-fade {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1.2s cubic-bezier(.2, .6, .2, 1), transform 1.2s cubic-bezier(.2, .6, .2, 1);
+    &.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

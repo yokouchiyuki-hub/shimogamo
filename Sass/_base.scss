@@ -1,12 +1,30 @@
 @use "sass:string";
+@use "sass:color";
+@use "sass:list";
 
 // ---------- variables ----------
-$c-bg: #E3DFD9;
-$c-text: #3C3C3C;
-$c-sub: #6B6B6B;
-$c-foot: #5C5C5C;
-$c-foot-text: #F2F0EC;
-$c-line: rgba(60, 60, 60, .35);
+// 日本の伝統色
+$c-kinari: #EDE8DE;     // 生成色 Kinari-iro
+$c-sumi: #22211F;       // 墨色 Sumi-iro
+$c-sakura: #E6DAD5;     // 桜鼠 Sakura-nezumi
+$c-ai: #1D2B3A;         // 藍色 Ai-iro
+$c-shironeri: #F5F3EE;  // 白練 Shironeri
+$c-susutake: #4A3D32;   // 煤竹色 Susutake-iro
+$c-shiracha: #E2D7C5;   // 白茶 Shiracha
+$c-shironezumi: #DEDDD8; // 白鼠 Shironezumi
+$c-shu: #B5452B;        // 朱 Shu(アクセント)
+$c-shu-lt: #DE7358;     // 朱(暗い地の上の小さな文字用。コントラスト確保のため明るくしたもの)
+$c-foot: #171615;
+
+$c-line-lt: rgba($c-sumi, .22);
+$c-line-dk: rgba($c-kinari, .26);
+
+$f-ja: "Shippori Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
+$f-en: "EB Garamond", "Times New Roman", serif;
+$f-sans: "Helvetica Neue", Arial, sans-serif;
+
+$gutter: 8vw;
+$header-h: 72px;
 
 $f-ja: "Shippori Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
 $f-en: "EB Garamond", "Times New Roman", serif;
@@ -32,8 +50,28 @@ $header-h: 72px;
   @return string.unquote("clamp(#{$lo}px, calc(#{$min}px + (#{$max} - #{$min}) * ((100vw - #{$from}px) / (#{$to} - #{$from}))), #{$hi}px)");
 }
 
+// 青海波(せいがいは)の繰り返しタイル。扇形の波を下の段が上の段に重なるよう描く。
+// $ground: 地の色(波の内側を塗りつぶして、後ろの波を隠す) / $line: 線の色 / $op: 線の不透明度
+@function seigaiha($ground, $line, $op) {
+  $g: "rgb(#{color.channel($ground, 'red')},#{color.channel($ground, 'green')},#{color.channel($ground, 'blue')})";
+  $l: "rgb(#{color.channel($line, 'red')},#{color.channel($line, 'green')},#{color.channel($line, 'blue')})";
+  $wave: "";
+  // 描画順: 上の段から下の段へ(下の段が前面になる)。中心座標 (x, y)
+  @each $c in ((24, -12), (0, 0), (48, 0), (24, 12), (0, 24), (48, 24), (24, 36)) {
+    $x: list.nth($c, 1) * 1;
+    $y: list.nth($c, 2) * 1;
+    $wave: $wave + "%3Ccircle cx='#{$x}' cy='#{$y}' r='24' fill='#{$g}' stroke='#{$l}' stroke-opacity='#{$op}'/%3E%3Ccircle cx='#{$x}' cy='#{$y}' r='18' fill='none' stroke='#{$l}' stroke-opacity='#{$op}'/%3E%3Ccircle cx='#{$x}' cy='#{$y}' r='12' fill='none' stroke='#{$l}' stroke-opacity='#{$op}'/%3E%3Ccircle cx='#{$x}' cy='#{$y}' r='6' fill='none' stroke='#{$l}' stroke-opacity='#{$op}'/%3E";
+  }
+  @return url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E#{$wave}%3C/svg%3E");
+}
+
 // ---------- reset ----------
 *, *::before, *::after { box-sizing: border-box; }
+// 左右の余白(全幅にはみ出す写真の計算にも使う)
+:root { --gutter: #{$gutter}; }
+@media (max-width: 1024px) { :root { --gutter: 6vw; } }
+@media (max-width: 768px) { :root { --gutter: 24px; } }
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -43,11 +81,11 @@ html {
 }
 body {
   margin: 0;
-  background: $c-bg;
-  color: $c-text;
+  background: $c-kinari;
+  color: $c-sumi;
   font-family: $f-ja;
   font-size: 15px;
-  line-height: 1.85;
+  line-height: 1.95;
   letter-spacing: .04em;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -72,6 +110,7 @@ html[lang="en"] [data-lang="ja"] { display: none; }
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 1.2s cubic-bezier(.2, .6, .2, 1), transform 1.2s cubic-bezier(.2, .6, .2, 1);
+    &.p-photo, &.p-band { transition-duration: 1.4s; }
     &.is-visible {
       opacity: 1;
       transform: none;

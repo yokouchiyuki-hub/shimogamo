@@ -22,9 +22,23 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin: 0;
-    line-height: 0;
-    img { width: auto; height: fluid(200, 340); }  // 375px(200) → 1440px(340)
+    padding-left: .6em;  // 末尾の字間ぶんを相殺
+    font-family: $f-sans;
+    font-weight: 300;
+    font-size: fluid(22, 34);  // 375px(22) → 1440px(34)
+    letter-spacing: .6em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  &__name {
+    position: absolute;
+    top: fluid(96, 140);  // 375px(96) → 1440px(140)
+    right: fluid(24, 120);  // 375px(24) → 1440px(120)
+    writing-mode: vertical-rl;
+    font-size: 26px;
+    letter-spacing: .3em;
+    line-height: 1.6;
+    span { display: block; white-space: nowrap; }
   }
   &__addr {
     position: absolute;

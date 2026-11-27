@@ -1,0 +1,32 @@
+@use 'base' as *;
+
+.p-contact {
+  padding: 0 $gutter fluid(110, 200);  // 375px(110) → 1440px(200)
+  &__head {
+    display: flex;
+    gap: 40px;
+    margin-bottom: fluid(48, 80);
+  }
+  &__body { margin-left: 27vw; }
+  &__sub {
+    margin-top: 28px;
+    max-width: 460px;
+    font-size: 12px;
+    line-height: 1.85;
+    color: $c-sub;
+  }
+  &__links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+    margin-top: 56px;
+  }
+  @include mq(1024) { padding: 0 6vw fluid(110, 200); &__body { margin-left: 18vw; } }
+  @include mq(768) {
+    padding: 0 24px fluid(110, 200);
+    &__head { justify-content: space-between; gap: 20px; }
+    &__body { margin-left: 0; }
+    .p-link--lg { white-space: normal; }
+  }
+}

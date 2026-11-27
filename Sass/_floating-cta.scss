@@ -1,25 +1,58 @@
 @use 'base' as *;
 
-.p-floating-cta {
+// 右下に固定: ページトップ(上) + 内覧予約(下)
+.l-fixed {
   position: fixed;
   right: fluid(16, 32);
   bottom: fluid(16, 32);
-  z-index: 80;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
+  > * { pointer-events: auto; }
+}
+html:has(.p-planmodal[open]) .l-fixed { display: none; }
+
+%fixed-btn {
+  background: $c-sumi;
+  border: 1px solid rgba($c-kinari, .4);
+  color: $c-kinari;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity .5s, visibility .5s, transform .5s, background-color .3s, color .3s;
+  &.is-show { opacity: 1; visibility: visible; transform: none; }
+  &:hover { background: $c-kinari; color: $c-sumi; }
+}
+
+.p-floating-cta {
+  @extend %fixed-btn;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   padding: 12px 20px;
-  background: $c-bg;
-  border: 1px solid $c-text;
-  color: $c-text;
   line-height: 1.2;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition: opacity .5s, visibility .5s, transform .5s;
-  &.is-show { opacity: 1; visibility: visible; transform: none; }
   &__ja { font-size: 13px; letter-spacing: .14em; }
   &__en { font-family: $f-sans; font-size: 9px; letter-spacing: .12em; }
-  &:hover { background: $c-text; color: $c-bg; }
+}
+
+.p-pagetop {
+  @extend %fixed-btn;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-family: $f-sans;
+  font-size: 8px;
+  letter-spacing: .1em;
+  line-height: 1;
+  svg { width: 14px; height: 14px; }
+  @include mq(768) { width: 44px; height: 44px; }
 }
