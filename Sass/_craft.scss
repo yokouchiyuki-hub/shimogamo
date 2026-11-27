@@ -2,6 +2,7 @@
 
 .p-craft {
   &__top {
+    margin-top: fluid(40, 72);  // 375px(40) → 1440px(72)
     display: grid;
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
     column-gap: fluid(32, 96, 768, 1440);  // 768px(32) → 1440px(96)
@@ -19,7 +20,7 @@
   &__josho-text[data-lang="en"] { font-family: $f-en; font-size: fluid(16, 18); line-height: 1.55; }  // 375px(16) → 1440px(18)
 
   // 時系列タイムライン(左に縦線と朱の点)
-  &__timeline { margin-top: fluid(64, 112); }  // 375px(64) → 1440px(112)
+  &__timeline { margin-top: 0; }
   &__stage {
     position: relative;
     padding: 0 0 fluid(56, 96) fluid(28, 56);  // 375px(56) → 1440px(96)

@@ -59,6 +59,7 @@
   &__row:hover &__track,
   &__row:focus-within &__track,
   &.is-paused &__track,
+  &.is-lightbox &__track,
   &.is-offscreen &__track { animation-play-state: paused; }
 }
 @keyframes marquee-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }

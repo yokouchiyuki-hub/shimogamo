@@ -36,9 +36,11 @@
   var ogTitle = doc.querySelector('meta[property="og:title"]');
   var ogDesc = doc.querySelector('meta[property="og:description"]');
 
+  var lbLabelUpdate = null;  // 写真拡大の aria-label を言語に合わせて更新する
   function setLang(lang, save) {
     if (lang !== 'ja' && lang !== 'en') lang = 'ja';
     root.lang = lang;
+    if (lbLabelUpdate) lbLabelUpdate();
     doc.title = META[lang].title;
     if (metaDesc) metaDesc.setAttribute('content', META[lang].desc);
     if (ogTitle) ogTitle.setAttribute('content', META[lang].title);
@@ -127,12 +129,39 @@
     }, { threshold: [0, 0.05, 0.1, 0.2, 0.3, 0.5] });
     for (var q = 0; q < bgSections.length; q++) bgIO.observe(bgSections[q]);
 
+    // 画面に入る少し前に、画像の読み込みを始める(loading="lazy" のままだと、入ってから読み込むため遅れる)
+    var eagerImgs = function (root) {
+      var im = root.querySelectorAll('img');
+      for (var e = 0; e < im.length; e++) im[e].loading = 'eager';
+    };
+    var preIO = new IntersectionObserver(function (entries, obs) {
+      for (var p = 0; p < entries.length; p++) {
+        if (!entries[p].isIntersecting) continue;
+        eagerImgs(entries[p].target);
+        obs.unobserve(entries[p].target);
+      }
+    }, { rootMargin: '800px 0px' });
+    var preTargets = doc.querySelectorAll('.js-reveal, .p-marquee, [data-slider]');  // 流れるギャラリーとスライダーは、中の画像をすべて
+    for (var pt = 0; pt < preTargets.length; pt++) preIO.observe(preTargets[pt]);
+
     var fades = doc.querySelectorAll('.js-fade');
     var fadeIO = new IntersectionObserver(function (entries, obs) {
+      var show = function (el) { el.classList.add('is-visible'); };
       for (var j = 0; j < entries.length; j++) {
-        if (entries[j].isIntersecting) {
-          entries[j].target.classList.add('is-visible');
-          obs.unobserve(entries[j].target);
+        if (!entries[j].isIntersecting) continue;
+        var el = entries[j].target;
+        obs.unobserve(el);
+        var img = el.classList.contains('js-reveal') ? el.querySelector('img') : null;
+        if (img && img.decode) {
+          // 写真は decode が終わってから現れる(最大 600ms 待つ)
+          (function (target, im) {
+            var done = false;
+            var go = function () { if (!done) { done = true; show(target); } };
+            im.decode().then(go, go);
+            setTimeout(go, 600);
+          })(el, img);
+        } else {
+          show(el);
         }
       }
     }, { threshold: 0.15 });
@@ -165,6 +194,11 @@
   }
   addEventListener('scroll', loadLazyPhotos, { once: true, passive: true });
   afterLoadAndPaint(loadLazyPhotos);
+  // FV のすぐ下のコラージュは、FV が表示されたあとに先読みする
+  afterLoadAndPaint(function () {
+    var cim = doc.querySelectorAll('.p-concept__collage img');
+    for (var c = 0; c < cim.length; c++) cim[c].loading = 'eager';
+  });
 
   /* ---------- 間取り図: ラベルの位置(data-x / data-y → --x / --y) ---------- */
   var planLabels = doc.querySelectorAll('.c-plan__label');
@@ -292,7 +326,7 @@
     var sIdx = 0, sVisible = false, sUserPaused = false, sHover = false, sFocus = false, sTouch = false;
     var sTimer = null, sTouchTimer = null, sTick = false;
 
-    var canPlay = function () { return !reduceMotion && sVisible && !sUserPaused && !sHover && !sFocus && !sTouch; };
+    var canPlay = function () { return !reduceMotion && sVisible && !sUserPaused && !sHover && !sFocus && !sTouch && !doc.querySelector('.p-lightbox[open]'); };
     var goTo = function (i) {
       vp.scrollTo({ left: i * vp.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
     };
@@ -340,6 +374,8 @@
       if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
       else if (e.key === 'ArrowLeft') { e.preventDefault(); goTo((sIdx + slides.length - 1) % slides.length); }
     });
+    // 写真拡大の開閉で、自動再生を止める / 戻す
+    doc.addEventListener('lightboxchange', function () { schedule(); });
     slider.addEventListener('mouseenter', function () { sHover = true; schedule(); });
     slider.addEventListener('mouseleave', function () { sHover = false; schedule(); });
     slider.addEventListener('focusin', function () { sFocus = true; schedule(); });
@@ -351,6 +387,151 @@
       schedule();
       sTouchTimer = setTimeout(function () { sTouch = false; schedule(); }, 8000);
     }, { passive: true });
+  }
+
+  /* ---------- 写真の拡大ポップアップ ---------- */
+  var lb = doc.getElementById('lightbox');
+  if (lb && typeof lb.showModal === 'function') {
+    var lbImg = lb.querySelector('[data-lb-img]');
+    var lbCap = lb.querySelector('[data-lb-cap]');
+    var lbStage = lb.querySelector('[data-lb-stage]');
+    var lbNow = lb.querySelector('[data-lb-now]');
+    var lbTotal = lb.querySelector('[data-lb-total]');
+    var lbMarquee = doc.querySelector('[data-marquee]');
+    var lbTriggers = Array.prototype.slice.call(doc.querySelectorAll('.p-concept__photo, .p-location__photo, .p-marquee__item figure, .p-details__item figure, .p-slider__frame, .p-residence__card-photo, .p-craft__shot'));
+    var lbGroups = {};
+    var lbOrig = new Map();   // 各写真 -> 送りの中で使う本物の写真(マーキーの複製は元の写真へ)
+    var lbGroup = null, lbIndex = 0, lbOpener = null, lbSwiped = false, lbToken = 0;
+
+    // グループ(セクションごと)を作る。マーキーの2回目の複製は元の写真に対応づける
+    lbTriggers.forEach(function (t) {
+      var dup = t.closest('[aria-hidden="true"]') && t.closest('.p-marquee__item');
+      if (dup) return;
+      var id = t.closest('.l-sec').id;
+      (lbGroups[id] = lbGroups[id] || []).push(t);
+      lbOrig.set(t, t);
+    });
+    var rows = doc.querySelectorAll('.p-marquee__track');
+    for (var ri = 0; ri < rows.length; ri++) {
+      var its = rows[ri].children, half = its.length / 2;
+      for (var di = half; di < its.length; di++) lbOrig.set(its[di].querySelector('figure'), its[di - half].querySelector('figure'));
+    }
+
+    var lbAlt = function (t) { var im = t.querySelector('img'); return (t._lbAlt || (im && im.getAttribute('alt')) || (lbOrig.get(t) && lbOrig.get(t).querySelector('img').getAttribute('alt')) || ''); };
+    var lbLabel = function (alt) { return (root.lang === 'en' ? 'Enlarge: ' : '拡大して見る：') + alt; };
+    lbLabelUpdate = function () {
+      lbTriggers.forEach(function (t) {
+        if (t.hasAttribute('data-lb-trigger') && t.hasAttribute('tabindex')) t.setAttribute('aria-label', lbLabel(lbAlt(lbOrig.get(t) || t)));
+      });
+    };
+    // 開く側: キーボードで開けるようにする(複製はフォーカス対象にしない)
+    lbTriggers.forEach(function (t) {
+      t.setAttribute('data-lb-trigger', '');
+      var dup = lbOrig.get(t) !== t;
+      if (!dup) {
+        t.setAttribute('tabindex', '0');
+        t.setAttribute('role', 'button');
+      }
+    });
+    lbLabelUpdate();
+
+    // 大きい画像: media の付かない webp の srcset(なければ img の src)
+    var lbBigSrc = function (t) {
+      var src = t.querySelector('source[type="image/webp"]:not([media])');
+      var im = t.querySelector('img');
+      var v = (src && (src.getAttribute('srcset') || src.getAttribute('data-lsrcset'))) || (im && (im.getAttribute('src') || im.getAttribute('data-lsrc'))) || '';
+      return v.split(' ')[0];
+    };
+    var lbCaption = function (t) {
+      var fc = t.querySelector('figcaption') || t.querySelector('.p-residence__card-note') || (t.parentNode && t.parentNode.querySelector && t.closest('.p-slider__slide') && t.closest('.p-slider__slide').querySelector('figcaption'));
+      var out = '';
+      if (fc) {
+        var c = fc.cloneNode(true);
+        var hidden = c.querySelectorAll('[data-lang]:not([data-lang="' + root.lang + '"])');
+        for (var i = 0; i < hidden.length; i++) hidden[i].parentNode.removeChild(hidden[i]);
+        out = c.innerHTML;
+      }
+      return out || '';
+    };
+    var lbShow = function (i) {
+      var t = lbGroup[(i + lbGroup.length) % lbGroup.length];
+      lbIndex = (i + lbGroup.length) % lbGroup.length;
+      var im = t.querySelector('img');
+      var token = ++lbToken;
+      var small = (im && (im.currentSrc || im.getAttribute('src'))) || '';
+      lbImg.alt = lbAlt(t);
+      if (small) lbImg.src = small;   // 先に今の小さい画像を出し、大きい画像が届いたら差し替える
+      var big = lbBigSrc(t);
+      if (big && big !== small) {
+        var pre = new Image();
+        pre.onload = function () { if (token === lbToken) lbImg.src = big; };
+        pre.src = big;
+      }
+      var cap = lbCaption(t);
+      if (cap) lbCap.innerHTML = cap; else lbCap.textContent = lbImg.alt;  // キャプションが無ければ alt を出す
+      lbCap.hidden = !lbCap.textContent;
+      lbNow.textContent = lbIndex + 1;
+      lbTotal.textContent = lbGroup.length;
+    };
+    var lbOpen = function (t) {
+      if (doc.querySelector('.p-planmodal[open]')) return;
+      var base = lbOrig.get(t) || t;
+      lbGroup = lbGroups[t.closest('.l-sec').id];
+      lbOpener = base;
+      lbShow(lbGroup.indexOf(base));
+      if (lbMarquee) lbMarquee.classList.add('is-lightbox');
+      lb.showModal();
+      doc.dispatchEvent(new Event('lightboxchange'));
+    };
+    var lbClose = function () { lb.close(); };
+
+    // 開く: クリック(ドラッグ後は開かない)と Enter / Space
+    var lbDown = null;
+    doc.addEventListener('pointerdown', function (e) { lbDown = { x: e.clientX, y: e.clientY }; });
+    doc.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-lb-trigger]');
+      if (!t) return;
+      if (lbDown && Math.hypot(e.clientX - lbDown.x, e.clientY - lbDown.y) > 8) return;
+      lbOpen(t);
+    });
+    doc.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-lb-trigger][role="button"]')) {
+        e.preventDefault();
+        lbOpen(e.target);
+      }
+    });
+
+    // 送る / 閉じる
+    lb.querySelector('[data-lb-prev]').addEventListener('click', function () { lbShow(lbIndex - 1); });
+    lb.querySelector('[data-lb-next]').addEventListener('click', function () { lbShow(lbIndex + 1); });
+    lb.querySelector('[data-lb-close]').addEventListener('click', lbClose);
+    lb.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); lbShow(lbIndex + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); lbShow(lbIndex - 1); }
+    });
+    // 写真の外(背景)のクリックで閉じる
+    lb.addEventListener('click', function (e) {
+      if (lbSwiped) { lbSwiped = false; return; }
+      var t = e.target;
+      if (t === lb || t.hasAttribute('data-lb-inner') || t === lbStage || t.hasAttribute('data-lb-fig')) lbClose();
+    });
+    // スワイプ(左右)
+    var sx = null, sy = null;
+    lbStage.addEventListener('pointerdown', function (e) { sx = e.clientX; sy = e.clientY; });
+    lbStage.addEventListener('pointerup', function (e) {
+      if (sx === null) return;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      sx = null;
+      if (Math.abs(dx) > 50 && Math.abs(dy) < 60) { lbSwiped = true; lbShow(lbIndex + (dx < 0 ? 1 : -1)); }
+    });
+    lbStage.addEventListener('pointercancel', function () { sx = null; });
+    // 閉じたら、開く前の写真にフォーカスを戻す
+    lb.addEventListener('close', function () {
+      if (lbMarquee) lbMarquee.classList.remove('is-lightbox');
+      doc.dispatchEvent(new Event('lightboxchange'));
+      if (lbOpener) { lbOpener.focus({ preventScroll: true }); lbOpener = null; }
+      lbImg.removeAttribute('src');
+    });
   }
 
   /* ---------- 砂紋 SVG の後読み(初回描画・LCP を邪魔しない) ---------- */

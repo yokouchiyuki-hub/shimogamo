@@ -3,7 +3,7 @@
 // SP・タブレットの文字サイズの下限(クライアント指定: 読ませるための文字は 15px 以上)
 // 各パーシャルの SP 指定より後に読み込み、ここで下限をそろえる。
 // - 読ませる文字(本文・説明・一覧・用語の説明・アクセス情報など): 15px
-// - 補足(写真のキャプション・注記): 13px
+// - 写真のキャプション・注記の 13px は全幅の指定(_common など)
 // - ナビ・小見出しラベル(01 — CONCEPT など)は対象外
 @include mq(1024) {
   // 読ませる文字: 15px
@@ -24,12 +24,6 @@
   .p-access__list dd,
   .p-access__list dd [data-lang="ja"] { font-size: 15px; }
 
-  // 補足: 13px
-  .p-caption,
-  .p-craft__caption,
-  .p-residence__card-note,
-  .p-plans__note,
-  .p-access__map-note,
-  .p-note,
+  // 補足(写真のキャプション・注記の 13px は、全幅の指定に移した: _common / _residence)
   .p-access__list dt { font-size: 13px; }
 }

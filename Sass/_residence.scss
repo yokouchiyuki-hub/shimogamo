@@ -2,7 +2,7 @@
 
 .p-residence {
   // 見出しの直下に本文を置き、スライダー、和のかたちカードの順に詰める
-  &__intro + .p-slider { margin-top: fluid(40, 72); }          // 375px(40) → 1440px(72)
+  .p-slider + &__intro { margin-top: fluid(40, 72); }  // 375px(40) → 1440px(72)
 
   // 和のかたち 4枚
   &__wa-title {
@@ -26,10 +26,10 @@
   &__card-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }  // 4枚とも比率を揃える
   &__card-note {
     padding: 8px fluid(16, 24) 0;  // 375px(16) → 1440px(24)
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
     color: var(--sub);
-    [data-lang="en"] { font-family: $f-en; font-size: 13px; font-style: italic; }
+    [data-lang="en"] { font-family: $f-en; font-size: 14px; font-style: italic; }
   }
   &__card-body { padding: fluid(16, 24) fluid(16, 24) fluid(20, 28); }
   &__card-num { font-size: 14px; color: var(--accent); line-height: 1; }
