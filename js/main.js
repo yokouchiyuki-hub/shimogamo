@@ -361,11 +361,22 @@
     l.rel = 'stylesheet';
     l.href = 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=EB+Garamond:ital@0;1&display=swap';
     doc.head.appendChild(l);
-    // 漢字エンブレムの筆文字(9文字だけ)
-    var y = doc.createElement('link');
-    y.rel = 'stylesheet';
-    y.href = 'https://fonts.googleapis.com/css2?family=Yuji+Syuku&text=%E5%AE%B6%E5%B7%9D%E6%99%AF%E5%85%89%E9%96%93%E6%9C%A8%E8%A8%80%E9%81%93%E7%B8%81&display=swap';
-    doc.head.appendChild(y);
+    // 漢字エンブレムの筆文字: Adobe Fonts「KSO黒龍爽」(Web プロジェクト noo7vnz、動的サブセット)
+    // 読み込み中は html に wf-loading、完了で wf-active、3秒で来なければ wf-inactive が付く
+    var h = doc.documentElement;
+    var tkTimer = setTimeout(function () {
+      h.className = h.className.replace(/\bwf-loading\b/g, '') + ' wf-inactive';
+    }, 3000);
+    h.className += ' wf-loading';
+    var tk = doc.createElement('script');
+    tk.src = 'https://use.typekit.net/noo7vnz.js';
+    tk.async = true;
+    tk.onload = function () {
+      clearTimeout(tkTimer);
+      try { window.Typekit.load({ kitId: 'noo7vnz', scriptTimeout: 3000, async: true }); } catch (e) {}
+    };
+    tk.onerror = function () { clearTimeout(tkTimer); h.className = h.className.replace(/\bwf-loading\b/g, '') + ' wf-inactive'; };
+    doc.head.appendChild(tk);
   });
 
   /* ---------- FV 動画 ---------- */
