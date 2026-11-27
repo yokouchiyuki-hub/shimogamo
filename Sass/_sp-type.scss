@@ -1,0 +1,35 @@
+@use 'base' as *;
+
+// SP・タブレットの文字サイズの下限(クライアント指定: 読ませるための文字は 15px 以上)
+// 各パーシャルの SP 指定より後に読み込み、ここで下限をそろえる。
+// - 読ませる文字(本文・説明・一覧・用語の説明・アクセス情報など): 15px
+// - 補足(写真のキャプション・注記): 13px
+// - ナビ・小見出しラベル(01 — CONCEPT など)は対象外
+@include mq(1024) {
+  // 読ませる文字: 15px
+  .p-residence__card-desc,
+  .p-plans__feat-desc,
+  .p-plans__feat-desc [data-lang="ja"],
+  .p-plans__room,
+  .p-plans__room [data-lang="ja"],
+  .p-plans__area,
+  .p-plans__area [data-lang="ja"],
+  .p-words__desc,
+  .p-craft__josho-text,
+  .p-contact__sub,
+  .p-contact__sub [data-lang="ja"],
+  .p-location .p-place__ja,
+  .p-details__title [data-lang="ja"],
+  .p-residence__wa-title [data-lang="ja"],
+  .p-access__list dd,
+  .p-access__list dd [data-lang="ja"] { font-size: 15px; }
+
+  // 補足: 13px
+  .p-caption,
+  .p-craft__caption,
+  .p-residence__card-note,
+  .p-plans__note,
+  .p-access__map-note,
+  .p-note,
+  .p-access__list dt { font-size: 13px; }
+}

@@ -74,6 +74,6 @@
   // 縦積み(図面 → 説明)
   @include mq(1024) {
     &__row { grid-template-columns: 1fr; row-gap: 24px; }
-    &__fig { position: static; order: -1; }
+    &__fig { position: static; order: -1; width: 100%; max-width: 640px; }  // タブレットで図面が大きくなりすぎないように
   }
 }

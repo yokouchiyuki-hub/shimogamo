@@ -136,7 +136,7 @@
     line-height: 1.65;
     letter-spacing: .005em;
   }
-  @include mq(768) { font-size: 14.5px; }
+  @include mq(1024) { font-size: 15px; }  // SP・タブレットの読ませる文字は 15px 以上
 }
 
 // 中くらいのステートメント

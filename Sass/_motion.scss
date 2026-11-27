@@ -6,22 +6,13 @@
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     // 1. 全幅写真の帯: ゆっくり寄りながら流れる
-    .p-band picture {
+    .p-band picture,
+    .p-band__video {  // 動画もポスターと同じ動きにして、切り替わりでずれないようにする
       animation: band-drift linear both;
       animation-timeline: view();
       animation-range: cover;
     }
-    // 2. 写真が下からめくれて現れる(既存のフェードとは重ねない)
-    .js-reveal.js-fade,
-    .js-reveal.js-fade.is-visible {
-      opacity: 1;
-      transform: none;
-      transition: none;
-      animation: photo-reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 10% entry 70%;
-    }
-    // 3. 漢字エンブレムの視差(とても控えめ)
+    // 2. 漢字エンブレムの視差(とても控えめ)
     .c-emblem {
       animation: emblem-drift linear both;
       animation-timeline: view();
@@ -29,7 +20,7 @@
       // SP は見出しのすぐ下に漢字が来るため、視差で上に動くと見出しに重なる。SP では止める
       @include mq(768) { animation: none; }
     }
-    // 4. 大きな英語見出し: 下から少し上がりながら現れる
+    // 3. 大きな英語見出し: 下から少し上がりながら現れる
     .p-head.js-fade,
     .p-head.js-fade.is-visible { opacity: 1; transform: none; transition: none; }
     .p-head__en {
@@ -38,24 +29,24 @@
       animation-range: entry 0% entry 60%;
     }
   }
-  // 非対応ブラウザ: 既存の .js-fade の仕組みで、同じ clip-path を動かす
-  @supports not (animation-timeline: view()) {
-    .js-reveal.js-fade {
-      opacity: 1;
-      transform: none;
-      clip-path: inset(100% 0 0 0);
-      transition: clip-path 1.2s cubic-bezier(.2, .6, .2, 1);
-      &.is-visible { clip-path: inset(0); }
+  // 写真の現れ方: 画面に入ったら(.js-fade の IntersectionObserver で is-visible)、
+  // 上から下へ、じわりと浮かび上がる。スクロール量には連動させず、時間で動かす(どのブラウザでも同じ)
+  // ※ clip-path は中の画像(picture)に付ける。要素自体を切り抜くと面積が 0 になり、IntersectionObserver が反応しない
+  .js-reveal.js-fade {
+    opacity: .2;
+    transform: none;
+    transition: opacity 2.2s ease-out;
+    picture {
+      clip-path: inset(0 0 100% 0);
+      transition: clip-path 1.8s cubic-bezier(.25, .1, .2, 1);
     }
+    &.is-visible { opacity: 1; }
+    &.is-visible picture { clip-path: inset(0); }
   }
 }
 @keyframes band-drift {
   from { transform: scale(1.16) translateY(-3%); }
   to { transform: scale(1.08) translateY(3%); }
-}
-@keyframes photo-reveal {
-  from { clip-path: inset(100% 0 0 0); }
-  to { clip-path: inset(0); }
 }
 @keyframes emblem-drift {
   from { transform: translateY(48px); }

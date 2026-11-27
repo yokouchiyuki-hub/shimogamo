@@ -76,7 +76,17 @@
     .p-caption { margin: 0; max-width: 340px; color: rgba(#fff, .78); text-align: right; }
   }
 
-  // 全幅写真: NIGHT
+  // 全幅写真: NIGHT(川面の灯りの動画。ポスター画像の上に重ね、再生が始まったらふわっと出す)
+  &__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    &.is-playing { opacity: 1; }
+  }
   &--night {
     &::after { background: rgba(0, 0, 0, .28); }
     .p-band__center {
@@ -94,16 +104,21 @@
     }
   }
 
+  // VIEW(タブレット・SP): 写真の明るい所に文字が乗って読みにくいので、本文とキャプションは写真の下の墨地に出す
+  @include mq(1024) {
+    &--view { aspect-ratio: auto; height: auto; min-height: 0; display: flex; flex-direction: column; }
+    &--view picture { flex: none; height: 66vw; overflow: hidden; }
+    &--view::after { bottom: auto; height: 66vw; background: linear-gradient(to bottom, rgba(0, 0, 0, .72), transparent 55%); }
+    &--view .p-band__foot { position: relative; inset: auto; padding: 32px var(--gutter) 48px; background: $c-sumi; flex-direction: column; align-items: flex-start; gap: 14px; }
+    &--view .p-caption { text-align: left; max-width: none; }
+  }
   @include mq(768) {
     height: auto;
     aspect-ratio: 3 / 4;
-    // VIEW(SP): 写真の明るい所に文字が乗って読みにくいので、本文とキャプションは写真の下の墨地に出す
-    &--view { aspect-ratio: auto; height: auto; min-height: 0; display: flex; flex-direction: column; }
-    &--view picture { flex: none; height: 125vw; overflow: hidden; }
+    &--view picture { height: 125vw; }
+    &--view::after { height: 125vw; }
+    &--view .p-band__foot { padding: 28px var(--gutter) 44px; }
     &--night { aspect-ratio: 4 / 5; }
-    &--view::after { bottom: auto; height: 125vw; background: linear-gradient(to bottom, rgba(0, 0, 0, .72), transparent 55%); }
-    &--view .p-band__foot { position: relative; inset: auto; padding: 28px var(--gutter) 44px; background: $c-sumi; flex-direction: column; align-items: flex-start; gap: 14px; }
-    &--view .p-caption { text-align: left; max-width: none; }
   }
 }
 

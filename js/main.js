@@ -409,6 +409,25 @@
     }
   });
 
+  /* ---------- NIGHT 帯の動画: 画面に近づいたら読み込んで再生、離れたら止める ---------- */
+  var nightBand = doc.querySelector('.p-band--night');
+  var nightVideo = nightBand && nightBand.querySelector('.p-band__video');
+  if (nightVideo && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var mqNightSp = matchMedia('(max-width:767px)');
+    nightVideo.addEventListener('playing', function () { nightVideo.classList.add('is-playing'); }, { once: true });
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        if (!nightVideo.getAttribute('src')) {
+          nightVideo.src = mqNightSp.matches ? nightVideo.getAttribute('data-src-sp') : nightVideo.getAttribute('data-src-pc');
+        }
+        var np = nightVideo.play();
+        if (np && np.catch) np.catch(function () {});
+      } else if (nightVideo.getAttribute('src')) {
+        nightVideo.pause();
+      }
+    }, { rootMargin: '200px 0px' }).observe(nightBand);
+  }
+
   /* ---------- FV 動画 ---------- */
   var video = doc.querySelector('.p-fv__video');
   if (video) {
