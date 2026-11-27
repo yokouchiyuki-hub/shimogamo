@@ -1,0 +1,119 @@
+@use "sass:string";
+@use "sass:color";
+@use "sass:list";
+
+// ---------- variables ----------
+// 日本の伝統色
+$c-kinari: #EDE8DE;     // 生成色 Kinari-iro
+$c-sumi: #22211F;       // 墨色 Sumi-iro
+$c-sakura: #E6DAD5;     // 桜鼠 Sakura-nezumi
+$c-ai: #1D2B3A;         // 藍色 Ai-iro
+$c-shironeri: #F5F3EE;  // 白練 Shironeri
+$c-susutake: #4A3D32;   // 煤竹色 Susutake-iro
+$c-shiracha: #E2D7C5;   // 白茶 Shiracha
+$c-shironezumi: #DEDDD8; // 白鼠 Shironezumi
+$c-shu: #B5452B;        // 朱 Shu(アクセント)
+$c-shu-lt: #DE7358;     // 朱(暗い地の上の小さな文字用。コントラスト確保のため明るくしたもの)
+$c-foot: #171615;
+
+$c-line-lt: rgba($c-sumi, .22);
+$c-line-dk: rgba($c-kinari, .26);
+
+$f-ja: "Shippori Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
+$f-en: "EB Garamond", "Times New Roman", serif;
+$f-sans: "Helvetica Neue", Arial, sans-serif;
+
+$gutter: 8vw;
+$header-h: 72px;
+
+$f-ja: "Shippori Mincho", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
+$f-en: "EB Garamond", "Times New Roman", serif;
+$f-sans: "Helvetica Neue", Arial, sans-serif;
+
+$gutter: 8vw;
+$header-h: 72px;
+
+// ---------- mixins / functions ----------
+// desktop-first: max-width
+@mixin mq($w) {
+  @media (max-width: #{$w}px) { @content; }
+}
+
+// 区間 $from(px) → $to(px) で $min → $max を線形補完
+@function fluid($min, $max, $from: 375, $to: 1440) {
+  $lo: $min;
+  $hi: $max;
+  @if $min > $max {
+    $lo: $max;
+    $hi: $min;
+  }
+  @return string.unquote("clamp(#{$lo}px, calc(#{$min}px + (#{$max} - #{$min}) * ((100vw - #{$from}px) / (#{$to} - #{$from}))), #{$hi}px)");
+}
+
+// 青海波(せいがいは)の繰り返しタイル。扇形の波を下の段が上の段に重なるよう描く。
+// $ground: 地の色(波の内側を塗りつぶして、後ろの波を隠す) / $line: 線の色 / $op: 線の不透明度
+@function seigaiha($ground, $line, $op) {
+  $g: "rgb(#{color.channel($ground, 'red')},#{color.channel($ground, 'green')},#{color.channel($ground, 'blue')})";
+  $l: "rgb(#{color.channel($line, 'red')},#{color.channel($line, 'green')},#{color.channel($line, 'blue')})";
+  $wave: "";
+  // 描画順: 上の段から下の段へ(下の段が前面になる)。中心座標 (x, y)
+  @each $c in ((24, -12), (0, 0), (48, 0), (24, 12), (0, 24), (48, 24), (24, 36)) {
+    $x: list.nth($c, 1) * 1;
+    $y: list.nth($c, 2) * 1;
+    $wave: $wave + "%3Ccircle cx='#{$x}' cy='#{$y}' r='24' fill='#{$g}' stroke='#{$l}' stroke-opacity='#{$op}'/%3E%3Ccircle cx='#{$x}' cy='#{$y}' r='18' fill='none' stroke='#{$l}' stroke-opacity='#{$op}'/%3E%3Ccircle cx='#{$x}' cy='#{$y}' r='12' fill='none' stroke='#{$l}' stroke-opacity='#{$op}'/%3E%3Ccircle cx='#{$x}' cy='#{$y}' r='6' fill='none' stroke='#{$l}' stroke-opacity='#{$op}'/%3E";
+  }
+  @return url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E#{$wave}%3C/svg%3E");
+}
+
+// ---------- reset ----------
+*, *::before, *::after { box-sizing: border-box; }
+// 左右の余白(全幅にはみ出す写真の計算にも使う)
+:root { --gutter: #{$gutter}; }
+@media (max-width: 1024px) { :root { --gutter: 6vw; } }
+@media (max-width: 768px) { :root { --gutter: 24px; } }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  margin: 0;
+  background: $c-kinari;
+  color: $c-sumi;
+  font-family: $f-ja;
+  font-size: 15px;
+  line-height: 1.95;
+  letter-spacing: .04em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; }
+img, picture, video, svg { display: block; max-width: 100%; }
+img { height: auto; }
+[id] { scroll-margin-top: $header-h; }
+
+:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
+
+// ---------- language ----------
+html[lang="ja"] [data-lang="en"],
+html[lang="en"] [data-lang="ja"] { display: none; }
+
+// ---------- fade ----------
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .js-fade {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1.2s cubic-bezier(.2, .6, .2, 1), transform 1.2s cubic-bezier(.2, .6, .2, 1);
+    &.p-photo, &.p-band { transition-duration: 1.4s; }
+    &.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

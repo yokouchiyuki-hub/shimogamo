@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-95.16 0 353.43 353.43">
+<style>g{fill:#22211F}@media (prefers-color-scheme:dark){g{fill:#EDE8DE}}</style>
+<g>
+    <g>
+      <rect x="77.79" y="3.77" width="7.54" height="344.24"/>
+      <rect x="38.89" y="42.96" width="7.54" height="266.24"/>
+      <rect x="97.31" y="254.72" width="7.54" height="74.05"/>
+      <rect x="136.34" y="215.68" width="7.54" height="73.98"/>
+      <rect x="116.82" y="235.29" width="7.54" height="73.91"/>
+      <rect x="97.3" y="-4.35" width="7.54" height="55.01" transform="translate(13.39 78.52) rotate(-45.18)"/>
+      <g>
+        <rect x="38.89" y="-12.34" width="7.54" height="110.01" transform="translate(-17.67 42.66) rotate(-45)"/>
+        <rect x="65.45" y="38.89" width="110.01" height="7.54" transform="translate(5.11 97.67) rotate(-45)"/>
+      </g>
+      <rect x="65.45" y="98.35" width="110.01" height="7.54" transform="translate(-36.93 115.08) rotate(-45)"/>
+      <rect x="65.45" y="157.8" width="110.01" height="7.54" transform="translate(-78.97 132.49) rotate(-45)"/>
+      <rect x="65.45" y="194.68" width="110.01" height="7.54" transform="translate(-105.04 143.29) rotate(-45)"/>
+      <rect x="65.45" y="231.56" width="110.01" height="7.54" transform="translate(-131.12 154.1) rotate(-45)"/>
+      <rect x="38.89" y="106.56" width="7.54" height="110.01" transform="translate(-101.75 77.49) rotate(-45)"/>
+      <rect x="38.89" y="47.11" width="7.54" height="110.01" transform="translate(-59.71 60.08) rotate(-45)"/>
+      <path d="M81.56,353.43L0,271.87V0h163.11v271.87l-81.56,81.55ZM7.54,268.75l74.02,74.02,74.02-74.02V7.54H7.54v261.21Z"/>
+    </g>
+  </g>
+</svg>

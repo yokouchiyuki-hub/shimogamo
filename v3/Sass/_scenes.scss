@@ -1,0 +1,89 @@
+@use 'base' as *;
+@use 'sass:list';
+
+// 写真の配置 (番号: 開始列, 終了列, 行, 上のずらし[375px, 1440px])
+// PC: 12カラムの編集的なグリッド
+$scene-pc: (
+  1: (1, 9, 1, 0, 0),
+  2: (9, 13, 1, 0, 0),
+  3: (5, 13, 2, 0, 0),
+  4: (1, 5, 2, 0, 0),
+  5: (1, 9, 3, 0, 0),
+  6: (9, 13, 3, 0, 0),
+  7: (1, 6, 4, 0, 0),
+  8: (6, 13, 4, 0, 0)
+);
+// タブレット: 大小を交互に
+$scene-tab: (
+  1: (1, 8, 1),
+  2: (8, 13, 1),
+  3: (6, 13, 2),
+  4: (1, 6, 2),
+  5: (1, 8, 3),
+  6: (8, 13, 3),
+  7: (1, 6, 4),
+  8: (6, 13, 4)
+);
+
+.p-scenes {
+  &__lead { max-width: 560px; margin: 0 0 fluid(48, 80); }
+  &__hint { display: none; }
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: fluid(16, 32);  // 375px(16) → 1440px(32)
+    row-gap: fluid(32, 48);  // 375px(32) → 1440px(48)
+    align-items: start;
+  }
+  &__item { margin: 0; }
+  &__item img { width: 100%; }
+  &__caption { display: flex; gap: 10px; align-items: baseline; }
+  &__no { font-family: $f-en; font-size: 13px; letter-spacing: .08em; color: var(--accent); }
+
+  @each $n, $v in $scene-pc {
+    &__item--n#{$n} {
+      grid-column: #{list.nth($v, 1)} / #{list.nth($v, 2)};
+      grid-row: #{list.nth($v, 3)};
+      margin-top: fluid(list.nth($v, 4), list.nth($v, 5));
+    }
+  }
+
+  &__item--n7 { align-self: end; }
+
+  @include mq(1024) {
+    &__item--n7 { align-self: start; }
+    @each $n, $v in $scene-tab {
+      &__item--n#{$n} {
+        grid-column: #{list.nth($v, 1)} / #{list.nth($v, 2)};
+        grid-row: #{list.nth($v, 3)};
+        margin-top: 0;
+      }
+    }
+  }
+  @include mq(768) {
+    &__lead { margin-top: 0; }
+    &__hint {
+      display: block;
+      margin-bottom: 14px;
+      font-family: $f-sans;
+      font-size: 11px;
+      letter-spacing: .14em;
+      color: var(--sub);
+    }
+    &__list {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 0 calc(var(--gutter) * -1);
+      padding: 0 var(--gutter);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-left: var(--gutter);
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+    }
+    &__item { flex: none; scroll-snap-align: start; margin-top: 0; }
+    &__item--l { width: 80vw; }
+    &__item--p { width: 56vw; }
+  }
+}

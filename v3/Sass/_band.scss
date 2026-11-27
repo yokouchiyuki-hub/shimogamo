@@ -1,0 +1,110 @@
+@use 'base' as *;
+
+// 全幅写真の帯(上下余白なし)
+.p-band {
+  position: relative;
+  height: min(88vh, 56.25vw);
+  min-height: 420px;
+  overflow: hidden;
+  color: #fff;
+  background: $c-sumi;
+  picture, img { display: block; width: 100%; height: 100%; }
+  img { object-fit: cover; }
+  // 文字の可読性のための薄い暗幕
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, .5), transparent 42%), linear-gradient(to bottom, rgba(0, 0, 0, .32), transparent 38%);
+    pointer-events: none;
+  }
+  &__caption, &__ja, &__head, &__foot, &__center { position: absolute; z-index: 1; }
+  &__caption {
+    left: var(--gutter);
+    bottom: fluid(24, 48);  // 375px(24) → 1440px(48)
+    font-family: $f-en;
+    font-size: fluid(19, 26);  // 375px(19) → 1440px(26)
+    font-style: italic;
+    line-height: 1.3;
+  }
+  &__ja {
+    top: fluid(96, 128);  // 375px(96) → 1440px(128)
+    right: var(--gutter);
+    writing-mode: vertical-rl;
+    font-weight: 500;
+    font-size: fluid(16, 20);  // 375px(16) → 1440px(20)
+    letter-spacing: .3em;
+    line-height: 1.7;
+  }
+
+  // 全幅写真: DELTA
+  &--delta .p-band__caption [data-lang="ja"] { display: none; }
+
+  // 全幅写真: VIEW
+  &--view {
+    height: min(92vh, 62vw);
+    .p-band__head {
+      top: fluid(72, 120);  // 375px(72) → 1440px(120)
+      left: var(--gutter);
+      right: var(--gutter);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+    .p-head__label { color: rgba(#fff, .8); }
+    .p-head__num { color: #fff; }
+    .p-head__en { color: #fff; }
+    .p-band__vja {
+      writing-mode: vertical-rl;
+      font-weight: 500;
+      font-size: fluid(16, 20);  // 375px(16) → 1440px(20)
+      letter-spacing: .3em;
+      line-height: 1.7;
+      span { display: block; white-space: nowrap; }
+    }
+    .p-band__foot {
+      left: var(--gutter);
+      right: var(--gutter);
+      bottom: fluid(24, 48);  // 375px(24) → 1440px(48)
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+    }
+    .p-text { max-width: 34em; }
+    .p-caption { margin: 0; max-width: 340px; color: rgba(#fff, .78); text-align: right; }
+  }
+
+  // 全幅写真: NIGHT
+  &--night {
+    &::after { background: rgba(0, 0, 0, .28); }
+    .p-band__center {
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      text-align: center;
+      font-size: fluid(18, 28);  // 375px(18) → 1440px(28)
+      font-weight: 500;
+      letter-spacing: .2em;
+      line-height: 1.9;
+      [data-lang="en"] { font-family: $f-en; font-style: italic; font-weight: 400; letter-spacing: .03em; font-size: fluid(24, 40); }  // 375px(24) → 1440px(40)
+    }
+  }
+
+  @include mq(768) {
+    height: auto;
+    aspect-ratio: 3 / 4;
+    &--view { aspect-ratio: auto; height: 150vw; min-height: 600px; }
+    &--night { aspect-ratio: 4 / 5; }
+    &--view .p-band__foot { flex-direction: column; align-items: flex-start; gap: 14px; }
+    &--view .p-caption { text-align: left; max-width: none; }
+  }
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .p-band--night .p-band__center.js-fade { transform: translateY(24px); }
+  .p-band--night .p-band__center.js-fade.is-visible { transform: none; }
+}

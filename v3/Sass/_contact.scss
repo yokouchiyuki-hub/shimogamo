@@ -1,0 +1,71 @@
+@use 'base' as *;
+
+.p-contact {
+  overflow: hidden;
+  // 青海波の地紋(全面・ごく薄く)
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: seigaiha($c-sumi, $c-kinari, .07);
+    background-size: fluid(48, 72) auto;  // 375px(48) → 1440px(72)
+    pointer-events: none;
+  }
+  &__mark {
+    position: absolute;
+    bottom: 5%;
+    right: 4vw;
+    height: 60vh;
+    opacity: .05;
+    pointer-events: none;
+    img { width: auto; height: 100%; }
+  }
+  &__inner { position: relative; }
+  &__body { margin-left: 18vw; }
+  &__sub {
+    margin-top: 28px;
+    max-width: 34em;
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: var(--sub);
+    [data-lang="en"] { font-family: $f-en; font-size: 16px; line-height: 1.55; }
+  }
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 48px;
+  }
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 320px;
+    height: 64px;
+    padding: 0 16px;
+    border: 1px solid $c-shu;
+    background: $c-shu;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: .12em;
+    text-align: center;
+    line-height: 1.3;
+    transition: background-color .3s, border-color .3s;
+    &:hover { background: #8F3320; border-color: #8F3320; }
+    [data-lang="en"] { font-family: $f-sans; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+    &--line {
+      background: transparent;
+      color: $c-kinari;
+      &:hover { background: $c-shu; border-color: $c-shu; color: #fff; }
+    }
+  }
+  @include mq(1024) { &__body { margin-left: 8vw; } }
+  @include mq(768) {
+    // マークは本文の下(余白の中)に置く
+    padding-bottom: calc(#{fluid(96, 180)} + 200px);
+    &__mark { top: auto; right: 50%; bottom: 32px; height: 150px; transform: translateX(50%); opacity: .045; }
+    &__body { margin-left: 0; }
+    &__links { flex-direction: column; }
+    &__btn { width: 100%; }
+  }
+}
