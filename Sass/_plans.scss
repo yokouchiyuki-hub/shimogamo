@@ -16,6 +16,8 @@
   // 図面は上端にそろえ、左の説明を読む間はヘッダーの下に留める
   &__fig { position: sticky; top: calc(#{$header-h} + 32px); display: flex; flex-direction: column; align-items: flex-start; align-self: start; gap: 16px; }
   &__fig .c-plan { width: 100%; }
+  // 図面そのものをクリックしても、間取りポップアップ(部屋名つき)が開く。キーボードは下の「拡大して見る」ボタンで操作する
+  &__fig .c-plan--zoom { cursor: zoom-in; transition: opacity .3s; &:hover { opacity: .85; } }
   &__tagline { margin-top: 12px; font-size: fluid(18, 22); line-height: 1.6; letter-spacing: .06em; [data-lang="en"] { font-family: $f-en; font-size: fluid(20, 26); letter-spacing: 0; } }  // 375px(18) → 1440px(22)
   // 設備の説明
   &__feats { margin-top: fluid(20, 32); }
