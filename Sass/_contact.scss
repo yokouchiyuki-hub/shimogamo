@@ -24,7 +24,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    align-items: flex-end;
+    align-items: center;
     // 見出しと重ならないよう、狭い幅では上に出す
     @include mq(1200) {
       position: static;

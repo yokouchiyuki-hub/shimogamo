@@ -113,22 +113,6 @@
       }).observe(contact);
     }
 
-    // 背景(砂紋・和柄): セクションに20%入ったら流れ込み(1回だけ)。画面外では揺れを止める
-    var bgSections = doc.querySelectorAll('.l-sec');
-    var bgIO = new IntersectionObserver(function (entries) {
-      for (var r = 0; r < entries.length; r++) {
-        var en = entries[r];
-        var layers = en.target.querySelectorAll('.c-rake, .c-wa');
-        // 背の高いセクションは、画面の6割を占めたときも「到達」とみなす
-        var reached = en.intersectionRatio >= 0.2 || (en.rootBounds && en.intersectionRect.height >= en.rootBounds.height * 0.6);
-        for (var q = 0; q < layers.length; q++) {
-          layers[q].classList.toggle('is-onscreen', en.isIntersecting);
-          if (reached) layers[q].classList.add('is-flowing');
-        }
-      }
-    }, { threshold: [0, 0.05, 0.1, 0.2, 0.3, 0.5] });
-    for (var q = 0; q < bgSections.length; q++) bgIO.observe(bgSections[q]);
-
     // 画面に入る少し前に、画像の読み込みを始める(loading="lazy" のままだと、入ってから読み込むため遅れる)
     var eagerImgs = function (root) {
       var im = root.querySelectorAll('img');
@@ -170,8 +154,6 @@
     // 非対応ブラウザ: 最初から表示
     var all = doc.querySelectorAll('.js-fade');
     for (var m = 0; m < all.length; m++) all[m].classList.add('is-visible');
-    var bgAll = doc.querySelectorAll('.c-rake, .c-wa');
-    for (var bq = 0; bq < bgAll.length; bq++) bgAll[bq].classList.add('is-flowing');
     if (cta) cta.classList.add('is-show');
     if (pagetop) pagetop.classList.add('is-show');
   }
@@ -597,23 +579,27 @@
     }
   });
 
-  /* ---------- NIGHT 帯の動画: 画面に近づいたら読み込んで再生、離れたら止める ---------- */
-  var nightBand = doc.querySelector('.p-band--night');
-  var nightVideo = nightBand && nightBand.querySelector('.p-band__video');
-  if (nightVideo && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var mqNightSp = matchMedia('(max-width:767px)');
-    nightVideo.addEventListener('playing', function () { nightVideo.classList.add('is-playing'); }, { once: true });
-    new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
-        if (!nightVideo.getAttribute('src')) {
-          nightVideo.src = mqNightSp.matches ? nightVideo.getAttribute('data-src-sp') : nightVideo.getAttribute('data-src-pc');
+  /* ---------- 動画(帯・Scenes の2本並び): 画面に近づいたら読み込んで再生、離れたら止める ---------- */
+  var loopVideos = doc.querySelectorAll('.p-band__video, .p-clips__video');
+  if (loopVideos.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var mqLoopSp = matchMedia('(max-width:767px)');
+    var loopIO = new IntersectionObserver(function (entries) {
+      for (var e = 0; e < entries.length; e++) {
+        var v = entries[e].target.querySelector('video');
+        if (!v) continue;
+        if (entries[e].isIntersecting) {
+          if (!v.getAttribute('src')) v.src = mqLoopSp.matches ? v.getAttribute('data-src-sp') : v.getAttribute('data-src-pc');
+          var lp = v.play();
+          if (lp && lp.catch) lp.catch(function () {});
+        } else if (v.getAttribute('src')) {
+          v.pause();
         }
-        var np = nightVideo.play();
-        if (np && np.catch) np.catch(function () {});
-      } else if (nightVideo.getAttribute('src')) {
-        nightVideo.pause();
       }
-    }, { rootMargin: '200px 0px' }).observe(nightBand);
+    }, { rootMargin: '200px 0px' });
+    for (var lv = 0; lv < loopVideos.length; lv++) {
+      loopVideos[lv].addEventListener('playing', function (ev) { ev.target.classList.add('is-playing'); }, { once: true });
+      loopIO.observe(loopVideos[lv].closest('.p-band, .p-clips__item'));
+    }
   }
 
   /* ---------- FV 動画 ---------- */

@@ -107,7 +107,9 @@
     transition: opacity 1.2s ease;
     &.is-playing { opacity: 1; }
   }
-  &--night {
+  // 動画の帯(night / water / dusk 共通)
+  &--water, &--dusk { height: min(70vh, 48vw); }
+  &--loop {
     &::after { background: rgba(0, 0, 0, .28); }
     .p-band__center {
       inset: 0;
@@ -139,11 +141,11 @@
     &--view picture { height: 125vw; }
     &--view::after { height: 125vw; }
     &--view .p-band__foot { padding: 28px var(--gutter) 44px; }
-    &--night { aspect-ratio: 4 / 5; }
+    &--loop { aspect-ratio: 4 / 5; }
   }
 }
 
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .p-band--night .p-band__center.js-fade { transform: translateY(24px); }
-  .p-band--night .p-band__center.js-fade.is-visible { transform: none; }
+  .p-band--loop .p-band__center.js-fade { transform: translateY(24px); }
+  .p-band--loop .p-band__center.js-fade.is-visible { transform: none; }
 }

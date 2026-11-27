@@ -1,8 +1,7 @@
 @use 'base' as *;
 
 // 枯山水の砂紋(各セクションの背景色の上、本文・写真の後ろ)
-// 動き: セクションに到達したら上から下へ流れ込み(.is-flowing)、そのあとゆっくり揺れ続ける。
-// 動かすのは clip-path と transform だけ。JS 無効・動きを減らす設定のときは、動かさずに最初から表示する。
+// 砂紋は動かさない(静止して表示する)。
 .l-sec { isolation: isolate; }
 
 .c-rake {
@@ -50,26 +49,3 @@
 // 版2つぶんの高さ(PC: 幅の約 2.38 倍 / SP: 約 3.46 倍)があるときだけ、2つ目を出す
 @media (min-width: 769px) { @container (max-aspect-ratio: 0.42) { .c-rake__part--end { display: block; } } }
 @media (max-width: 768px) { @container (max-aspect-ratio: 0.289) { .c-rake__part--end { display: block; } } }
-
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .c-rake {
-    clip-path: inset(0 0 100% 0);
-    &.is-flowing {
-      clip-path: inset(0 0 0 0);
-      transition: clip-path 3.2s cubic-bezier(.25, .1, .2, 1);  // 1回だけ。戻さない
-    }
-    &__svg {
-      animation: rake-sway 27s ease-in-out infinite;
-      animation-play-state: paused;
-    }
-    // 形ごとに周期をずらす
-    &--a &__svg { animation-duration: 24s; }
-    &--c &__svg { animation-duration: 30s; }
-    // 流れ込んだあと、画面にあるときだけ揺らす
-    &.is-flowing.is-onscreen &__svg { animation-play-state: running; }
-  }
-}
-@keyframes rake-sway {
-  0%, 100% { transform: translateX(0) scaleY(1); }
-  50% { transform: translateX(-2.5%) scaleY(1.03); }
-}

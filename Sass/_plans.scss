@@ -64,7 +64,7 @@
   &__thumb-item { flex: none; }
   &__thumb { margin: 0; }
   &__thumb img { width: auto; height: 120px; border-radius: 0; @include mq(768) { height: 96px; } }  // 高さ PC 120px / SP 96px、横幅は比率なり
-  &__thumb .p-caption { margin-top: 6px; max-width: 12em; line-height: 1.4; }
+  &__thumb .p-caption { margin-top: 6px; max-width: 12em; min-height: 2.8em; line-height: 1.4; }
   &__rooms {
     margin-top: fluid(16, 28);
     border-top: 1px solid var(--line);

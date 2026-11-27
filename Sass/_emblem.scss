@@ -4,7 +4,7 @@
 .c-emblem {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;  // 補足は漢字の真下の中央
   gap: 6px;
   &__kanji {
     font-family: "kokuryu", $f-ja;  // 筆文字: Adobe Fonts「KSO黒龍爽」(後読み)
@@ -23,13 +23,20 @@
     font-size: 17px;
     line-height: 1.3;
     letter-spacing: .01em;
+    text-align: center;
     color: var(--sub);
-    i { font-style: italic; }
+    i { font-style: italic; padding-right: .2em; }  // 斜体の字の張り出しぶん
+    // 補足が漢字より長くても、エンブレムの箱を広げない(漢字の位置が章ごとにずれないように)
+    width: 0;
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    white-space: nowrap;
   }
   @include mq(768) {
     flex-direction: row;
     align-items: flex-end;
     gap: 16px;
-    &__roman { padding-bottom: 10px; }
+    &__roman { padding-bottom: 10px; text-align: left; width: auto; min-width: 0; display: block; white-space: normal; }
   }
 }
