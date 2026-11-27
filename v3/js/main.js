@@ -95,12 +95,12 @@
 
   if ('IntersectionObserver' in window) {
     if (fv) {
-      // ヘッダーの高さ分だけ内側で判定する
+      // ヘッダーの高さ(72px)より少し内側で判定する（アンカー移動でFVの下端がヘッダーに接したままになるのを防ぐ）
       new IntersectionObserver(function (entries) {
         fvVisible = entries[0].isIntersecting;
         header.classList.toggle('is-solid', !fvVisible);
         updateCta();
-      }, { rootMargin: '-72px 0px 0px 0px' }).observe(fv);
+      }, { rootMargin: '-80px 0px 0px 0px' }).observe(fv);
     }
     if (contact) {
       new IntersectionObserver(function (entries) {
