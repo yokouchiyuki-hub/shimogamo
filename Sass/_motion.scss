@@ -26,6 +26,8 @@
       animation: emblem-drift linear both;
       animation-timeline: view();
       animation-range: cover;
+      // SP は見出しのすぐ下に漢字が来るため、視差で上に動くと見出しに重なる。SP では止める
+      @include mq(768) { animation: none; }
     }
     // 4. 大きな英語見出し: 下から少し上がりながら現れる
     .p-head.js-fade,

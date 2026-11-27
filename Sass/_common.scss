@@ -121,6 +121,7 @@
 
 // ---------- 本文 ----------
 .p-text {
+  text-wrap: pretty;  // 行末に1〜2文字だけ残る改行を減らす
   display: flex;
   flex-direction: column;
   gap: 1.2em;
