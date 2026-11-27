@@ -111,16 +111,21 @@
       }).observe(contact);
     }
 
-    // 砂紋: CSS のスクロール連動アニメーション非対応のブラウザ用(画面に15%入ったら引く)
-    if (!(window.CSS && CSS.supports && CSS.supports('animation-timeline: view()'))) {
-      var rakes = doc.querySelectorAll('.c-rake');
-      var rakeIO = new IntersectionObserver(function (entries, obs) {
-        for (var r = 0; r < entries.length; r++) {
-          if (entries[r].isIntersecting) { entries[r].target.classList.add('is-raked'); obs.unobserve(entries[r].target); }
+    // 背景(砂紋・和柄): セクションに20%入ったら流れ込み(1回だけ)。画面外では揺れを止める
+    var bgSections = doc.querySelectorAll('.l-sec');
+    var bgIO = new IntersectionObserver(function (entries) {
+      for (var r = 0; r < entries.length; r++) {
+        var en = entries[r];
+        var layers = en.target.querySelectorAll('.c-rake, .c-wa');
+        // 背の高いセクションは、画面の6割を占めたときも「到達」とみなす
+        var reached = en.intersectionRatio >= 0.2 || (en.rootBounds && en.intersectionRect.height >= en.rootBounds.height * 0.6);
+        for (var q = 0; q < layers.length; q++) {
+          layers[q].classList.toggle('is-onscreen', en.isIntersecting);
+          if (reached) layers[q].classList.add('is-flowing');
         }
-      }, { threshold: 0.15 });
-      for (var q = 0; q < rakes.length; q++) rakeIO.observe(rakes[q]);
-    }
+      }
+    }, { threshold: [0, 0.05, 0.1, 0.2, 0.3, 0.5] });
+    for (var q = 0; q < bgSections.length; q++) bgIO.observe(bgSections[q]);
 
     var fades = doc.querySelectorAll('.js-fade');
     var fadeIO = new IntersectionObserver(function (entries, obs) {
@@ -136,6 +141,8 @@
     // 非対応ブラウザ: 最初から表示
     var all = doc.querySelectorAll('.js-fade');
     for (var m = 0; m < all.length; m++) all[m].classList.add('is-visible');
+    var bgAll = doc.querySelectorAll('.c-rake, .c-wa');
+    for (var bq = 0; bq < bgAll.length; bq++) bgAll[bq].classList.add('is-flowing');
     if (cta) cta.classList.add('is-show');
     if (pagetop) pagetop.classList.add('is-show');
   }
@@ -361,8 +368,16 @@
     l.rel = 'stylesheet';
     l.href = 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=EB+Garamond:ital@0;1&display=swap';
     doc.head.appendChild(l);
-    // 漢字エンブレムの筆文字: Adobe Fonts「KSO黒龍爽」(Web プロジェクト noo7vnz、動的サブセット)
-    // 読み込み中は html に wf-loading、完了で wf-active、3秒で来なければ wf-inactive が付く
+  });
+
+  /* ---------- 漢字エンブレムの筆文字: Adobe Fonts「KSO黒龍爽」(Web プロジェクト noo7vnz、動的サブセット) ---------- */
+  // Typekit の読み込みと文字の走査は重いので、初回描画のあとすぐには読まない。
+  // 最初のスクロール・操作、または漢字が画面に近づいたときに1回だけ読む。
+  // 読み込み中は html に wf-loading、完了で wf-active、3秒で来なければ wf-inactive が付く
+  var kanjiFontDone = false;
+  var loadKanjiFont = function () {
+    if (kanjiFontDone) return;
+    kanjiFontDone = true;
     var h = doc.documentElement;
     var tkTimer = setTimeout(function () {
       h.className = h.className.replace(/\bwf-loading\b/g, '') + ' wf-inactive';
@@ -377,6 +392,21 @@
     };
     tk.onerror = function () { clearTimeout(tkTimer); h.className = h.className.replace(/\bwf-loading\b/g, '') + ' wf-inactive'; };
     doc.head.appendChild(tk);
+  };
+  afterLoadAndPaint(function () {
+    var evs = ['scroll', 'pointerdown', 'keydown', 'touchstart'];
+    var onFirst = function () {
+      for (var i = 0; i < evs.length; i++) removeEventListener(evs[i], onFirst, { passive: true });
+      loadKanjiFont();
+    };
+    for (var i = 0; i < evs.length; i++) addEventListener(evs[i], onFirst, { passive: true });
+    var firstEmblem = doc.querySelector('.c-emblem__kanji');
+    if (firstEmblem && 'IntersectionObserver' in window) {
+      var kio = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { kio.disconnect(); loadKanjiFont(); }
+      });
+      kio.observe(firstEmblem);
+    }
   });
 
   /* ---------- FV 動画 ---------- */

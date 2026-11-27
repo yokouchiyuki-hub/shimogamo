@@ -1,7 +1,6 @@
 @use 'base' as *;
 
 .p-location {
-  padding-bottom: calc(#{fluid(96, 160)} + #{fluid(48, 96)});
   &__body {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -34,21 +33,6 @@
     &__en { font-family: $f-en; font-size: 16px; }
     &__tag { font-family: $f-sans; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); [data-lang="ja"] { font-family: $f-ja; letter-spacing: .1em; text-transform: none; font-size: 11px; } }
   }
-  // 下端の青海波
-  &__wave {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: fluid(48, 96);  // 375px(48) → 1440px(96)
-    background: seigaiha($c-sumi, $c-kinari, .18);
-    background-size: fluid(36, 48) auto;  // 375px(36) → 1440px(48)
-    background-position: center bottom;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%);
-    mask-image: linear-gradient(to bottom, transparent, #000 45%);
-    pointer-events: none;
-  }
-
   @include mq(768) {
     &__body { display: block; }
     &__text { margin-bottom: 32px; }

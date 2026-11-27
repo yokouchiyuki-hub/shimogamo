@@ -1,6 +1,8 @@
 @use 'base' as *;
 
 // 枯山水の砂紋(各セクションの背景色の上、本文・写真の後ろ)
+// 動き: セクションに到達したら上から下へ流れ込み(.is-flowing)、そのあとゆっくり揺れ続ける。
+// 動かすのは clip-path と transform だけ。JS 無効・動きを減らす設定のときは、動かさずに最初から表示する。
 .l-sec { isolation: isolate; }
 
 .c-rake {
@@ -9,14 +11,15 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  // 明るい地は墨、暗い地は生成色で、ごく薄く
-  .l-sec--light & { color: rgba($c-sumi, .14); }
-  .l-sec--dark & { color: rgba($c-kinari, .11); }
+  // 文字と紛れないよう、「あるとわかる」程度にごく薄く
+  .l-sec--light & { color: rgba($c-sumi, .055); }
+  .l-sec--dark & { color: rgba($c-kinari, .05); }
 
   &__svg {
     position: absolute;
-    inset: 0;
-    width: 100%;
+    top: 0;
+    left: -4%;  // 揺れても端が見えないよう、左右に余白を持たせる
+    width: 108%;
     height: 100%;
     fill: none;
     stroke: currentColor;
@@ -29,28 +32,29 @@
       &--sp { display: block; }
     }
   }
-  &--flip &__svg { transform: scaleX(-1); }
+  // 反転は親に付ける(揺れの transform と打ち消し合わないように)
+  &--flip { transform: scaleX(-1); }
 }
 
-// 上から下へ「引かれていく」動き。JS 無効・動きを減らす設定のときは最初から全体を表示する
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .c-rake {
-      animation: rake-reveal linear both;
-      animation-timeline: view();
-      // セクションの上端が画面の上から60%の線に来たときに始まり、下端がその線に来たときに引き終わる
-      animation-range: cover 40vh cover calc(100% - 60vh);
+  .c-rake {
+    clip-path: inset(0 0 100% 0);
+    &.is-flowing {
+      clip-path: inset(0 0 0 0);
+      transition: clip-path 3.2s cubic-bezier(.25, .1, .2, 1);  // 1回だけ。戻さない
     }
-  }
-  @supports not (animation-timeline: view()) {
-    .c-rake {
-      clip-path: inset(0 0 100% 0);
-      transition: clip-path 2.8s cubic-bezier(.3, .1, .2, 1);
-      &.is-raked { clip-path: inset(0 0 0 0); }
+    &__svg {
+      animation: rake-sway 27s ease-in-out infinite;
+      animation-play-state: paused;
     }
+    // 形ごとに周期をずらす
+    &--a &__svg { animation-duration: 24s; }
+    &--c &__svg { animation-duration: 30s; }
+    // 流れ込んだあと、画面にあるときだけ揺らす
+    &.is-flowing.is-onscreen &__svg { animation-play-state: running; }
   }
 }
-@keyframes rake-reveal {
-  from { clip-path: inset(0 0 100% 0); }
-  to { clip-path: inset(0 0 0 0); }
+@keyframes rake-sway {
+  0%, 100% { transform: translateX(0) scaleY(1); }
+  50% { transform: translateX(-2.5%) scaleY(1.03); }
 }
