@@ -73,37 +73,10 @@
   .p-scenes__pause { display: none; }
 }
 
-// 接写の群れ(小さく、2列・段違い)
-.p-details {
-  margin-top: fluid(72, 120);  // 375px(72) → 1440px(120)
-  &__title {
-    font-family: $f-sans;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--sub);
-    [data-lang="ja"] { font-family: $f-ja; font-size: 14px; letter-spacing: .14em; text-transform: none; }
-    [data-lang="en"] { font-family: $f-en; font-size: 18px; font-style: italic; letter-spacing: .02em; text-transform: none; }
-  }
-  &__list {
-    display: flex;
-    justify-content: center;
-    gap: fluid(24, 48, 768, 1440);  // 768px(24) → 1440px(48)
-    margin-top: 24px;
-  }
-  &__item { width: 220px; }  // 段違いにしない(そろえて並べる)
-  &__item img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-  // SP: 2列。間隔は 8px
-  @include mq(767) {
-    &__list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    &__item { width: auto; }
-  }
-}
-
-// 動画2本並び(PC は2列 16:9、SP は1列)
+// 動画2本並び(PC は2列 16:9、SP は1列)。本文の左右の余白をはみ出して、画面の端近くまで広げる
 .p-clips {
   display: grid;
+  margin-inline: calc(var(--gutter) * -1 + #{fluid(12, 32)});  // 画面端からの余白 375px(12) → 1440px(32)
   grid-template-columns: 1fr 1fr;
   gap: fluid(16, 32);  // 375px(16) → 1440px(32)
   margin-top: fluid(40, 64);
