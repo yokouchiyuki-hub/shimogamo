@@ -121,7 +121,8 @@
       font-weight: 500;
       letter-spacing: .2em;
       line-height: 1.9;
-      [data-lang="en"] { font-family: $f-en; font-style: italic; font-weight: 400; letter-spacing: .03em; font-size: fluid(24, 40); }  // 375px(24) → 1440px(40)
+      text-wrap: balance;  // 「river.」だけの行を作らない
+      [data-lang="en"] { font-family: $f-en; font-style: italic; font-weight: 400; letter-spacing: .03em; font-size: fluid(24, 40); line-height: 1.35; }  // 375px(24) → 1440px(40)
     }
   }
 

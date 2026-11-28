@@ -10,6 +10,7 @@
     height: 44vh;
     opacity: .05;
     pointer-events: none;
+    picture { display: block; height: 100%; }  // 画像を箱の高さに収める(はみ出してセクションの端で切れないように)
     img { width: auto; height: 100%; }
   }
   &__inner {
