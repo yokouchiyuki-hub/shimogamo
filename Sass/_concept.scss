@@ -87,7 +87,7 @@
   }
   &__site {
     margin: 0 calc(var(--gutter) * -1) calc(#{fluid(96, 160)} * -1);  // 下はセクションの下余白(96→160)を打ち消す
-    padding: fluid(64, 104) var(--gutter) fluid(80, 140);  // 375px(64/80) → 1440px(104/140)
+    padding: fluid(64, 104) var(--gutter) 120px;  // 上は 375px(64) → 1440px(104)。下は全幅で 120px(クライアント指定)
     background: #F5F1E8 url("../img/washi.webp") 0 0 / 800px auto;  // 和紙の繊維のテクスチャ(継ぎ目なしの 800px タイル)
   }
   &__site-title {
