@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 90px var(--gutter);  // 文字の上下は 90px(クライアント指定)
+  padding: 110px var(--gutter);  // 文字の上下は 110px(クライアント指定)
   text-align: center;
   &__en {
     max-width: 18em;
