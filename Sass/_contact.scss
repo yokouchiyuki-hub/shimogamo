@@ -78,10 +78,9 @@
     color: var(--sub);
     [data-lang="en"] { font-family: $f-en; font-size: 16px; line-height: 1.55; }
   }
-  // タブレット・SP: マークは見出しに重ならないよう、本文の下(余白の中)に置く
+  // タブレット・SP: マークは出さない(見出しに重なる・下に置くと余白が間延びするため。クライアント指定)
   @include mq(1200) {
-    padding-bottom: calc(#{fluid(96, 160)} + 200px);
-    &__mark { right: 50%; bottom: 32px; height: 150px; transform: translateX(50%); opacity: .045; }
+    &__mark { display: none; }
   }
   @include mq(768) {
     &__links { flex-direction: column; width: 100%; }
