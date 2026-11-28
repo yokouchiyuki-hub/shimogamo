@@ -66,7 +66,7 @@
       [data-lang="en"] { font-family: $f-en; font-size: 20px; line-height: 1.3; }
     }
   }
-  &__more { margin-top: fluid(28, 40); text-align: center; }  // リンクも概要の塊に合わせて中央に
+  &__more { margin-top: 50px; text-align: center; }  // リンクも概要の塊に合わせて中央に
 
   // 現在の現場(3列の段違い。真ん中の列を 64px 下げる)
   // 現在の現場: 枯山水の下で区切り、和紙のような白の帯に(全幅・セクションの下端まで)
