@@ -96,6 +96,7 @@
 
   function updateCta() {
     if (cta) cta.classList.toggle('is-show', !fvVisible && !contactVisible);
+    if (cta) cta.parentNode.classList.toggle('has-cta', !fvVisible && !contactVisible);  // SP: 帯が消えたら TOP を下へ
     if (pagetop) pagetop.classList.toggle('is-show', !fvVisible);  // ページトップは Contact でも出す
   }
 
@@ -156,7 +157,7 @@
     // 非対応ブラウザ: 最初から表示
     var all = doc.querySelectorAll('.js-fade');
     for (var m = 0; m < all.length; m++) all[m].classList.add('is-visible');
-    if (cta) cta.classList.add('is-show');
+    if (cta) { cta.classList.add('is-show'); cta.parentNode.classList.add('has-cta'); }
     if (pagetop) pagetop.classList.add('is-show');
   }
 

@@ -10,7 +10,7 @@
   &__logo img { display: block; width: auto; height: fluid(110, 150); }  // 375px(110) → 1440px(150)
   padding: fluid(40, 56) $gutter;  // 375px(40) → 1440px(56)
   background: $c-foot;
-  @include mq(768) { padding-bottom: calc(40px + 78px + env(safe-area-inset-bottom)); }  // SP: 下に追従する内覧予約の帯に隠れないぶん
+  @include mq(768) { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }  // SP: 下は 70px(クライアント指定。フッターでは内覧予約の帯は隠れている)
   &__brand {
     display: block;
     transition: opacity .3s;

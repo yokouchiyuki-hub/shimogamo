@@ -79,6 +79,11 @@ html:has(.p-planmodal[open]) .l-fixed { display: none; }
     align-items: stretch;
     gap: 12px;
   }
+  // 帯が隠れているとき(FV・お問い合わせ・フッター): 帯は場所を取らず、TOP は画面の下へ下りる
+  .l-fixed:not(.has-cta) {
+    .p-floating-cta { position: absolute; left: 0; right: 0; bottom: 0; }
+    .p-pagetop { margin-bottom: calc(15px + env(safe-area-inset-bottom)); }
+  }
   // TOP: 帯の上の右端。写真の上でも読めるよう、生成色の小さな面を敷く
   .p-pagetop {
     align-self: flex-end;
