@@ -494,7 +494,12 @@
     };
     var lbCaption = function (t) {
       var own = t.getAttribute('data-lb-cap-' + root.lang);  // 撮影年月などを足した拡大用のキャプション
-      if (own) return own;
+      if (own) {
+        // 「写真名（説明）」は、写真名と説明の2段に分けて見せる(リンクなどを含むものはそのまま)
+        var m = own.indexOf('<') < 0 && (own.match(/^(.+?)（(.+)）$/) || own.match(/^(.+?) \((.+)\)$/));
+        if (m) return '<span class="p-lightbox__cap-title">' + m[1] + '</span><span class="p-lightbox__cap-desc">' + m[2] + '</span>';
+        return own;
+      }
       var fc = t.querySelector('figcaption') || t.querySelector('.p-residence__card-note') || (t.parentNode && t.parentNode.querySelector && t.closest('.p-slider__slide') && t.closest('.p-slider__slide').querySelector('figcaption'));
       var out = '';
       if (fc) {
@@ -850,4 +855,8 @@
     addEventListener('scroll', queueVv, { passive: true });
     updateVv();
   }
+
+  /* ---------- 操作の種類: キーボードのときだけフォーカスの枠を出す(タップ・クリック後に枠を残さない) ---------- */
+  doc.addEventListener('keydown', function (e) { if (e.key === 'Tab') root.classList.add('is-kbd'); });
+  doc.addEventListener('pointerdown', function () { root.classList.remove('is-kbd'); });
 })();

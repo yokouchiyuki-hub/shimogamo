@@ -66,6 +66,7 @@
     gap: 22px;
   }
   &__lang { @extend %lang-switch; }
+  &__lang--sp { display: none; }  // SP・iPad 用(ハンバーガーの左)
   &__plan {
     display: inline-flex;
     align-items: center;
@@ -117,7 +118,8 @@
     &__book { display: none; }
   }
   @include mq(1024) {
-    &__inner { grid-template-columns: 1fr auto auto; column-gap: 0; }
+    &__inner { grid-template-columns: 1fr auto auto auto; column-gap: 0; }
+    &__lang--sp { display: flex; margin-right: 18px; }
     &__plan--sp { display: inline-flex; margin-right: 6px; }
     &__logo img { height: 36px; }
     &__nav, &__right { display: none; }
@@ -162,7 +164,9 @@
   &__ja { font-size: 12px; letter-spacing: .1em; opacity: .7; white-space: nowrap; }
   &__lang { @extend %lang-switch; font-size: 12px; }
   &__book {
+    min-width: 212px;  // 日本語(内覧予約)も英語(PRIVATE VIEWING)と同じ幅に
     padding: 14px 28px;
+    text-align: center;
     border: 1px solid $c-gold-lt;
     background: $c-gold-lt;
     color: $c-sumi;  // 金の地には墨の文字(白だとコントラストが足りない)

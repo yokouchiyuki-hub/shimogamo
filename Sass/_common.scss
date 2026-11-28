@@ -256,3 +256,11 @@
 
 // 文節のまとまりで改行する(見出しや短い文で、語の途中で折り返さないように)
 .u-phrase { display: inline-block; }
+
+// 写真の下の小さなキャプションは、リンクの文字のように見えるので出さない。写真を押すと、拡大表示で写真名と説明が読める
+// (対象: コンセプトの写真・現在の現場 / 間取りの「この階の写真」/ 家づくりの記録の各写真)
+.p-concept .p-concept__captions,
+.p-concept .p-concept__photo .p-caption,
+.p-concept .p-concept__site-row .p-caption,
+.p-plans .p-plans__thumb .p-caption,
+.p-craft .p-craft__shot .p-caption { display: none; }  // 各章の SP 用の表示指定より強くする

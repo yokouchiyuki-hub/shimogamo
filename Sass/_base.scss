@@ -100,8 +100,8 @@ img { height: auto; }
 [id] { scroll-margin-top: $header-h; @include mq(768) { scroll-margin-top: $header-h-sp; } }
 
 :focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
-// タッチ操作の端末(iPhone など)では、タップ後にリンクやボタンへ四角い枠が残らないようにする(キーボード操作の PC は枠を出す)
-@media (hover: none) and (pointer: coarse) { a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: none; } }
+// 枠はキーボード(Tab)で操作しているときだけ出す。タップやクリックのあとに四角い枠が残らないように(main.js が .is-kbd を付け外し)
+html:not(.is-kbd) :focus-visible { outline: none; }
 
 // ---------- language ----------
 html[lang="ja"] [data-lang="en"],

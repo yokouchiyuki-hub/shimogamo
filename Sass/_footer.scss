@@ -1,10 +1,13 @@
 @use 'base' as *;
 
-// フッター: 項目は置かず、プリンシパルホームのロゴだけ(公式サイトへのリンク)
+// フッター: 項目は置かず、下鴨のロゴの下にプリンシパルホームのロゴ(公式サイトへのリンク)を縦に並べる
 // 地はこれまでの墨色。ロゴは白に色を変えた SVG(img/principal-home_wt.svg)
 .l-footer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: fluid(28, 40);  // 下鴨ロゴの下に会社ロゴ
+  &__logo img { display: block; width: auto; height: fluid(110, 150); }  // 375px(110) → 1440px(150)
   padding: fluid(40, 56) $gutter;  // 375px(40) → 1440px(56)
   background: $c-foot;
   @include mq(768) { padding-bottom: calc(40px + 78px + env(safe-area-inset-bottom)); }  // SP: 下に追従する内覧予約の帯に隠れないぶん
