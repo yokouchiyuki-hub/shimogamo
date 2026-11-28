@@ -649,4 +649,14 @@
     strip.addEventListener('click', function (e) { if (moved) { moved = false; e.preventDefault(); e.stopPropagation(); } }, true);
     strip.addEventListener('dragstart', function (e) { e.preventDefault(); });
   })(dragStrips[ds]);
+
+  /* ---------- 間の章: 水滴と波紋は、画面に入っている間だけ動かす ---------- */
+  var maSec = doc.querySelector('.p-ma');
+  if (maSec && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      for (var mi = 0; mi < entries.length; mi++) entries[mi].target.classList.toggle('is-inview', entries[mi].isIntersecting);
+    }, { threshold: 0.2 }).observe(maSec);
+  } else if (maSec) {
+    maSec.classList.add('is-inview');
+  }
 })();

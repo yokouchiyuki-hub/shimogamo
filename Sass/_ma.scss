@@ -1,17 +1,15 @@
 @use 'base' as *;
 
-// 間(ま)の章: 写真のない、文字だけの余白
+// 間(ま)の章: 写真のない、文字だけの余白。水滴が一滴落ちて、波紋が広がる
 .p-ma {
+  position: relative;
+  overflow: hidden;  // 広がった波紋は章の外に出さない
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: fluid(28, 48);  // 375px(28) → 1440px(48)
-  min-height: 70vh;
-  padding: fluid(64, 120) var(--gutter);  // 375px(64) → 1440px(120)
+  padding: 80px var(--gutter);  // 文字の上下は 80px(クライアント指定)
   text-align: center;
-  @include mq(768) { min-height: 60vh; }
-  &__line { display: block; width: 1px; height: 64px; background: rgba($c-sumi, .3); }
   &__en {
     max-width: 18em;
     font-family: $f-en;
@@ -21,7 +19,7 @@
   }
   &__ja { margin-top: 16px; font-size: 15px; letter-spacing: .14em; color: var(--sub); }
   // 日本語表示: 日本語を大きく、英語を下に小さく
-  &__text { display: flex; flex-direction: column; align-items: center; }
+  &__text { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
   html[lang="ja"] &__ja {
     order: -1;
     margin-top: 0;
@@ -33,4 +31,61 @@
   }
   // 日本語表示: 英文は下に小さく添える
   html[lang="ja"] &__en { font-size: 17px; font-style: italic; color: var(--sub); }
+
+  // ---------- 水滴と波紋 ----------
+  // 一滴が上から落ち、文字の中心に触れたところから、楕円の輪が4重に広がって消える(7秒ごと)。
+  // 画面に入っている間だけ動かす(main.js が .is-inview を付ける)。動きを減らす設定では出さない
+  &__ripple {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    --ripple: #{rgba(#9C8456, .62)};  // 砂紋と同じ、生成色に近い温かい茶
+  }
+  &__drop, &__ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+    opacity: 0;
+    .is-inview & { animation-play-state: running; }
+  }
+  // 水滴: 細長いしずく形が落ちてきて、水面に触れて消える
+  &__drop {
+    width: 5px;
+    height: 12px;
+    margin: -12px 0 0 -2.5px;
+    border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+    background: var(--ripple);
+    animation-name: ma-drop;
+    animation-timing-function: cubic-bezier(.55, 0, 1, .45);  // 重力のように、だんだん速く
+  }
+  // 波紋: 水面を斜めから見た楕円(横 : 縦 = 3.2 : 1)
+  &__ring {
+    width: min(760px, 130vw);
+    aspect-ratio: 3.2 / 1;
+    border: 1px solid var(--ripple);
+    border-radius: 50%;
+    translate: -50% -50%;
+    animation-name: ma-ring;
+    animation-timing-function: cubic-bezier(.2, .6, .35, 1);  // 最初は速く、外へ行くほどゆっくり
+    &:nth-child(3) { animation-delay: .5s; }
+    &:nth-child(4) { animation-delay: 1s; }
+    &:nth-child(5) { animation-delay: 1.5s; }
+  }
+  @media (prefers-reduced-motion: reduce) { &__ripple { display: none; } }
+}
+@keyframes ma-drop {
+  0% { opacity: 0; transform: translateY(-150px); }
+  3% { opacity: 1; }
+  11% { opacity: 1; transform: translateY(0) scaleY(1); }
+  12.5% { opacity: 0; transform: translateY(0) scaleY(.3); }
+  100% { opacity: 0; transform: translateY(0); }
+}
+@keyframes ma-ring {
+  0%, 11% { opacity: 0; transform: scale(.02); }
+  12% { opacity: 1; transform: scale(.03); }
+  72% { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
 }
