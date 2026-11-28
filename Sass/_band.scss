@@ -103,8 +103,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0;
-    transition: opacity 1.2s ease;
+    opacity: 0;  // 再生が始まるまではポスター画像(動画の最初のコマ)を見せ、始まったら切り替える(ふわっと出さない)
     &.is-playing { opacity: 1; }
   }
   // 動画の帯(night / water / dusk 共通)
@@ -145,7 +144,3 @@
   }
 }
 
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .p-band--loop .p-band__center.js-fade { transform: translateY(24px); }
-  .p-band--loop .p-band__center.js-fade.is-visible { transform: none; }
-}

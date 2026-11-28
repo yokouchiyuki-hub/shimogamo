@@ -105,12 +105,12 @@ html[lang="ja"] [data-lang="en"],
 html[lang="en"] [data-lang="ja"] { display: none; }
 
 // ---------- fade ----------
+// スクロールで浮かび上がるのは、章の見出し(漢字エンブレムを含む)だけ(クライアント指定)。本文・写真・動画は最初から表示
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   .js-fade {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 1.2s cubic-bezier(.2, .6, .2, 1), transform 1.2s cubic-bezier(.2, .6, .2, 1);
-    &.p-photo, &.p-band { transition-duration: 1.4s; }
     &.is-visible {
       opacity: 1;
       transform: none;
