@@ -37,10 +37,12 @@
   var ogDesc = doc.querySelector('meta[property="og:description"]');
 
   var lbLabelUpdate = null;  // 写真拡大の aria-label を言語に合わせて更新する
+  var formLangUpdate = null;  // フォームの選択肢・入力例を言語に合わせて更新する
   function setLang(lang, save) {
     if (lang !== 'ja' && lang !== 'en') lang = 'ja';
     root.lang = lang;
     if (lbLabelUpdate) lbLabelUpdate();
+    if (formLangUpdate) formLangUpdate();
     doc.title = META[lang].title;
     if (metaDesc) metaDesc.setAttribute('content', META[lang].desc);
     if (ogTitle) ogTitle.setAttribute('content', META[lang].title);
@@ -722,51 +724,109 @@
   }
 
   /* ---------- 内覧予約・お問い合わせのフォーム(ポップアップ) ---------- */
-  // SP の追従 CTA を押したら、ページ移動せずにフォームを開く(PC は今までどおりお問い合わせの章へ)
+  // 開く: SP の追従 CTA / お問い合わせの「内覧予約」「カタログ請求」。1 入力 → 2 確認 の順に進む。
+  // 送信の仕組みはまだ入れていない(確認画面の「送信する」は押せない)
   var formModal = doc.getElementById('formmodal');
   if (formModal && typeof formModal.showModal === 'function') {
     var fForm = formModal.querySelector('form');
-    var fEndpoint = fForm.getAttribute('data-form-endpoint');  // 送信先(フォームサービスの URL)。未設定の間は送信しない
-    var fSubmit = fForm.querySelector('[type="submit"]');
-    var fNote = fForm.querySelector('[data-form-note]');
     var fViewing = fForm.querySelector('[data-form-viewing]');
+    var fCountry = fForm.querySelector('[name="country"]');
+    var fCountryOther = fForm.querySelector('[data-form-country-other]');
+    var fEmail = fForm.querySelector('[name="email"]');
+    var fEmail2 = fForm.querySelector('[data-form-email-confirm]');
+    var fReview = fForm.querySelector('[data-form-review]');
     var mqFormSp = matchMedia('(max-width:768px)');
-    if (fEndpoint) {
-      fForm.setAttribute('action', fEndpoint);
-      fForm.setAttribute('method', 'post');
-      if (fNote) fNote.hidden = true;
-    } else {
-      fSubmit.disabled = true;
-    }
-    var openForm = function () { formModal.showModal(); };
+    var en = function () { return root.lang === 'en'; };
+
+    // 言語: 選択肢の文字と入力例を切り替える
+    formLangUpdate = function () {
+      var k = en() ? 'data-en' : 'data-ja', kp = en() ? 'data-ph-en' : 'data-ph-ja';
+      Array.prototype.forEach.call(fForm.querySelectorAll('option[data-ja]'), function (o) { o.textContent = o.getAttribute(k); });
+      Array.prototype.forEach.call(fForm.querySelectorAll('[data-ph-ja]'), function (el) { el.setAttribute('placeholder', el.getAttribute(kp)); });
+    };
+    formLangUpdate();
+
+    var setStep = function (n) {
+      fForm.setAttribute('data-form-step', String(n));
+      Array.prototype.forEach.call(fForm.querySelectorAll('[data-form-panel]'), function (p) { p.hidden = p.getAttribute('data-form-panel') !== String(n); });
+      formModal.scrollTop = 0;
+    };
+    var openForm = function (type) {
+      if (type) { var r = fForm.querySelector('input[name="type"][value="' + type + '"]'); if (r) r.checked = true; }
+      syncForm();
+      setStep(1);
+      formModal.showModal();
+    };
     var ctaLink = doc.querySelector('.p-floating-cta');
     if (ctaLink) {
       ctaLink.setAttribute('aria-haspopup', 'dialog');
-      ctaLink.addEventListener('click', function (e) {
-        if (!mqFormSp.matches) return;
-        e.preventDefault();
-        openForm();
-      });
+      ctaLink.addEventListener('click', function (e) { if (!mqFormSp.matches) return; e.preventDefault(); openForm('viewing'); });
     }
-    formModal.querySelector('[data-form-close]').addEventListener('click', function () { formModal.close(); });
-    // 背景(シートの外)を押したら閉じる
-    formModal.addEventListener('click', function (e) { if (e.target === formModal) formModal.close(); });
-    // 希望日は「内覧予約」のときだけ出す
-    var syncType = function () {
-      var t = fForm.querySelector('input[name="type"]:checked');
-      if (fViewing) fViewing.hidden = !(t && t.value === 'viewing');
-    };
-    fForm.addEventListener('change', syncType);
-    syncType();
-    // 必須項目の確認(送信先があるときだけ送る)
-    fForm.addEventListener('submit', function (e) {
-      var bad = null;
-      Array.prototype.forEach.call(fForm.querySelectorAll('[required]'), function (el) {
-        var ok = el.type === 'checkbox' ? el.checked : el.checkValidity() && el.value.trim() !== '';
-        el.setAttribute('aria-invalid', ok ? 'false' : 'true');
-        if (!ok && !bad) bad = el;
-      });
-      if (bad || !fEndpoint) { e.preventDefault(); if (bad) bad.focus(); }
+    Array.prototype.forEach.call(doc.querySelectorAll('[data-form-open]'), function (btn) {
+      btn.setAttribute('aria-haspopup', 'dialog');
+      btn.addEventListener('click', function (e) { e.preventDefault(); openForm(btn.getAttribute('data-form-open')); });
     });
+    formModal.querySelector('[data-form-close]').addEventListener('click', function () { formModal.close(); });
+    formModal.addEventListener('click', function (e) { if (e.target === formModal) formModal.close(); });  // シートの外を押したら閉じる
+
+    // 希望日は「内覧予約」のときだけ / 国「その他」のときは入力欄を出す
+    var syncForm = function () {
+      var t = fForm.querySelector('input[name="type"]:checked');
+      fViewing.hidden = !(t && t.value === 'viewing');
+      fCountryOther.hidden = fCountry.value !== 'OTHER';
+    };
+    fForm.addEventListener('change', syncForm);
+
+    // 入力の確認
+    var mark = function (el, ok) {
+      if (el.type === 'checkbox') el.closest('label').classList.toggle('is-invalid', !ok);
+      else el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      return ok;
+    };
+    var validate = function () {
+      var bad = null;
+      Array.prototype.forEach.call(fForm.querySelectorAll('[data-form-panel="1"] [required]'), function (el) {
+        var ok = el.type === 'checkbox' ? el.checked : (el.value.trim() !== '' && el.checkValidity());
+        if (!mark(el, ok) && !bad) bad = el;
+      });
+      if (!fCountryOther.hidden && !mark(fCountryOther, fCountryOther.value.trim() !== '') && !bad) bad = fCountryOther;
+      if (fEmail2.value && !mark(fEmail2, fEmail2.value.trim() === fEmail.value.trim()) && !bad) bad = fEmail2;
+      return bad;
+    };
+    fForm.addEventListener('input', function (e) { if (e.target.getAttribute('aria-invalid') === 'true') mark(e.target, e.target.value.trim() !== ''); });
+
+    // 確認画面の一覧を作る
+    var esc = function (t) { var d = doc.createElement('div'); d.textContent = t; return d.innerHTML; };
+    var optText = function (sel) { var o = sel.options[sel.selectedIndex]; return o && o.value ? o.textContent : ''; };
+    var buildReview = function () {
+      var rows = [];
+      var add = function (ja, enl, v) { if (v) rows.push('<div><dt>' + (en() ? enl : ja) + '</dt><dd>' + esc(v) + '</dd></div>'); };
+      var t = fForm.querySelector('input[name="type"]:checked');
+      add('ご用件', 'Enquiry', t ? t.getAttribute(en() ? 'data-en' : 'data-ja') : '');
+      if (!fViewing.hidden) {
+        [1, 2, 3].forEach(function (n) {
+          var m = optText(fForm.querySelector('[name="date' + n + '_month"]'));
+          var d = fForm.querySelector('[name="date' + n + '_day"]').value;
+          var tm = fForm.querySelector('input[name="date' + n + '_time"]:checked');
+          var tt = tm ? (tm.value === 'am' ? (en() ? 'A.M.' : '午前') : (en() ? 'P.M.' : '午後')) : '';
+          var v = m ? (en() ? m + (d ? ' ' + d : '') : m + (d ? d + '日' : '')) + (tt ? ' ' + tt : '') : '';
+          add('第' + n + '希望', ['1st', '2nd', '3rd'][n - 1] + ' choice', v);
+        });
+      }
+      add('ご質問・ご要望', 'Message', fForm.querySelector('[name="message"]').value.trim());
+      add('お名前', 'Name', (fForm.querySelector('[name="family"]').value + ' ' + fForm.querySelector('[name="given"]').value).trim());
+      add('お住まいの国・地域', 'Country', fCountry.value === 'OTHER' ? fCountryOther.value.trim() : optText(fCountry));
+      add('メールアドレス', 'Email', fEmail.value.trim());
+      add('電話番号', 'Phone', fForm.querySelector('[name="tel"]').value.trim());
+      fReview.innerHTML = rows.join('');
+    };
+    fForm.querySelector('[data-form-next]').addEventListener('click', function () {
+      var bad = validate();
+      if (bad) { bad.focus(); return; }
+      buildReview();
+      setStep(2);
+    });
+    fForm.querySelector('[data-form-back]').addEventListener('click', function () { setStep(1); });
+    fForm.addEventListener('submit', function (e) { e.preventDefault(); });  // 送信の仕組みは未設定
   }
 })();

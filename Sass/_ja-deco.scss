@@ -3,9 +3,8 @@
 // 日本語表示のとき、飾りの英文字を日本語に置き換える(英語を隠すものは、HTML 側で data-lang="en" を付けてある)。
 // 置き換えた文字は明朝・字間広めで、大文字化はしない。英語表示の見た目は変えない。
 html[lang="ja"] {
-  // ナビ(ヘッダー・フッター)
-  .l-header__nav a [data-lang="ja"],
-  .l-footer__nav a [data-lang="ja"] {
+  // ナビ(ヘッダー)
+  .l-header__nav a [data-lang="ja"] {
     font-family: $f-ja;
     font-size: 12px;
     letter-spacing: .14em;

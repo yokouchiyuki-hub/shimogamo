@@ -39,15 +39,63 @@ html:has(.p-formmodal[open]) .l-fixed { display: none; }
 @keyframes form-sheet-up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
 
 .p-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px 20px calc(28px + env(safe-area-inset-bottom));
-  &__lead { font-size: 14px; line-height: 1.85; color: rgba($c-sumi, .8); [data-lang="en"] { font-family: $f-en; font-size: 16px; line-height: 1.5; } }
+  padding: 20px 20px calc(32px + env(safe-area-inset-bottom));
+  @media (min-width: 769px) { padding: 28px 40px 40px; }
+  // 進み具合: 1 入力 → 2 確認 → 3 送信
+  &__steps {
+    display: flex;
+    gap: 6px;
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+  }
+  &__step {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 4px;
+    border-bottom: 2px solid $c-line-lt;
+    color: rgba($c-sumi, .45);
+    font-size: 13px;
+    letter-spacing: .12em;
+    [data-lang="en"] { font-family: $f-en; font-size: 15px; letter-spacing: .02em; }
+  }
+  &__step-no { font-family: $f-en; font-size: 18px; line-height: 1; }
+  &[data-form-step="1"] [data-step="1"],
+  &[data-form-step="2"] [data-step="2"] { border-color: $c-gold; color: $c-sumi; }
+  // 物件の要点
+  &__property {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 8px;
+    padding: 14px 16px;
+    background: rgba($c-kinari, .7);
+    > div { display: grid; grid-template-columns: 6em 1fr; gap: 12px; }
+    dt { font-size: 12px; letter-spacing: .12em; color: rgba($c-sumi, .65); [data-lang="en"] { font-family: $f-sans; font-size: 10px; text-transform: uppercase; } }
+    dd { margin: 0; font-size: 14px; [data-lang="en"] { font-family: $f-en; font-size: 16px; } }
+  }
+  &__panel { &[hidden] { display: none; } }
+  // 区切り(お問い合わせ内容 / お客様情報 / ご同意事項)
+  &__sec { display: flex; flex-direction: column; gap: 20px; padding: 24px 0; border-bottom: 1px solid $c-line-lt; }
+  &__sec-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    &::before { content: ""; width: 20px; height: 1px; background: $c-gold; }
+    [data-lang="en"] { font-family: $f-en; font-size: 19px; font-weight: 400; letter-spacing: .02em; }
+  }
   &__field { display: flex; flex-direction: column; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
-  &__label { display: flex; align-items: center; gap: 10px; font-size: 14px; letter-spacing: .08em; [data-lang="en"] { font-family: $f-en; font-size: 16px; letter-spacing: .01em; } }
-  &__req { padding: 1px 6px; background: $c-sumi; color: $c-kinari; font-family: $f-sans; font-size: 10px; line-height: 1.5; letter-spacing: .1em; }
-  &__label &__req [data-lang] { font-family: $f-sans; font-size: 10px; letter-spacing: .1em; }  // 「必須」は日英とも同じ小さなゴシック
+  &__label { display: flex; align-items: center; gap: 10px; padding: 0; font-size: 14px; letter-spacing: .08em; [data-lang="en"] { font-family: $f-en; font-size: 16px; letter-spacing: .01em; } }
+  &__req, &__opt { padding: 1px 6px; font-family: $f-sans; font-size: 10px; line-height: 1.5; letter-spacing: .1em; }
+  &__req { background: $c-sumi; color: $c-kinari; }
+  &__opt { border: 1px solid rgba($c-sumi, .3); color: rgba($c-sumi, .65); }
+  &__label &__req [data-lang], &__label &__opt [data-lang] { font-family: $f-sans; font-size: 10px; letter-spacing: .1em; }  // 「必須」「任意」は日英とも小さなゴシック
+  &__help { font-size: 12.5px; line-height: 1.7; color: rgba($c-sumi, .68); [data-lang="en"] { font-family: $f-en; font-size: 14.5px; line-height: 1.45; } }
   // 入力欄: iOS で拡大されないよう 16px
   &__input {
     width: 100%;
@@ -60,21 +108,47 @@ html:has(.p-formmodal[open]) .l-fixed { display: none; }
     font: inherit;
     font-size: 16px;
     appearance: none;
+    &::placeholder { color: rgba($c-sumi, .4); }
     &:focus { outline: 2px solid $c-gold; outline-offset: 0; border-color: $c-gold; }
-    &[aria-invalid="true"] { border-color: #A33; }
+    &[aria-invalid="true"] { border-color: #A33; background: #FFF8F6; }
+    &[hidden] { display: none; }
+  }
+  &__select {
+    padding-right: 32px;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2322211F' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat right 12px center;
   }
   &__textarea { min-height: 112px; resize: vertical; }
-  &__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; &[hidden] { display: none; } }
+  &__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  // 希望日: 第n希望 / 月 / 日 / 午前・午後
+  &__date {
+    display: grid;
+    grid-template-columns: 5.5em minmax(0, 1fr) 5em;
+    grid-template-areas: "no month day" "no time time";
+    align-items: center;
+    gap: 8px 8px;
+    padding: 12px 0;
+    & + & { border-top: 1px dashed $c-line-lt; }
+    @media (min-width: 769px) { grid-template-columns: 6em minmax(0, 1fr) 5.5em auto; grid-template-areas: "no month day time"; }
+  }
+  &__date-no { grid-area: no; align-self: start; padding-top: 13px; font-size: 13px; letter-spacing: .08em; [data-lang="en"] { font-family: $f-en; font-size: 15px; } @media (min-width: 769px) { align-self: center; padding-top: 0; } }
+  &__date > .p-form__select:first-of-type { grid-area: month; }
+  &__date > .p-form__select--day { grid-area: day; }
+  &__ampm { grid-area: time; display: flex; gap: 8px; }
+  &__fieldset[hidden], &__field[hidden] { display: none; }
+  // 選択肢(ご用件・午前/午後)
   &__choices { display: flex; flex-wrap: wrap; gap: 8px; }
-  &__choice {
+  &__pill {
     position: relative;
     input { position: absolute; opacity: 0; pointer-events: none; }
     > span {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      min-width: 64px;
       min-height: 44px;
       padding: 0 16px;
       border: 1px solid rgba($c-sumi, .3);
+      background: #fff;
       font-size: 14px;
       letter-spacing: .08em;
       cursor: pointer;
@@ -88,18 +162,30 @@ html:has(.p-formmodal[open]) .l-fixed { display: none; }
     align-items: flex-start;
     gap: 10px;
     font-size: 13.5px;
-    line-height: 1.7;
-    [data-lang="en"] { font-family: $f-en; font-size: 15px; }
-    input { flex: none; width: 20px; height: 20px; margin-top: 2px; accent-color: $c-sumi; }
+    line-height: 1.8;
+    [data-lang="en"] { font-family: $f-en; font-size: 15px; line-height: 1.5; }
+    input { flex: none; width: 20px; height: 20px; margin-top: 3px; accent-color: $c-sumi; }
+    &.is-invalid { color: #A33; }
   }
-  &__submit {
+  &__submit, &__back {
+    width: 100%;
     min-height: 52px;
-    background: $c-sumi;
-    color: $c-kinari;
     font-size: 15px;
     letter-spacing: .2em;
     [data-lang="en"] { font-family: $f-sans; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; }
-    &:disabled { opacity: .45; cursor: not-allowed; }
   }
-  &__note { font-size: 12.5px; line-height: 1.7; color: rgba($c-sumi, .7); [data-lang="en"] { font-family: $f-en; font-size: 14px; } &[hidden] { display: none; } }
+  &__submit { margin-top: 28px; background: $c-sumi; color: $c-kinari; &:disabled { opacity: .45; cursor: not-allowed; } }
+  &__back { border: 1px solid $c-sumi; }
+  &__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; .p-form__submit { margin-top: 0; } }
+  &__note { margin-top: 14px; font-size: 12.5px; line-height: 1.7; color: rgba($c-sumi, .7); [data-lang="en"] { font-family: $f-en; font-size: 14px; } }
+  // 確認画面
+  &__review {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    > div { display: grid; grid-template-columns: 8em 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid $c-line-lt; }
+    dt { font-size: 12.5px; letter-spacing: .08em; color: rgba($c-sumi, .65); }
+    dd { margin: 0; font-size: 15px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+    @include mq(768) { > div { grid-template-columns: 1fr; gap: 2px; } }
+  }
 }

@@ -1002,8 +1002,8 @@ src="https://www.facebook.com/tr?id=954407957033133&ev=PageView&noscript=1"
         <p data-lang="en">As a second home or a primary residence — for owners based overseas, we can arrange introductions to local partners for property management, housekeeping and security.</p>
       </div>
       <div class="p-contact__links">
-        <a class="p-contact__btn" href="#" data-todo="内覧予約フォームURL"><span class="p-contact__btn-en" data-lang="en">Private Viewing</span><span class="p-contact__btn-ja">内覧予約</span></a>
-        <a class="p-contact__btn" href="#" data-todo="カタログ請求フォームURL"><span class="p-contact__btn-en" data-lang="en">Request a Brochure</span><span class="p-contact__btn-ja">カタログ請求</span></a>
+        <a class="p-contact__btn" href="#formmodal" data-form-open="viewing"><span class="p-contact__btn-en" data-lang="en">Private Viewing</span><span class="p-contact__btn-ja">内覧予約</span></a>
+        <a class="p-contact__btn" href="#formmodal" data-form-open="brochure"><span class="p-contact__btn-en" data-lang="en">Request a Brochure</span><span class="p-contact__btn-ja">カタログ請求</span></a>
       </div>
       <p class="p-contact__sub"><span data-lang="ja"><span class="u-phrase">プリンシパルホームでは、</span><span class="u-phrase">新築・リノベーションのご相談も</span><span class="u-phrase">承っております。</span></span><span data-lang="en">Principal Home also welcomes enquiries about new builds and renovations.</span></p>
     </div>
@@ -1013,64 +1013,120 @@ src="https://www.facebook.com/tr?id=954407957033133&ev=PageView&noscript=1"
 </main>
 
 <footer class="l-footer">
-  <div class="l-footer__top">
-    <picture class="l-footer__logo"><source type="image/webp" srcset="img/logo_wt.webp"><img src="img/logo_wt.png" alt="下鴨 Shimogamo" width="400" height="800" decoding="async"></picture>
-    <p class="l-footer__addr"><span data-lang="ja">京都市左京区田中上柳町</span><span data-lang="en">Tanaka Kamiyanagi-cho, Sakyo-ku, Kyoto</span></p>
-  </div>
-  <div class="l-footer__bottom">
-    <nav class="l-footer__nav" aria-label="Footer">
-      <ul>
-        <li><a href="#concept"><span data-lang="ja">コンセプト</span><span data-lang="en">Concept</span></a></li><li><a href="#location"><span data-lang="ja">ロケーション</span><span data-lang="en">Location</span></a></li><li><a href="#scenes"><span data-lang="ja">京の風景</span><span data-lang="en">Scenes</span></a></li><li><a href="#residence"><span data-lang="ja">邸宅</span><span data-lang="en">Residence</span></a></li><li><a href="#plans"><span data-lang="ja">間取り</span><span data-lang="en">Floor plans</span></a></li><li><a href="#craft"><span data-lang="ja">家づくり</span><span data-lang="en">Craft</span></a></li><li><a href="#words"><span data-lang="ja">この土地のことば</span><span data-lang="en">Words</span></a></li><li><a href="#access"><span data-lang="ja">アクセス</span><span data-lang="en">Access</span></a></li><li><a href="#contact"><span data-lang="ja">お問い合わせ</span><span data-lang="en">Contact</span></a></li>
-      </ul>
-    </nav>
-    <p class="l-footer__copy">© 2026 Principal Home</p>
-  </div>
+  <a class="l-footer__brand" href="https://pr-h.jp/" target="_blank" rel="noopener"><img src="img/principal-home.svg" alt="Principal Home（プリンシパルホーム）" width="511" height="48" loading="lazy" decoding="async"></a>
 </footer>
 
 <dialog class="p-formmodal" id="formmodal" aria-labelledby="formmodal-title">
   <div class="p-formmodal__head">
-    <h2 class="p-formmodal__title" id="formmodal-title"><span data-lang="ja">内覧予約・お問い合わせ</span><span data-lang="en">Private viewing &amp; enquiries</span></h2>
+    <p class="p-formmodal__title" id="formmodal-title"><span data-lang="ja">下鴨邸宅へのお問い合わせ</span><span data-lang="en">Enquiry: Shimogamo Residence</span></p>
     <button class="p-formmodal__close" type="button" data-form-close aria-label="閉じる / Close"><span aria-hidden="true">×</span></button>
   </div>
-  <form class="p-form" data-form-endpoint="" novalidate>
-    <p class="p-form__lead"><span data-lang="ja">下鴨邸宅の内覧のご予約、資料のご請求、ご質問を承ります。担当者よりメールでご連絡します。</span><span data-lang="en">Request a private viewing or a brochure, or send us a question about the Shimogamo residence. We will reply by email.</span></p>
-    <fieldset class="p-form__field">
-      <legend class="p-form__label"><span data-lang="ja">ご用件</span><span data-lang="en">Enquiry</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></legend>
-      <div class="p-form__choices">
-        <label class="p-form__choice"><input type="radio" name="type" value="viewing" checked><span><span data-lang="ja">内覧予約</span><span data-lang="en">Private viewing</span></span></label>
-        <label class="p-form__choice"><input type="radio" name="type" value="brochure"><span><span data-lang="ja">資料請求</span><span data-lang="en">Brochure</span></span></label>
-        <label class="p-form__choice"><input type="radio" name="type" value="question"><span><span data-lang="ja">その他のご質問</span><span data-lang="en">Other question</span></span></label>
+  <form class="p-form" novalidate data-form-step="1">
+    <ol class="p-form__steps" aria-label="Steps">
+      <li class="p-form__step" data-step="1"><span class="p-form__step-no">1</span><span data-lang="ja">入力</span><span data-lang="en">Fill out</span></li>
+      <li class="p-form__step" data-step="2"><span class="p-form__step-no">2</span><span data-lang="ja">確認</span><span data-lang="en">Confirm</span></li>
+      <li class="p-form__step" data-step="3"><span class="p-form__step-no">3</span><span data-lang="ja">送信</span><span data-lang="en">Submit</span></li>
+    </ol>
+    <dl class="p-form__property">
+      <div><dt><span data-lang="ja">物件</span><span data-lang="en">Property</span></dt><dd><span data-lang="ja">下鴨邸宅</span><span data-lang="en">Shimogamo Residence</span></dd></div>
+      <div><dt><span data-lang="ja">所在地</span><span data-lang="en">Location</span></dt><dd><span data-lang="ja">京都市左京区田中上柳町</span><span data-lang="en">Tanaka Kamiyanagi-cho, Sakyo-ku, Kyoto</span></dd></div>
+      <div><dt><span data-lang="ja">竣工予定</span><span data-lang="en">Completion</span></dt><dd><span data-lang="ja">2026年11月下旬</span><span data-lang="en">Late November 2026</span></dd></div>
+    </dl>
+
+    <div class="p-form__panel" data-form-panel="1">
+      <section class="p-form__sec">
+        <h3 class="p-form__sec-title"><span data-lang="ja">お問い合わせ内容</span><span data-lang="en">Enquiry details</span></h3>
+        <fieldset class="p-form__field">
+          <legend class="p-form__label"><span data-lang="ja">ご用件</span><span data-lang="en">Enquiry</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></legend>
+          <div class="p-form__choices">
+            <label class="p-form__pill"><input type="radio" name="type" value="viewing" data-ja="内覧予約" data-en="Private viewing" checked><span><span data-lang="ja">内覧予約</span><span data-lang="en">Private viewing</span></span></label>
+            <label class="p-form__pill"><input type="radio" name="type" value="brochure" data-ja="資料請求" data-en="Brochure"><span><span data-lang="ja">資料請求</span><span data-lang="en">Brochure</span></span></label>
+            <label class="p-form__pill"><input type="radio" name="type" value="question" data-ja="その他のご質問" data-en="Other question"><span><span data-lang="ja">その他のご質問</span><span data-lang="en">Other question</span></span></label>
+          </div>
+        </fieldset>
+        <fieldset class="p-form__field" data-form-viewing>
+          <legend class="p-form__label"><span data-lang="ja">内覧のご希望日</span><span data-lang="en">Preferred viewing dates</span><span class="p-form__opt"><span data-lang="ja">任意</span><span data-lang="en">Optional</span></span></legend>
+          <p class="p-form__help"><span data-lang="ja">第3希望までお選びください。担当者が日時を調整してご連絡します。</span><span data-lang="en">Choose up to three dates. We will confirm the time with you.</span></p>
+        <div class="p-form__date">
+          <span class="p-form__date-no"><span data-lang="ja">第1希望</span><span data-lang="en">1st choice</span></span>
+          <select class="p-form__input p-form__select" name="date1_month" aria-label="第1希望（月） / 1st choice (month)"><option value="">－</option><option value="2026-11" data-ja="2026年11月" data-en="November 2026">2026年11月</option><option value="2026-12" data-ja="2026年12月" data-en="December 2026">2026年12月</option><option value="2027-01" data-ja="2027年1月" data-en="January 2027">2027年1月</option><option value="2027-02" data-ja="2027年2月" data-en="February 2027">2027年2月</option><option value="2027-03" data-ja="2027年3月" data-en="March 2027">2027年3月</option><option value="2027-04" data-ja="2027年4月" data-en="April 2027">2027年4月</option><option value="2027-05" data-ja="2027年5月" data-en="May 2027">2027年5月</option><option value="2027-06" data-ja="2027年6月" data-en="June 2027">2027年6月</option><option value="2027-07" data-ja="2027年7月" data-en="July 2027">2027年7月</option><option value="2027-08" data-ja="2027年8月" data-en="August 2027">2027年8月</option><option value="2027-09" data-ja="2027年9月" data-en="September 2027">2027年9月</option><option value="2027-10" data-ja="2027年10月" data-en="October 2027">2027年10月</option></select>
+          <select class="p-form__input p-form__select p-form__select--day" name="date1_day" aria-label="第1希望（日） / 1st choice (day)"><option value="">－</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+          <span class="p-form__ampm">
+            <label class="p-form__pill"><input type="radio" name="date1_time" value="am"><span><span data-lang="ja">午前</span><span data-lang="en">A.M.</span></span></label>
+            <label class="p-form__pill"><input type="radio" name="date1_time" value="pm"><span><span data-lang="ja">午後</span><span data-lang="en">P.M.</span></span></label>
+          </span>
+        </div>
+        <div class="p-form__date">
+          <span class="p-form__date-no"><span data-lang="ja">第2希望</span><span data-lang="en">2nd choice</span></span>
+          <select class="p-form__input p-form__select" name="date2_month" aria-label="第2希望（月） / 2nd choice (month)"><option value="">－</option><option value="2026-11" data-ja="2026年11月" data-en="November 2026">2026年11月</option><option value="2026-12" data-ja="2026年12月" data-en="December 2026">2026年12月</option><option value="2027-01" data-ja="2027年1月" data-en="January 2027">2027年1月</option><option value="2027-02" data-ja="2027年2月" data-en="February 2027">2027年2月</option><option value="2027-03" data-ja="2027年3月" data-en="March 2027">2027年3月</option><option value="2027-04" data-ja="2027年4月" data-en="April 2027">2027年4月</option><option value="2027-05" data-ja="2027年5月" data-en="May 2027">2027年5月</option><option value="2027-06" data-ja="2027年6月" data-en="June 2027">2027年6月</option><option value="2027-07" data-ja="2027年7月" data-en="July 2027">2027年7月</option><option value="2027-08" data-ja="2027年8月" data-en="August 2027">2027年8月</option><option value="2027-09" data-ja="2027年9月" data-en="September 2027">2027年9月</option><option value="2027-10" data-ja="2027年10月" data-en="October 2027">2027年10月</option></select>
+          <select class="p-form__input p-form__select p-form__select--day" name="date2_day" aria-label="第2希望（日） / 2nd choice (day)"><option value="">－</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+          <span class="p-form__ampm">
+            <label class="p-form__pill"><input type="radio" name="date2_time" value="am"><span><span data-lang="ja">午前</span><span data-lang="en">A.M.</span></span></label>
+            <label class="p-form__pill"><input type="radio" name="date2_time" value="pm"><span><span data-lang="ja">午後</span><span data-lang="en">P.M.</span></span></label>
+          </span>
+        </div>
+        <div class="p-form__date">
+          <span class="p-form__date-no"><span data-lang="ja">第3希望</span><span data-lang="en">3rd choice</span></span>
+          <select class="p-form__input p-form__select" name="date3_month" aria-label="第3希望（月） / 3rd choice (month)"><option value="">－</option><option value="2026-11" data-ja="2026年11月" data-en="November 2026">2026年11月</option><option value="2026-12" data-ja="2026年12月" data-en="December 2026">2026年12月</option><option value="2027-01" data-ja="2027年1月" data-en="January 2027">2027年1月</option><option value="2027-02" data-ja="2027年2月" data-en="February 2027">2027年2月</option><option value="2027-03" data-ja="2027年3月" data-en="March 2027">2027年3月</option><option value="2027-04" data-ja="2027年4月" data-en="April 2027">2027年4月</option><option value="2027-05" data-ja="2027年5月" data-en="May 2027">2027年5月</option><option value="2027-06" data-ja="2027年6月" data-en="June 2027">2027年6月</option><option value="2027-07" data-ja="2027年7月" data-en="July 2027">2027年7月</option><option value="2027-08" data-ja="2027年8月" data-en="August 2027">2027年8月</option><option value="2027-09" data-ja="2027年9月" data-en="September 2027">2027年9月</option><option value="2027-10" data-ja="2027年10月" data-en="October 2027">2027年10月</option></select>
+          <select class="p-form__input p-form__select p-form__select--day" name="date3_day" aria-label="第3希望（日） / 3rd choice (day)"><option value="">－</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+          <span class="p-form__ampm">
+            <label class="p-form__pill"><input type="radio" name="date3_time" value="am"><span><span data-lang="ja">午前</span><span data-lang="en">A.M.</span></span></label>
+            <label class="p-form__pill"><input type="radio" name="date3_time" value="pm"><span><span data-lang="ja">午後</span><span data-lang="en">P.M.</span></span></label>
+          </span>
+        </div>
+        </fieldset>
+        <div class="p-form__field">
+          <label class="p-form__label" for="f-msg"><span data-lang="ja">ご質問・ご要望</span><span data-lang="en">Message</span><span class="p-form__opt"><span data-lang="ja">任意</span><span data-lang="en">Optional</span></span></label>
+          <textarea class="p-form__input p-form__textarea" id="f-msg" name="message" rows="4"></textarea>
+        </div>
+      </section>
+
+      <section class="p-form__sec">
+        <h3 class="p-form__sec-title"><span data-lang="ja">お客様情報</span><span data-lang="en">Your details</span></h3>
+        <div class="p-form__field">
+          <span class="p-form__label"><span data-lang="ja">お名前</span><span data-lang="en">Name</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></span>
+          <div class="p-form__pair">
+            <input class="p-form__input" name="family" type="text" autocomplete="family-name" required aria-label="姓 / Family name" data-ph-ja="姓" data-ph-en="Family name" placeholder="姓">
+            <input class="p-form__input" name="given" type="text" autocomplete="given-name" required aria-label="名 / Given name" data-ph-ja="名" data-ph-en="Given name" placeholder="名">
+          </div>
+        </div>
+        <div class="p-form__field">
+          <label class="p-form__label" for="f-country"><span data-lang="ja">お住まいの国・地域</span><span data-lang="en">Country of residence</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></label>
+          <select class="p-form__input p-form__select" id="f-country" name="country" required><option value="">－</option><option value="JP" data-ja="日本" data-en="Japan">日本</option><option value="US" data-ja="アメリカ" data-en="United States">アメリカ</option><option value="CA" data-ja="カナダ" data-en="Canada">カナダ</option><option value="GB" data-ja="イギリス" data-en="United Kingdom">イギリス</option><option value="FR" data-ja="フランス" data-en="France">フランス</option><option value="DE" data-ja="ドイツ" data-en="Germany">ドイツ</option><option value="IT" data-ja="イタリア" data-en="Italy">イタリア</option><option value="CH" data-ja="スイス" data-en="Switzerland">スイス</option><option value="NL" data-ja="オランダ" data-en="Netherlands">オランダ</option><option value="AU" data-ja="オーストラリア" data-en="Australia">オーストラリア</option><option value="NZ" data-ja="ニュージーランド" data-en="New Zealand">ニュージーランド</option><option value="SG" data-ja="シンガポール" data-en="Singapore">シンガポール</option><option value="HK" data-ja="香港" data-en="Hong Kong">香港</option><option value="TW" data-ja="台湾" data-en="Taiwan">台湾</option><option value="CN" data-ja="中国" data-en="China">中国</option><option value="KR" data-ja="韓国" data-en="South Korea">韓国</option><option value="TH" data-ja="タイ" data-en="Thailand">タイ</option><option value="MY" data-ja="マレーシア" data-en="Malaysia">マレーシア</option><option value="ID" data-ja="インドネシア" data-en="Indonesia">インドネシア</option><option value="PH" data-ja="フィリピン" data-en="Philippines">フィリピン</option><option value="VN" data-ja="ベトナム" data-en="Vietnam">ベトナム</option><option value="IN" data-ja="インド" data-en="India">インド</option><option value="AE" data-ja="アラブ首長国連邦" data-en="United Arab Emirates">アラブ首長国連邦</option><option value="OTHER" data-ja="その他" data-en="Other">その他</option></select>
+          <input class="p-form__input" name="country_other" type="text" hidden aria-label="国・地域名 / Country" data-ph-ja="国・地域名をご記入ください" data-ph-en="Please enter your country" placeholder="国・地域名をご記入ください" data-form-country-other>
+        </div>
+        <div class="p-form__field">
+          <label class="p-form__label" for="f-email"><span data-lang="ja">メールアドレス</span><span data-lang="en">Email address</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></label>
+          <input class="p-form__input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          <input class="p-form__input" name="email_confirm" type="email" autocomplete="email" inputmode="email" required aria-label="確認のため再入力 / Retype to confirm" data-ph-ja="確認のため、もう一度ご入力ください" data-ph-en="Retype to confirm" placeholder="確認のため、もう一度ご入力ください" data-form-email-confirm>
+          <p class="p-form__help"><span data-lang="ja">ご返信が迷惑メールフォルダに届く場合があります。届かないときは、迷惑メールフォルダもご確認ください。</span><span data-lang="en">Our reply may land in your junk folder. If you cannot find it, please check there.</span></p>
+        </div>
+        <div class="p-form__field">
+          <label class="p-form__label" for="f-tel"><span data-lang="ja">電話番号</span><span data-lang="en">Phone number</span><span class="p-form__opt"><span data-lang="ja">任意</span><span data-lang="en">Optional</span></span></label>
+          <input class="p-form__input" id="f-tel" name="tel" type="tel" autocomplete="tel" inputmode="tel">
+          <p class="p-form__help"><span data-lang="ja">海外の方は国番号から。携帯電話の番号をおすすめします。</span><span data-lang="en">Including country code; a mobile number is preferred.</span></p>
+        </div>
+      </section>
+
+      <section class="p-form__sec">
+        <h3 class="p-form__sec-title"><span data-lang="ja">ご同意事項</span><span data-lang="en">Your consent</span></h3>
+        <label class="p-form__agree"><input type="checkbox" name="agree" required><span><span data-lang="ja">お預かりした個人情報は、お問い合わせへのご返信とご案内のためにのみ使用します。内容に同意します。</span><span data-lang="en">Your personal information will be used only to reply to your enquiry and to arrange a viewing. I agree.</span></span></label>
+      </section>
+
+      <button class="p-form__submit" type="button" data-form-next><span data-lang="ja">確認画面へ</span><span data-lang="en">Review</span></button>
+    </div>
+
+    <div class="p-form__panel" data-form-panel="2" hidden>
+      <section class="p-form__sec">
+        <h3 class="p-form__sec-title"><span data-lang="ja">ご入力内容の確認</span><span data-lang="en">Please review</span></h3>
+        <dl class="p-form__review" data-form-review></dl>
+      </section>
+      <div class="p-form__actions">
+        <button class="p-form__back" type="button" data-form-back><span data-lang="ja">戻って修正する</span><span data-lang="en">Back</span></button>
+        <button class="p-form__submit" type="submit" disabled><span data-lang="ja">送信する</span><span data-lang="en">Submit</span></button>
       </div>
-    </fieldset>
-    <div class="p-form__field">
-      <label class="p-form__label" for="f-name"><span data-lang="ja">お名前</span><span data-lang="en">Name</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></label>
-      <input class="p-form__input" id="f-name" name="name" type="text" autocomplete="name" required>
+      <p class="p-form__note"><span data-lang="ja">※送信の受付は準備中です。受付開始までは送信できません。</span><span data-lang="en">* The form is not yet accepting submissions.</span></p>
     </div>
-    <div class="p-form__field">
-      <label class="p-form__label" for="f-email"><span data-lang="ja">メールアドレス</span><span data-lang="en">Email</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></label>
-      <input class="p-form__input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
-    </div>
-    <div class="p-form__field">
-      <label class="p-form__label" for="f-tel"><span data-lang="ja">電話番号</span><span data-lang="en">Phone</span></label>
-      <input class="p-form__input" id="f-tel" name="tel" type="tel" autocomplete="tel" inputmode="tel">
-    </div>
-    <div class="p-form__row" data-form-viewing>
-      <div class="p-form__field">
-        <label class="p-form__label" for="f-date1"><span data-lang="ja">内覧の第1希望日</span><span data-lang="en">Preferred date (1st)</span></label>
-        <input class="p-form__input" id="f-date1" name="date1" type="date">
-      </div>
-      <div class="p-form__field">
-        <label class="p-form__label" for="f-date2"><span data-lang="ja">第2希望日</span><span data-lang="en">Preferred date (2nd)</span></label>
-        <input class="p-form__input" id="f-date2" name="date2" type="date">
-      </div>
-    </div>
-    <div class="p-form__field">
-      <label class="p-form__label" for="f-msg"><span data-lang="ja">ご質問・ご要望</span><span data-lang="en">Message</span></label>
-      <textarea class="p-form__input p-form__textarea" id="f-msg" name="message" rows="4"></textarea>
-    </div>
-    <label class="p-form__agree"><input type="checkbox" name="agree" required><span><span data-lang="ja">個人情報の取り扱いに同意して送信します</span><span data-lang="en">I agree to the handling of my personal information</span></span></label>
-    <button class="p-form__submit" type="submit"><span data-lang="ja">送信する</span><span data-lang="en">Send</span></button>
-    <p class="p-form__note" data-form-note><span data-lang="ja">※送信の受付は準備中です。受付開始までは送信できません。</span><span data-lang="en">* The form is not yet accepting submissions.</span></p>
   </form>
 </dialog>
 
