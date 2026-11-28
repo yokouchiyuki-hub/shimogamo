@@ -27,7 +27,11 @@
     gap: 6px;
     margin-top: 8px;
     .p-caption { margin: 0; min-height: 1.6em; }
-    &-pair { display: flex; gap: 24px; }
+    &-pair {
+      display: flex;
+      gap: 24px;
+      @include mq(1024) { flex-direction: column; gap: 2px; }  // タブレットは右の2枚ぶんが狭いので、2つのキャプションを縦に並べる
+    }
   }
   &__note, &__site-note { margin-top: 14px; font-size: 13px; color: var(--sub); [data-lang="en"] { font-family: $f-en; font-size: 14px; font-style: italic; } }
 

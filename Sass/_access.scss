@@ -54,7 +54,8 @@
   }
   @include mq(768) {
     &__body { grid-template-columns: 1fr; gap: 48px; }
-    &__list > div { grid-template-columns: 6.5em 1fr; gap: 12px; }
-    &__outline-list { grid-template-columns: 1fr; > div { grid-template-columns: 7.5em 1fr; gap: 12px; } }
+    // 交通と物件概要で、内容の書き出し位置をそろえる(文字の大きさが違うので px で指定)
+    &__list > div { grid-template-columns: 104px 1fr; gap: 12px; }
+    &__outline-list { grid-template-columns: 1fr; > div { grid-template-columns: 104px 1fr; gap: 12px; } }
   }
 }

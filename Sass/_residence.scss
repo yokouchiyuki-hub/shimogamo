@@ -32,7 +32,7 @@
     [data-lang="en"] { font-family: $f-en; font-size: 14px; font-style: italic; }
   }
   &__card-body { padding: fluid(16, 24) fluid(16, 24) fluid(20, 28); }
-  &__card-num { font-size: 14px; color: var(--accent); line-height: 1; }
+  &__card-num { font-family: "kokuryu", $f-ja; font-size: 30px; color: var(--accent); line-height: 1; }  // 細い明朝の「一」「二」は線に見えるので、筆文字で(この土地のことばと同じ)
   &__card-kanji {
     margin-top: 14px;
     font-size: fluid(24, 32);  // 375px(24) → 1440px(32)
