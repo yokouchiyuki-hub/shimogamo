@@ -44,7 +44,7 @@
       background: $c-gold-lt;
     }
     &:last-child { padding-bottom: 0; }
-    &:last-child::before { bottom: 0; }
+    &:last-child::before { bottom: calc(#{fluid(96, 160)} * -1); }  // 最後の線はセクションの下余白(96→160)まで伸ばし、次の帯につなげる
   }
   &__stage-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: fluid(24, 40); }
   &__date { font-family: $f-en; font-size: fluid(28, 44); line-height: 1; letter-spacing: .02em; }  // 375px(28) → 1440px(44)
