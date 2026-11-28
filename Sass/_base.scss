@@ -99,6 +99,8 @@ img { height: auto; }
 [id] { scroll-margin-top: $header-h; }
 
 :focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
+// タッチ操作の端末(iPhone など)では、タップ後にリンクやボタンへ四角い枠が残らないようにする(キーボード操作の PC は枠を出す)
+@media (hover: none) and (pointer: coarse) { a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: none; } }
 
 // ---------- language ----------
 html[lang="ja"] [data-lang="en"],
