@@ -48,6 +48,10 @@
   }
   &__outline .p-note { margin-top: 16px; }
 
+  // タブレット縦(〜900px): 物件概要は2列だと内容が細かく折り返すので1列に
+  @include mq(900) {
+    &__outline-list { grid-template-columns: 1fr; }
+  }
   @include mq(768) {
     &__body { grid-template-columns: 1fr; gap: 48px; }
     &__list > div { grid-template-columns: 6.5em 1fr; gap: 12px; }

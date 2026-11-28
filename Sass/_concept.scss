@@ -70,8 +70,23 @@
 
   // 現在の現場(3列の段違い。真ん中の列を 64px 下げる)
   // 現在の現場: 枯山水の下で区切り、和紙のような白の帯に(全幅・セクションの下端まで)
+  // 和紙の帯より上(見出し〜「邸宅を見る」)。枯山水はこの範囲に敷き、帯の上端までとどかせる
+  // 上・左右はセクションの余白を打ち消して、セクションの端から始める
+  &__main {
+    position: relative;
+    margin: calc(#{fluid(96, 160)} * -1) calc(var(--gutter) * -1) 0;
+    padding: fluid(96, 160) var(--gutter) fluid(72, 120);  // 375px → 1440px。下は帯までの間(72→120)
+  }
+  // 枯山水の版を、縦横比を保ったまま帯の上端まで届く大きさにする(はみ出した右側は切れる)。
+  // SP で縦に長いときは拡大せず、2つ目の版を下端に置く(共通のしくみ)
+  @media (min-width: 769px) {
+    .c-rake__part { width: max(108%, 100cqh / 1.1); }
+  }
+  @media (max-width: 768px) {
+    @container (min-aspect-ratio: 0.289) { .c-rake__part { width: max(108%, 100cqh / 1.6); } }
+  }
   &__site {
-    margin: fluid(72, 120) calc(var(--gutter) * -1) calc(#{fluid(96, 160)} * -1);  // 下はセクションの下余白(96→160)を打ち消す
+    margin: 0 calc(var(--gutter) * -1) calc(#{fluid(96, 160)} * -1);  // 下はセクションの下余白(96→160)を打ち消す
     padding: fluid(64, 104) var(--gutter) fluid(80, 140);  // 375px(64/80) → 1440px(104/140)
     background: #F5F1E8 url("../img/washi.webp") 0 0 / 800px auto;  // 和紙の繊維のテクスチャ(継ぎ目なしの 800px タイル)
   }
