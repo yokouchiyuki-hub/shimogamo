@@ -70,9 +70,9 @@ html:has(.p-planmodal[open]) .l-fixed { display: none; }
 // SP: 画面下に追従する、横いっぱいのバー(生成色の帯の中に、墨色のボタン)
 @include mq(768) {
   .l-fixed {
-    left: 15px;
-    right: 15px;
-    bottom: calc(15px + env(safe-area-inset-bottom));
+    left: calc(15px + env(safe-area-inset-left));
+    right: calc(15px + env(safe-area-inset-right));
+    bottom: calc(15px + env(safe-area-inset-bottom));  // viewport-fit=cover で、ホームバー・Safari のツールバーの上に置く
     align-items: stretch;
     gap: 30px;  // TOP は帯(ボタンの上 15px)より上に出す
   }

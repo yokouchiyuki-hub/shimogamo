@@ -15,7 +15,8 @@
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 1000;  // ヘッダーは常に最前面
-  height: $header-h;
+  height: calc(#{$header-h} + env(safe-area-inset-top));  // viewport-fit=cover: 上の安全領域のぶん下げる(通常のブラウザでは 0)
+  padding-top: env(safe-area-inset-top);
   color: #fff;
   transition: background-color .5s, color .5s;
   &.is-solid,
@@ -30,7 +31,7 @@
     column-gap: 24px;
     align-items: center;
     height: 100%;
-    padding: 0 fluid(20, 40);  // 375px(20) → 1440px(40)
+    padding: 0 max(#{fluid(20, 40)}, env(safe-area-inset-left), env(safe-area-inset-right));  // 375px(20) → 1440px(40)。横向きの切り欠きにかからないように
   }
   &__logo {
     justify-self: start;
