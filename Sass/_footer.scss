@@ -1,12 +1,12 @@
 @use 'base' as *;
 
 // フッター: 項目は置かず、プリンシパルホームのロゴだけ(公式サイトへのリンク)
-// ロゴは元の色のまま見せるため、地は明るい生成色
+// 地はこれまでの墨色。ロゴは白に色を変えた SVG(img/principal-home_wt.svg)
 .l-footer {
   display: flex;
   justify-content: center;
   padding: fluid(40, 56) $gutter;  // 375px(40) → 1440px(56)
-  background: $c-kinari;
+  background: $c-foot;
   @include mq(768) { padding-bottom: calc(40px + 78px + env(safe-area-inset-bottom)); }  // SP: 下に追従する内覧予約の帯に隠れないぶん
   &__brand {
     display: block;
