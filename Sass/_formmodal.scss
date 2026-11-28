@@ -1,0 +1,105 @@
+@use 'base' as *;
+
+// ---------- 内覧予約・お問い合わせのフォーム(ポップアップ) ----------
+// SP の追従 CTA から開く。画面の下からせり上がるシート
+html:has(.p-formmodal[open]) { overflow: hidden; }
+html:has(.p-formmodal[open]) .l-fixed { display: none; }
+
+.p-formmodal {
+  width: min(640px, 100vw);
+  max-width: none;
+  max-height: 92dvh;
+  margin: auto auto 0;  // 画面の下に付ける
+  padding: 0;
+  border: 0;
+  background: $c-shironeri;
+  color: $c-sumi;
+  overflow: auto;
+  overscroll-behavior: contain;
+  &::backdrop { background: rgba($c-sumi, .72); }
+  &[open] { animation: form-sheet-up .45s cubic-bezier(.2, .7, .2, 1); }
+  @media (min-width: 769px) { margin: auto; max-height: 88vh; }
+  @media (prefers-reduced-motion: reduce) { &[open] { animation: none; } }
+
+  &__head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    background: $c-shironeri;
+    border-bottom: 1px solid $c-line-lt;
+  }
+  &__title { font-size: 17px; font-weight: 500; letter-spacing: .12em; [data-lang="en"] { font-family: $f-en; font-size: 21px; letter-spacing: .02em; } }
+  &__close { width: 44px; height: 44px; margin: -10px -12px -10px 0; font-size: 28px; line-height: 1; }
+}
+@keyframes form-sheet-up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.p-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 20px calc(28px + env(safe-area-inset-bottom));
+  &__lead { font-size: 14px; line-height: 1.85; color: rgba($c-sumi, .8); [data-lang="en"] { font-family: $f-en; font-size: 16px; line-height: 1.5; } }
+  &__field { display: flex; flex-direction: column; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
+  &__label { display: flex; align-items: center; gap: 10px; font-size: 14px; letter-spacing: .08em; [data-lang="en"] { font-family: $f-en; font-size: 16px; letter-spacing: .01em; } }
+  &__req { padding: 1px 6px; background: $c-sumi; color: $c-kinari; font-family: $f-sans; font-size: 10px; line-height: 1.5; letter-spacing: .1em; }
+  &__label &__req [data-lang] { font-family: $f-sans; font-size: 10px; letter-spacing: .1em; }  // 「必須」は日英とも同じ小さなゴシック
+  // 入力欄: iOS で拡大されないよう 16px
+  &__input {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid rgba($c-sumi, .3);
+    border-radius: 0;
+    background: #fff;
+    color: $c-sumi;
+    font: inherit;
+    font-size: 16px;
+    appearance: none;
+    &:focus { outline: 2px solid $c-gold; outline-offset: 0; border-color: $c-gold; }
+    &[aria-invalid="true"] { border-color: #A33; }
+  }
+  &__textarea { min-height: 112px; resize: vertical; }
+  &__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; &[hidden] { display: none; } }
+  &__choices { display: flex; flex-wrap: wrap; gap: 8px; }
+  &__choice {
+    position: relative;
+    input { position: absolute; opacity: 0; pointer-events: none; }
+    > span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid rgba($c-sumi, .3);
+      font-size: 14px;
+      letter-spacing: .08em;
+      cursor: pointer;
+      [data-lang="en"] { font-family: $f-en; font-size: 16px; }
+    }
+    input:checked + span { background: $c-sumi; border-color: $c-sumi; color: $c-kinari; }
+    input:focus-visible + span { outline: 2px solid $c-gold; outline-offset: 2px; }
+  }
+  &__agree {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    [data-lang="en"] { font-family: $f-en; font-size: 15px; }
+    input { flex: none; width: 20px; height: 20px; margin-top: 2px; accent-color: $c-sumi; }
+  }
+  &__submit {
+    min-height: 52px;
+    background: $c-sumi;
+    color: $c-kinari;
+    font-size: 15px;
+    letter-spacing: .2em;
+    [data-lang="en"] { font-family: $f-sans; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; }
+    &:disabled { opacity: .45; cursor: not-allowed; }
+  }
+  &__note { font-size: 12.5px; line-height: 1.7; color: rgba($c-sumi, .7); [data-lang="en"] { font-family: $f-en; font-size: 14px; } &[hidden] { display: none; } }
+}

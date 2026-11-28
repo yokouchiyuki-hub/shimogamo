@@ -1027,6 +1027,53 @@ src="https://www.facebook.com/tr?id=954407957033133&ev=PageView&noscript=1"
   </div>
 </footer>
 
+<dialog class="p-formmodal" id="formmodal" aria-labelledby="formmodal-title">
+  <div class="p-formmodal__head">
+    <h2 class="p-formmodal__title" id="formmodal-title"><span data-lang="ja">内覧予約・お問い合わせ</span><span data-lang="en">Private viewing &amp; enquiries</span></h2>
+    <button class="p-formmodal__close" type="button" data-form-close aria-label="閉じる / Close"><span aria-hidden="true">×</span></button>
+  </div>
+  <form class="p-form" data-form-endpoint="" novalidate>
+    <p class="p-form__lead"><span data-lang="ja">下鴨邸宅の内覧のご予約、資料のご請求、ご質問を承ります。担当者よりメールでご連絡します。</span><span data-lang="en">Request a private viewing or a brochure, or send us a question about the Shimogamo residence. We will reply by email.</span></p>
+    <fieldset class="p-form__field">
+      <legend class="p-form__label"><span data-lang="ja">ご用件</span><span data-lang="en">Enquiry</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></legend>
+      <div class="p-form__choices">
+        <label class="p-form__choice"><input type="radio" name="type" value="viewing" checked><span><span data-lang="ja">内覧予約</span><span data-lang="en">Private viewing</span></span></label>
+        <label class="p-form__choice"><input type="radio" name="type" value="brochure"><span><span data-lang="ja">資料請求</span><span data-lang="en">Brochure</span></span></label>
+        <label class="p-form__choice"><input type="radio" name="type" value="question"><span><span data-lang="ja">その他のご質問</span><span data-lang="en">Other question</span></span></label>
+      </div>
+    </fieldset>
+    <div class="p-form__field">
+      <label class="p-form__label" for="f-name"><span data-lang="ja">お名前</span><span data-lang="en">Name</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></label>
+      <input class="p-form__input" id="f-name" name="name" type="text" autocomplete="name" required>
+    </div>
+    <div class="p-form__field">
+      <label class="p-form__label" for="f-email"><span data-lang="ja">メールアドレス</span><span data-lang="en">Email</span><span class="p-form__req"><span data-lang="ja">必須</span><span data-lang="en">Required</span></span></label>
+      <input class="p-form__input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+    </div>
+    <div class="p-form__field">
+      <label class="p-form__label" for="f-tel"><span data-lang="ja">電話番号</span><span data-lang="en">Phone</span></label>
+      <input class="p-form__input" id="f-tel" name="tel" type="tel" autocomplete="tel" inputmode="tel">
+    </div>
+    <div class="p-form__row" data-form-viewing>
+      <div class="p-form__field">
+        <label class="p-form__label" for="f-date1"><span data-lang="ja">内覧の第1希望日</span><span data-lang="en">Preferred date (1st)</span></label>
+        <input class="p-form__input" id="f-date1" name="date1" type="date">
+      </div>
+      <div class="p-form__field">
+        <label class="p-form__label" for="f-date2"><span data-lang="ja">第2希望日</span><span data-lang="en">Preferred date (2nd)</span></label>
+        <input class="p-form__input" id="f-date2" name="date2" type="date">
+      </div>
+    </div>
+    <div class="p-form__field">
+      <label class="p-form__label" for="f-msg"><span data-lang="ja">ご質問・ご要望</span><span data-lang="en">Message</span></label>
+      <textarea class="p-form__input p-form__textarea" id="f-msg" name="message" rows="4"></textarea>
+    </div>
+    <label class="p-form__agree"><input type="checkbox" name="agree" required><span><span data-lang="ja">個人情報の取り扱いに同意して送信します</span><span data-lang="en">I agree to the handling of my personal information</span></span></label>
+    <button class="p-form__submit" type="submit"><span data-lang="ja">送信する</span><span data-lang="en">Send</span></button>
+    <p class="p-form__note" data-form-note><span data-lang="ja">※送信の受付は準備中です。受付開始までは送信できません。</span><span data-lang="en">* The form is not yet accepting submissions.</span></p>
+  </form>
+</dialog>
+
 <dialog class="p-planmodal" id="planmodal" aria-labelledby="planmodal-title">
   <div class="p-planmodal__inner">
     <button class="p-planmodal__close" type="button" data-plan-close aria-label="閉じる / Close"><span aria-hidden="true">×</span></button>

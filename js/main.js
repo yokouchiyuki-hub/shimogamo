@@ -720,4 +720,53 @@
   } else if (maSec) {
     maSec.classList.add('is-inview');
   }
+
+  /* ---------- 内覧予約・お問い合わせのフォーム(ポップアップ) ---------- */
+  // SP の追従 CTA を押したら、ページ移動せずにフォームを開く(PC は今までどおりお問い合わせの章へ)
+  var formModal = doc.getElementById('formmodal');
+  if (formModal && typeof formModal.showModal === 'function') {
+    var fForm = formModal.querySelector('form');
+    var fEndpoint = fForm.getAttribute('data-form-endpoint');  // 送信先(フォームサービスの URL)。未設定の間は送信しない
+    var fSubmit = fForm.querySelector('[type="submit"]');
+    var fNote = fForm.querySelector('[data-form-note]');
+    var fViewing = fForm.querySelector('[data-form-viewing]');
+    var mqFormSp = matchMedia('(max-width:768px)');
+    if (fEndpoint) {
+      fForm.setAttribute('action', fEndpoint);
+      fForm.setAttribute('method', 'post');
+      if (fNote) fNote.hidden = true;
+    } else {
+      fSubmit.disabled = true;
+    }
+    var openForm = function () { formModal.showModal(); };
+    var ctaLink = doc.querySelector('.p-floating-cta');
+    if (ctaLink) {
+      ctaLink.setAttribute('aria-haspopup', 'dialog');
+      ctaLink.addEventListener('click', function (e) {
+        if (!mqFormSp.matches) return;
+        e.preventDefault();
+        openForm();
+      });
+    }
+    formModal.querySelector('[data-form-close]').addEventListener('click', function () { formModal.close(); });
+    // 背景(シートの外)を押したら閉じる
+    formModal.addEventListener('click', function (e) { if (e.target === formModal) formModal.close(); });
+    // 希望日は「内覧予約」のときだけ出す
+    var syncType = function () {
+      var t = fForm.querySelector('input[name="type"]:checked');
+      if (fViewing) fViewing.hidden = !(t && t.value === 'viewing');
+    };
+    fForm.addEventListener('change', syncType);
+    syncType();
+    // 必須項目の確認(送信先があるときだけ送る)
+    fForm.addEventListener('submit', function (e) {
+      var bad = null;
+      Array.prototype.forEach.call(fForm.querySelectorAll('[required]'), function (el) {
+        var ok = el.type === 'checkbox' ? el.checked : el.checkValidity() && el.value.trim() !== '';
+        el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        if (!ok && !bad) bad = el;
+      });
+      if (bad || !fEndpoint) { e.preventDefault(); if (bad) bad.focus(); }
+    });
+  }
 })();

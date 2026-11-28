@@ -66,3 +66,29 @@ html:has(.p-planmodal[open]) .l-fixed { display: none; }
   &::after { content: ""; position: absolute; inset: 0 0 0 -20px; }  // 押せる範囲は左へ広げて 48px 角を保つ
   svg { width: 28px; height: 14px; }
 }
+
+// SP: 画面下に追従する、横いっぱいのバー(生成色の帯の中に、墨色のボタン)
+@include mq(768) {
+  .l-fixed {
+    left: 15px;
+    right: 15px;
+    bottom: calc(15px + env(safe-area-inset-bottom));
+    align-items: stretch;
+    gap: 30px;  // TOP は帯(ボタンの上 15px)より上に出す
+  }
+  .p-pagetop { align-self: flex-end; margin-right: 4px; }
+  .p-floating-cta {
+    min-width: 0;
+    height: 48px;
+    padding: 0 16px;
+    justify-content: center;
+    border: 0;
+    // 帯: ボタンのまわり 15px と、画面の下端(ホームバーの余白)までを生成色で埋める
+    box-shadow:
+      0 0 0 15px $c-kinari,
+      0 calc(15px + env(safe-area-inset-bottom)) 0 15px $c-kinari,
+      0 -16px 16px 14px rgba($c-sumi, .06);
+    &:hover { background: $c-sumi; color: $c-kinari; }
+    &__ja { font-size: 14px; letter-spacing: .2em; }
+  }
+}

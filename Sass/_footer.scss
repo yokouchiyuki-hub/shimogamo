@@ -3,6 +3,7 @@
 .l-footer {
   position: relative;
   padding: fluid(80, 140) $gutter 32px;  // 375px(80) → 1440px(140)
+  @include mq(768) { padding-bottom: calc(32px + 78px + env(safe-area-inset-bottom)); }  // SP: 下に追従する内覧予約の帯に隠れないぶん
   background: $c-foot;
   color: $c-kinari;
   &__top { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 28px; }
