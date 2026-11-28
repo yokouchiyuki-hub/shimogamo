@@ -211,13 +211,37 @@
         imgs[j].removeAttribute('data-src');
       }
     };
-    // SP では図が横スクロールになるので、開いたときに中央を見せる（クリック後だけ読む）
-    var mqPlanSp = matchMedia('(max-width:768px)');
-    var centerPlan = function (panel) {
-      if (!mqPlanSp.matches || !panel) return;
-      var sc = panel.querySelector('.c-plan');
-      if (sc) requestAnimationFrame(function () { sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) / 2; });
+    // SP・iPad: 図の大きさを「縮小・拡大・全体」ボタンで変える(100%〜300%)。拡大・縮小しても見ている中心を保つ
+    var PLAN_ZOOMS = [1, 1.5, 2, 2.5, 3];
+    var planZoomI = 0;
+    var zoomVal = planModal.querySelector('[data-plan-zoom-val]');
+    var zoomHint = planModal.querySelector('[data-plan-hint]');
+    var zoomOut = planModal.querySelector('[data-plan-zoom="-1"]');
+    var zoomIn = planModal.querySelector('[data-plan-zoom="1"]');
+    var visiblePlan = function () { var p = planModal.querySelector('.p-planmodal__panel:not([hidden]) .c-plan'); return p; };
+    var setPlanZoom = function (i) {
+      var sc = visiblePlan();
+      var cx = 0.5, cy = 0.5;
+      if (sc && sc.scrollWidth > sc.clientWidth) cx = (sc.scrollLeft + sc.clientWidth / 2) / sc.scrollWidth;
+      if (sc && sc.scrollHeight > sc.clientHeight) cy = (sc.scrollTop + sc.clientHeight / 2) / sc.scrollHeight;
+      planZoomI = Math.max(0, Math.min(PLAN_ZOOMS.length - 1, i));
+      planModal.style.setProperty('--plan-zoom', PLAN_ZOOMS[planZoomI]);
+      zoomVal.textContent = Math.round(PLAN_ZOOMS[planZoomI] * 100) + '%';
+      zoomOut.disabled = planZoomI === 0;
+      zoomIn.disabled = planZoomI === PLAN_ZOOMS.length - 1;
+      zoomHint.hidden = planZoomI === 0;
+      if (sc) requestAnimationFrame(function () {
+        sc.scrollLeft = cx * sc.scrollWidth - sc.clientWidth / 2;
+        sc.scrollTop = cy * sc.scrollHeight - sc.clientHeight / 2;
+      });
     };
+    planModal.querySelector('.p-planmodal__zoom').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-plan-zoom]');
+      if (!b) return;
+      var d = +b.getAttribute('data-plan-zoom');
+      setPlanZoom(d === 0 ? 0 : planZoomI + d);
+    });
+    var centerPlan = function () {};  // 開いたときは全体表示(100%)から
     var selectPlanTab = function (tab, focus) {
       for (var i = 0; i < planTabs.length; i++) {
         var on = planTabs[i] === tab;
@@ -233,6 +257,7 @@
       planOpener = opener;
       var tab = doc.getElementById('plantab-' + floor) || planTabs[0];
       selectPlanTab(tab, false);
+      setPlanZoom(0);
       planModal.showModal();
       centerPlan(doc.getElementById(tab.getAttribute('aria-controls')));
     };

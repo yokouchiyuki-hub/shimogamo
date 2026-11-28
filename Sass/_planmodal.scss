@@ -32,11 +32,13 @@
   &__name { display: block; }
   // 本文の FLOOR PLANS では、SP は図を幅に収め、ラベルは図の下の一覧に任せる
   .p-plans & { @include mq(768) { &__label { display: none; } } }
-  // ポップアップでは、SP は図を拡大して横スクロール
+  // ポップアップ(SP・iPad): 図の大きさを「縮小・拡大」ボタンで変える(--plan-zoom、main.js)。拡大したら縦横にスクロール
   .p-planmodal & {
-    @include mq(768) {
-      overflow-x: auto;
-      .c-plan__box { min-width: 760px; }
+    @include mq(1024) {
+      overflow: auto;
+      max-height: 62dvh;
+      overscroll-behavior: contain;
+      .c-plan__box { width: calc(100% * var(--plan-zoom, 1)); }
     }
   }
   &__area { display: block; font-size: .86em; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
@@ -77,7 +79,33 @@ html:has(.p-planmodal[open]) { overflow: hidden; }
     transition: background-color .3s, color .3s;
     &[aria-selected="true"] { background: $c-sumi; border-color: $c-sumi; color: $c-shironeri; }
   }
-  &__hint { display: none; margin-top: 16px; font-family: $f-sans; font-size: 11px; letter-spacing: .14em; color: rgba($c-sumi, .66); }
+  &__hint { display: none; margin-top: 10px; font-size: 12px; letter-spacing: .08em; color: rgba($c-sumi, .66); [data-lang="en"] { font-family: $f-en; font-size: 14px; } }
+  // 図の大きさ(SP・iPad のみ)
+  &__zoom { display: none; align-items: center; gap: 8px; margin-top: 16px; }
+  &__zoom-btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba($c-sumi, .4);
+    font-size: 22px;
+    line-height: 1;
+    &:disabled { opacity: .3; }
+  }
+  &__zoom-val { min-width: 3.5em; font-family: $f-en; font-size: 17px; text-align: center; font-variant-numeric: tabular-nums; }
+  &__zoom-fit {
+    margin-left: auto;
+    padding: 0 14px;
+    height: 44px;
+    border: 1px solid rgba($c-sumi, .4);
+    font-size: 13px;
+    letter-spacing: .08em;
+    [data-lang="en"] { font-family: $f-sans; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  }
+  @include mq(1024) {
+    &__zoom { display: flex; }
+    &__hint:not([hidden]) { display: block; }
+  }
   &__panel { margin-top: 20px; }
   &__area {
     display: flex;
@@ -112,7 +140,6 @@ html:has(.p-planmodal[open]) { overflow: hidden; }
     height: 100vh;
     height: 100dvh;
     margin: 0;
-    &__hint { display: block; }
     &__book { width: 100%; }
     &__tab { flex: 1; }
   }

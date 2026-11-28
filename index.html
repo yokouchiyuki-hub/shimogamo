@@ -1135,7 +1135,13 @@ src="https://www.facebook.com/tr?id=954407957033133&ev=PageView&noscript=1"
     <button class="p-planmodal__close" type="button" data-plan-close aria-label="閉じる / Close"><span aria-hidden="true">×</span></button>
     <h2 class="p-planmodal__title" id="planmodal-title"><span data-lang="ja">間取り</span><span data-lang="en">Floor plan</span></h2>
     <div class="p-planmodal__tabs" role="tablist" aria-label="Floor"><button class="p-planmodal__tab" role="tab" type="button" id="plantab-1f" aria-controls="planpanel-1f" aria-selected="true" tabindex="0" data-plan-tab="1f">1F</button><button class="p-planmodal__tab" role="tab" type="button" id="plantab-2f" aria-controls="planpanel-2f" aria-selected="false" tabindex="-1" data-plan-tab="2f">2F</button><button class="p-planmodal__tab" role="tab" type="button" id="plantab-3f" aria-controls="planpanel-3f" aria-selected="false" tabindex="-1" data-plan-tab="3f">3F</button></div>
-    <p class="p-planmodal__hint" aria-hidden="true"><span data-lang="ja">← スクロール →</span><span data-lang="en">← Scroll →</span></p>
+    <div class="p-planmodal__zoom" role="group" aria-label="図の大きさ / Zoom">
+      <button class="p-planmodal__zoom-btn" type="button" data-plan-zoom="-1" aria-label="縮小 / Zoom out"><span aria-hidden="true">−</span></button>
+      <span class="p-planmodal__zoom-val" data-plan-zoom-val aria-live="polite">100%</span>
+      <button class="p-planmodal__zoom-btn" type="button" data-plan-zoom="1" aria-label="拡大 / Zoom in"><span aria-hidden="true">＋</span></button>
+      <button class="p-planmodal__zoom-fit" type="button" data-plan-zoom="0"><span data-lang="ja">全体を表示</span><span data-lang="en">Fit</span></button>
+    </div>
+    <p class="p-planmodal__hint" aria-hidden="true" data-plan-hint hidden><span data-lang="ja">図はスワイプで動かせます</span><span data-lang="en">Swipe to move around the plan</span></p>
     <div class="p-planmodal__panel" role="tabpanel" id="planpanel-1f" aria-labelledby="plantab-1f">
       <div class="p-planmodal__scroll"><div class="c-plan"><div class="c-plan__box"><picture>
         <source media="(max-width:767px)" type="image/webp" data-srcset="img/plan_s1f_sp.webp">
