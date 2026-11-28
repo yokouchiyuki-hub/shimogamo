@@ -32,6 +32,7 @@ $f-sans: "Helvetica Neue", Arial, sans-serif;
 
 $gutter: 8vw;
 $header-h: 72px;
+$header-h-sp: 50px;  // SP のヘッダーの高さ
 
 // ---------- mixins / functions ----------
 // desktop-first: max-width
@@ -96,7 +97,7 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; }
 img, picture, video, svg { display: block; max-width: 100%; }
 img { height: auto; }
-[id] { scroll-margin-top: $header-h; }
+[id] { scroll-margin-top: $header-h; @include mq(768) { scroll-margin-top: $header-h-sp; } }
 
 :focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
 // タッチ操作の端末(iPhone など)では、タップ後にリンクやボタンへ四角い枠が残らないようにする(キーボード操作の PC は枠を出す)

@@ -123,6 +123,12 @@
     &__nav, &__right { display: none; }
     &__burger { display: block; }
   }
+  // SP: ヘッダーの高さは 50px(クライアント指定)。ロゴもそれに合わせて小さく
+  @include mq(768) {
+    height: calc(#{$header-h-sp} + env(safe-area-inset-top));
+    &__logo img { height: 30px; }
+    &__plan--sp { margin-right: 9px; }  // ハンバーガーと近すぎないよう、3px 左へ
+  }
 }
 
 .l-menu {
@@ -135,6 +141,7 @@
   align-items: center;
   gap: fluid(24, 40, 375, 768);  // 375px(24) → 768px(40)
   padding: $header-h 24px 32px;
+  @include mq(768) { padding-top: $header-h-sp; }
   overflow-y: auto;
   background: $c-sumi;
   color: $c-kinari;
