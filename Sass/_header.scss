@@ -66,7 +66,6 @@
     gap: 22px;
   }
   &__lang { @extend %lang-switch; }
-  &__lang--sp { display: none; }  // SP・iPad 用(ハンバーガーの左)
   &__plan {
     display: inline-flex;
     align-items: center;
@@ -118,8 +117,7 @@
     &__book { display: none; }
   }
   @include mq(1024) {
-    &__inner { grid-template-columns: 1fr auto auto auto; column-gap: 0; }
-    &__lang--sp { display: flex; margin-right: 18px; }
+    &__inner { grid-template-columns: 1fr auto auto; column-gap: 0; }
     &__plan--sp { display: inline-flex; margin-right: 6px; }
     &__logo img { height: 36px; }
     &__nav, &__right { display: none; }
