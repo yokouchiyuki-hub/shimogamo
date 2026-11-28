@@ -650,7 +650,7 @@
     strip.addEventListener('dragstart', function (e) { e.preventDefault(); });
   })(dragStrips[ds]);
 
-  /* ---------- 間の章: 水滴と波紋は、画面に入っている間だけ動かす ---------- */
+  /* ---------- 間の章: 背景の枯山水の揺れは、画面に入っている間だけ動かす ---------- */
   var maSec = doc.querySelector('.p-ma');
   if (maSec && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
