@@ -297,6 +297,67 @@
     }
   }
 
+  /* ---------- Scenes: 流れるギャラリー(JS で流し、指やマウスで横に送れる) ---------- */
+  // 写真は2回並べてあり、位置を「半分の幅」で折り返すので、どれだけ流しても送っても継ぎ目は出ない。
+  // 止める: マウスを乗せている間 / フォーカス中 / 一時停止ボタン / 拡大表示中 / 画面外。送った直後のタップでは拡大を開かない
+  var mqBox = doc.querySelector('[data-marquee]');
+  var mqReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (mqBox && !mqReduce) {  // 動きを減らす設定では、CSS のとおり止めて横スクロールで見せる
+    var mqRowsArr = Array.prototype.slice.call(mqBox.querySelectorAll('.p-marquee__row'));
+    var mqState = mqRowsArr.map(function (row) {
+      var track = row.querySelector('.p-marquee__track');
+      var rev = row.classList.contains('p-marquee__row--r');
+      return { row: row, track: track, x: rev ? -1 : 0, half: 0, speed: rev ? 1 / 85 : -1 / 70, down: false, moved: false, sx: 0, sxPos: 0, pid: null };
+    });
+    var mqWrap = function (st) { if (!st.half) return; while (st.x > 0) st.x -= st.half; while (st.x <= -st.half) st.x += st.half; };
+    var mqMeasure = function () { mqState.forEach(function (st) { st.half = st.track.scrollWidth / 2; if (st.x === -1) st.x = -st.half; mqWrap(st); st.track.style.transform = 'translateX(' + st.x + 'px)'; }); };
+    mqBox.classList.add('is-js');
+    mqMeasure();
+    addEventListener('resize', mqMeasure);
+    addEventListener('load', mqMeasure);
+    var mqLast = 0, mqRaf = 0;
+    var mqTick = function (t) {
+      mqRaf = 0;
+      var dt = mqLast ? Math.min(t - mqLast, 100) / 1000 : 0;
+      mqLast = t;
+      var stopAll = mqReduce || mqBox.classList.contains('is-paused') || mqBox.classList.contains('is-lightbox');
+      mqState.forEach(function (st) {
+        if (!st.half) st.half = st.track.scrollWidth / 2;
+        var stop = stopAll || st.down || st.row.matches(':hover') || st.row.matches(':focus-within');
+        if (!stop) { st.x += st.speed * st.half * dt; mqWrap(st); st.track.style.transform = 'translateX(' + st.x + 'px)'; }
+      });
+      if (!mqBox.classList.contains('is-offscreen')) mqRaf = requestAnimationFrame(mqTick);
+      else mqLast = 0;
+    };
+    var mqStart = function () { if (!mqRaf) { mqLast = 0; mqRaf = requestAnimationFrame(mqTick); } };
+    mqStart();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) { if (entries[0].isIntersecting) mqStart(); }).observe(mqBox);
+    }
+    mqState.forEach(function (st) {
+      var row = st.row;
+      row.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        st.down = true; st.moved = false; st.sx = e.clientX; st.sxPos = st.x; st.pid = e.pointerId;
+      });
+      row.addEventListener('pointermove', function (e) {
+        if (!st.down || e.pointerId !== st.pid) return;
+        var dx = e.clientX - st.sx;
+        if (!st.moved && Math.abs(dx) > 6) { st.moved = true; row.classList.add('is-dragging'); try { row.setPointerCapture(st.pid); } catch (err) {} }
+        if (st.moved) { st.x = st.sxPos + dx; mqWrap(st); st.track.style.transform = 'translateX(' + st.x + 'px)'; }
+      });
+      var end = function () {
+        if (!st.down) return;
+        st.down = false; row.classList.remove('is-dragging');
+        try { row.releasePointerCapture(st.pid); } catch (err) {}
+      };
+      row.addEventListener('pointerup', end);
+      row.addEventListener('pointercancel', end);
+      row.addEventListener('click', function (e) { if (st.moved) { st.moved = false; e.preventDefault(); e.stopPropagation(); } }, true);
+      row.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    });
+  }
+
   /* ---------- Residence: 室内スライダー ---------- */
   var slider = doc.querySelector('[data-slider]');
   if (slider) {

@@ -40,7 +40,13 @@
 // 流れるギャラリー(2段。上段は左へ、下段は右へ)
 .p-marquee {
   margin: 0 calc(var(--gutter) * -1);
-  &__row { overflow: hidden; & + & { margin-top: fluid(16, 32); } }
+  &__row {
+    overflow: hidden;
+    touch-action: pan-y;  // 横のスワイプはギャラリーを送る(縦はページのスクロール)
+    cursor: grab;
+    & + & { margin-top: fluid(16, 32); }
+    &.is-dragging { cursor: grabbing; }
+  }
   &__track {
     display: flex;
     width: max-content;
@@ -62,12 +68,14 @@
   &.is-lightbox &__track,
   &.is-offscreen &__track { animation-play-state: paused; }
 }
+// JS が動いているときは、CSS の流れを止めて JS で位置を動かす(指で送れるようにするため)
+.p-marquee.is-js .p-marquee__track { animation: none; }
 @keyframes marquee-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes marquee-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
 // 動きを減らす設定: 動かさず、横スクロールで見られるようにする
 @media (prefers-reduced-motion: reduce) {
-  .p-marquee__row { overflow-x: auto; }
+  .p-marquee:not(.is-js) .p-marquee__row { overflow-x: auto; }
   .p-marquee__track { animation: none; width: auto; }
   .p-marquee__item[aria-hidden="true"] { display: none; }
   .p-scenes__pause { display: none; }

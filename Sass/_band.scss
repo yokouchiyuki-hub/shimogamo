@@ -70,6 +70,8 @@
       transition: background-color .3s, color .3s;
       &:hover { background: #fff; color: $c-sumi; }
       [data-lang="en"] { font-family: $f-sans; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+      // SP・タブレット(写真の下の墨地): 本文に埋もれないよう、白い面のボタンに
+      @include mq(1024) { background: #fff; border-color: #fff; color: $c-sumi; &:hover { opacity: .85; } }
     }
     .p-band__vja {
       writing-mode: vertical-rl;

@@ -31,7 +31,15 @@
     color: var(--sub);
     [data-lang="en"] { font-family: $f-en; font-size: 14px; font-style: italic; }
   }
-  &__card-body { padding: fluid(16, 24) fluid(16, 24) fluid(20, 28); }
+  &__card-body {
+    position: relative;
+    padding: fluid(16, 24) fluid(16, 24) fluid(20, 28);
+    // SP: 漢数字は写真のすぐ下の右側に置く(見出しと重ならないよう、見出しの右に余白を取る)
+    @include mq(768) {
+      .p-residence__card-num { position: absolute; top: 14px; right: 16px; }
+      .p-residence__card-kanji { padding-right: 40px; }
+    }
+  }
   &__card-num { font-family: "kokuryu", $f-ja; font-size: 30px; color: var(--accent); line-height: 1; }  // 細い明朝の「一」「二」は線に見えるので、筆文字で(この土地のことばと同じ)
   &__card-kanji {
     margin-top: 14px;
@@ -67,13 +75,12 @@
     &::-webkit-scrollbar { display: none; }
     &:focus-visible { outline-offset: 4px; }
   }
-  &__track { display: flex; }
+  &__track { display: flex; width: 100%; }  // スライド1枚 = 表示幅(はみ出した分を横にスワイプ)
   &__slide { flex: none; width: 100%; scroll-snap-align: start; }
   &__slide figure { margin: 0; }
   &__frame {
     overflow: hidden;
-    aspect-ratio: 3 / 2;
-    @include mq(768) { aspect-ratio: 4 / 3; }
+    aspect-ratio: 3 / 2;  // 写真は横長なので、SP も横長のまま見せる
     picture { display: block; width: 100%; height: 100%; }
     img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transition: transform 1.2s cubic-bezier(.2, .6, .2, 1); }
   }
