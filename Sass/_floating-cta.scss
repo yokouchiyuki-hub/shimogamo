@@ -41,19 +41,21 @@ html:has(.p-planmodal[open]) .l-fixed { display: none; }
 }
 
 // ページトップ: 円や背景なしの「上向きの山線」と TOP の文字だけ。明るい背景・暗い背景のどちらでも見える金色
+// 内覧予約ボタンと右端をそろえる(.l-fixed が右寄せ)
 .p-pagetop {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  width: 48px;
-  height: 48px;  // 見た目は線だけでも、押せる範囲は 48px 角を保つ
-  margin-right: fluid(66, 96);  // 375px(66) → 1440px(96)。内覧予約の中央に合わせる
+  width: 28px;   // 山線の幅に合わせ、右端を内覧予約とそろえる
+  height: 48px;
   color: $c-gold;
   font-family: $f-sans;
   font-size: 10px;
   letter-spacing: .16em;
+  text-indent: .16em;  // 字間の末尾ぶんを打ち消し、文字を山線の中央に
   line-height: 1;
   opacity: 0;
   visibility: hidden;
@@ -61,5 +63,6 @@ html:has(.p-planmodal[open]) .l-fixed { display: none; }
   transition: opacity .5s, visibility .5s, transform .5s, color .3s;
   &.is-show { opacity: 1; visibility: visible; transform: none; }
   &:hover { color: $c-gold-lt; }
+  &::after { content: ""; position: absolute; inset: 0 0 0 -20px; }  // 押せる範囲は左へ広げて 48px 角を保つ
   svg { width: 28px; height: 14px; }
 }
