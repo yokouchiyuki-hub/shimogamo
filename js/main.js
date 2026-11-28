@@ -380,7 +380,7 @@
     var lbNow = lb.querySelector('[data-lb-now]');
     var lbTotal = lb.querySelector('[data-lb-total]');
     var lbMarquee = doc.querySelector('[data-marquee]');
-    var lbTriggers = Array.prototype.slice.call(doc.querySelectorAll('.p-concept__photo, .p-location__photo, .p-marquee__item figure, .p-slider__frame, .p-residence__card-photo, .p-craft__shot, .p-plans__thumb, .p-words__photo:not(.p-words__photo--text)'));
+    var lbTriggers = Array.prototype.slice.call(doc.querySelectorAll('.p-concept__photo, .p-location__photo, .p-marquee__item figure, .p-slider__frame, .p-residence__card-photo, .p-craft__shot, .p-plans__thumb, .p-words__photo'));
     var lbGroups = {};
     var lbOrig = new Map();   // 各写真 -> 送りの中で使う本物の写真(マーキーの複製は元の写真へ)
     var lbGroup = null, lbIndex = 0, lbOpener = null, lbSwiped = false, lbToken = 0;
