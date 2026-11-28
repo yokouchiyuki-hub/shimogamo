@@ -884,4 +884,62 @@
   /* ---------- 操作の種類: キーボードのときだけフォーカスの枠を出す(タップ・クリック後に枠を残さない) ---------- */
   doc.addEventListener('keydown', function (e) { if (e.key === 'Tab') root.classList.add('is-kbd'); });
   doc.addEventListener('pointerdown', function () { root.classList.remove('is-kbd'); });
+
+  /* ---------- 間取りの「この階の写真」: 常に見える進み具合のバーと、前後の矢印 ---------- */
+  // 端末のスクロールバーは iPhone・Mac では普段見えないので、スライドできることが分かるよう自前で出す。
+  // バーのつまみをドラッグ / バーを押す / 矢印 / 写真のスワイプ(ドラッグ) のどれでも送れる
+  Array.prototype.forEach.call(doc.querySelectorAll('.p-plans__thumbs'), function (strip) {
+    var ui = doc.createElement('div');
+    ui.className = 'p-plans__strip-ui';
+    var arrow = function (d) { return '<svg viewBox="0 0 8 14" aria-hidden="true" focusable="false"><path d="' + (d < 0 ? 'M7 1 1 7l6 6' : 'M1 1l6 6-6 6') + '" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>'; };
+    ui.innerHTML = '<button class="p-plans__strip-btn" type="button" data-dir="-1" aria-label="前の写真 / Previous">' + arrow(-1) + '</button>' +
+      '<div class="p-plans__strip-track" aria-hidden="true"><span class="p-plans__strip-thumb"></span></div>' +
+      '<button class="p-plans__strip-btn" type="button" data-dir="1" aria-label="次の写真 / Next">' + arrow(1) + '</button>';
+    strip.parentNode.insertBefore(ui, strip.nextSibling);
+    var track = ui.querySelector('.p-plans__strip-track');
+    var thumb = ui.querySelector('.p-plans__strip-thumb');
+    var prev = ui.querySelector('[data-dir="-1"]');
+    var next = ui.querySelector('[data-dir="1"]');
+    var update = function () {
+      var max = strip.scrollWidth - strip.clientWidth;
+      ui.hidden = max <= 2;
+      if (ui.hidden) return;
+      var ratio = strip.clientWidth / strip.scrollWidth;
+      thumb.style.width = (ratio * 100) + '%';
+      thumb.style.left = ((strip.scrollLeft / strip.scrollWidth) * 100) + '%';
+      prev.disabled = strip.scrollLeft <= 2;
+      next.disabled = strip.scrollLeft >= max - 2;
+    };
+    strip.addEventListener('scroll', function () { requestAnimationFrame(update); }, { passive: true });
+    addEventListener('resize', update);
+    addEventListener('load', update);
+    Array.prototype.forEach.call(strip.querySelectorAll('img'), function (im) { im.addEventListener('load', update); });
+    update();
+    ui.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-dir]');
+      if (b) strip.scrollBy({ left: (+b.getAttribute('data-dir')) * strip.clientWidth * 0.8, behavior: 'smooth' });
+    });
+    // バー: 押した位置へ / つまみをドラッグ
+    var dragging = false, grabX = 0;
+    var moveTo = function (clientX) {
+      var r = track.getBoundingClientRect();
+      var tw = thumb.getBoundingClientRect().width;
+      var x = Math.max(0, Math.min(r.width - tw, clientX - r.left - grabX));
+      strip.style.scrollBehavior = 'auto';
+      strip.scrollLeft = (x / (r.width - tw || 1)) * (strip.scrollWidth - strip.clientWidth);
+      strip.style.scrollBehavior = '';
+    };
+    track.addEventListener('pointerdown', function (e) {
+      var tr = thumb.getBoundingClientRect();
+      grabX = (e.target === thumb) ? e.clientX - tr.left : tr.width / 2;
+      dragging = true; track.classList.add('is-dragging');
+      try { track.setPointerCapture(e.pointerId); } catch (err) {}
+      moveTo(e.clientX);
+      e.preventDefault();
+    });
+    track.addEventListener('pointermove', function (e) { if (dragging) moveTo(e.clientX); });
+    var stop = function () { dragging = false; track.classList.remove('is-dragging'); };
+    track.addEventListener('pointerup', stop);
+    track.addEventListener('pointercancel', stop);
+  });
 })();

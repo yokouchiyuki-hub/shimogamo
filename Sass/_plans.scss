@@ -61,12 +61,9 @@
     gap: 12px;
     margin-top: 12px;
     overflow-x: auto;
-    padding-bottom: 10px;
-    // スクロールバーは常に見えて、つかんで動かせる太さに(Safari は ::-webkit-scrollbar、Chrome/Firefox は scrollbar-color)
-    scrollbar-color: rgba($c-sumi, .45) rgba($c-sumi, .08);
-    &::-webkit-scrollbar { height: 8px; }
-    &::-webkit-scrollbar-track { background: rgba($c-sumi, .08); }
-    &::-webkit-scrollbar-thumb { background: rgba($c-sumi, .45); border-radius: 4px; }
+    // 端末のスクロールバーは隠し(iPhone・Mac では普段見えないため)、下に常に見える進み具合のバーと矢印を出す(main.js)
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
     // 写真そのものもドラッグで送れる(main.js)
     cursor: grab;
     user-select: none;
@@ -74,6 +71,45 @@
     img { -webkit-user-drag: none; }
   }
   &__thumb-item { flex: none; }
+  // 写真の列の下: 進み具合のバー(つまみをドラッグ・バーを押しても動く) + 前後の矢印。はみ出しがないときは出さない
+  &__strip-ui {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    &[hidden] { display: none; }
+  }
+  &__strip-track {
+    position: relative;
+    flex: 1;
+    height: 28px;
+    cursor: pointer;
+    touch-action: none;
+    &::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: rgba($c-sumi, .14); }
+  }
+  &__strip-thumb {
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    margin-top: -2px;
+    background: $c-sumi;
+    cursor: grab;
+    transition: background-color .2s;
+    .is-dragging > & { cursor: grabbing; background: $c-gold; }
+  }
+  &__strip-btn {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba($c-sumi, .3);
+    border-radius: 50%;
+    transition: background-color .3s, color .3s, opacity .3s;
+    svg { width: 8px; height: 14px; }
+    &:hover:not(:disabled) { background: $c-sumi; color: $c-shironeri; }
+    &:disabled { opacity: .3; cursor: default; }
+  }
   &__thumb { margin: 0; }
   &__thumb img { width: auto; height: 120px; border-radius: 0; @include mq(768) { height: 96px; } }  // 高さ PC 120px / SP 96px、横幅は比率なり
   &__thumb .p-caption { margin-top: 6px; max-width: 12em; min-height: 2.8em; line-height: 1.4; }
