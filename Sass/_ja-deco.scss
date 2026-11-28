@@ -21,8 +21,6 @@ html[lang="ja"] {
   // 和のかたちカード・Words の読み(ひらがな)
   .p-residence__card-roman [data-lang="ja"],
   .p-words__roman [data-lang="ja"] { font-family: $f-ja; font-size: 15px; font-style: normal; letter-spacing: .16em; }
-  // ページトップ
-  .p-pagetop [data-lang="ja"] { font-family: $f-ja; font-size: 10px; letter-spacing: .1em; }
   // アクセスの地図: 英語の地名と SITE を隠す(N は方位なので残す)
   .p-access__svg text.en:not(.n) { display: none; }
   // Contact のボタン: 日本語を大きく1行だけ

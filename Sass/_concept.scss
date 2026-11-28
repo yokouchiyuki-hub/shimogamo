@@ -44,8 +44,8 @@
   // PC・タブレット: 3項目の塊を画面の中央にそろえ、各項目の文字も中央にそろえる
   &__facts {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: min(100%, 880px);
+    grid-template-columns: repeat(4, 1fr);
+    width: min(100%, 1040px);
     margin: fluid(32, 48) auto 0;  // 375px(32) → 1440px(48)
     text-align: center;
     > div {

@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 12px;
+  gap: 20px;  // TOP と内覧予約の誤タップを防ぐため、間をあける
   pointer-events: none;
   > * { pointer-events: auto; }
 }
@@ -33,26 +33,33 @@ html:has(.p-planmodal[open]) .l-fixed { display: none; }
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding: 12px 20px;
+  min-width: fluid(180, 240);  // 375px(180) → 1440px(240)。押しやすいよう横に広く
+  padding: 14px 24px;
   line-height: 1.2;
   &__ja { font-size: 13px; letter-spacing: .14em; }
   &__en { font-family: $f-sans; font-size: 9px; letter-spacing: .12em; }
 }
 
+// ページトップ: 円や背景なしの「上向きの山線」と TOP の文字だけ。明るい背景・暗い背景のどちらでも見える金色
 .p-pagetop {
-  @extend %fixed-btn;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 6px;
   width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  height: 48px;  // 見た目は線だけでも、押せる範囲は 48px 角を保つ
+  margin-right: fluid(66, 96);  // 375px(66) → 1440px(96)。内覧予約の中央に合わせる
+  color: $c-gold;
   font-family: $f-sans;
-  font-size: 8px;
-  letter-spacing: .1em;
+  font-size: 10px;
+  letter-spacing: .16em;
   line-height: 1;
-  svg { width: 14px; height: 14px; }
-  @include mq(768) { width: 44px; height: 44px; }
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity .5s, visibility .5s, transform .5s, color .3s;
+  &.is-show { opacity: 1; visibility: visible; transform: none; }
+  &:hover { color: $c-gold-lt; }
+  svg { width: 28px; height: 14px; }
 }

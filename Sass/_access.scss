@@ -36,20 +36,21 @@
   }
   // 所在地・階数・販売状況
   &__outline { margin-top: fluid(64, 104); }
+  // 物件概要: 項目が多いので「項目名｜内容」の表組み。PC・タブレットは2列
   &__outline-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--line);
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: fluid(24, 64);  // 375px(24) → 1440px(64)
     border-bottom: 1px solid var(--line);
-    > div { padding: 22px fluid(16, 40); & + div { border-left: 1px solid var(--line); } &:first-child { padding-left: 0; } }
-    dt { font-family: $f-sans; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--sub); }
-    dd { margin-top: 6px; font-size: 16px; line-height: 1.6; [data-lang="en"] { font-family: $f-en; font-size: 20px; line-height: 1.4; } }
+    > div { display: grid; grid-template-columns: 9.5em 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+    dt { padding-top: 4px; font-family: $f-sans; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--sub); }
+    dd { margin: 0; font-size: 15px; line-height: 1.7; [data-lang="en"] { font-family: $f-en; font-size: 17px; line-height: 1.5; } }
   }
   &__outline .p-note { margin-top: 16px; }
 
   @include mq(768) {
     &__body { grid-template-columns: 1fr; gap: 48px; }
     &__list > div { grid-template-columns: 6.5em 1fr; gap: 12px; }
-    &__outline-list { grid-template-columns: 1fr; > div { padding: 16px 0; & + div { border-left: 0; border-top: 1px solid var(--line); } } }
+    &__outline-list { grid-template-columns: 1fr; > div { grid-template-columns: 7.5em 1fr; gap: 12px; } }
   }
 }
