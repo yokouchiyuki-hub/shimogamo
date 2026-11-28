@@ -88,6 +88,7 @@
     position: relative;
     margin: calc(#{fluid(96, 160)} * -1) calc(var(--gutter) * -1) 0;
     padding: fluid(96, 160) var(--gutter) fluid(72, 120);  // 375px → 1440px。下は帯までの間(72→120)
+    @include mq(768) { padding-bottom: 60px; }  // SP: 「邸宅を見る」の下は 60px(クライアント指定)
   }
   // 枯山水の版を、縦横比を保ったまま帯の上端まで届く大きさにする(はみ出した右側は切れる)。
   // SP で縦に長いときは拡大せず、2つ目の版を下端に置く(共通のしくみ)
@@ -100,6 +101,7 @@
   &__site {
     margin: 0 calc(var(--gutter) * -1) calc(#{fluid(96, 160)} * -1);  // 下はセクションの下余白(96→160)を打ち消す
     padding: fluid(64, 104) var(--gutter) 120px;  // 上は 375px(64) → 1440px(104)。下は全幅で 120px(クライアント指定)
+    @include mq(768) { padding-bottom: 60px; }  // SP: 「建築の記録を見る」の下は 60px(クライアント指定)
     background: #F5F1E8 url("../img/washi.webp") 0 0 / 800px auto;  // 和紙の繊維のテクスチャ(継ぎ目なしの 800px タイル)
   }
   &__site-title {

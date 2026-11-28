@@ -623,4 +623,30 @@
       }
     });
   }
+
+  /* ---------- 間取りの「この階の写真」: 下のバーに加えて、写真そのものをドラッグ／スワイプして横に送れる ---------- */
+  // タッチは横スクロールそのままで動く。マウスはドラッグで送り、ドラッグした直後のクリックでは拡大を開かない
+  var dragStrips = doc.querySelectorAll('.p-plans__thumbs');
+  for (var ds = 0; ds < dragStrips.length; ds++) (function (strip) {
+    var startX = 0, startLeft = 0, down = false, moved = false;
+    strip.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || strip.scrollWidth <= strip.clientWidth) return;
+      down = true; moved = false; startX = e.clientX; startLeft = strip.scrollLeft;
+    });
+    strip.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX;
+      if (!moved && Math.abs(dx) > 5) { moved = true; strip.classList.add('is-dragging'); try { strip.setPointerCapture(e.pointerId); } catch (err) {} }
+      if (moved) { strip.scrollLeft = startLeft - dx; e.preventDefault(); }
+    });
+    var end = function (e) {
+      if (!down) return;
+      down = false; strip.classList.remove('is-dragging');
+      try { strip.releasePointerCapture(e.pointerId); } catch (err) {}
+    };
+    strip.addEventListener('pointerup', end);
+    strip.addEventListener('pointercancel', end);
+    strip.addEventListener('click', function (e) { if (moved) { moved = false; e.preventDefault(); e.stopPropagation(); } }, true);
+    strip.addEventListener('dragstart', function (e) { e.preventDefault(); });
+  })(dragStrips[ds]);
 })();

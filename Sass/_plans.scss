@@ -16,6 +16,7 @@
   // 図面は上端にそろえ、左の説明を読む間はヘッダーの下に留める
   &__fig { position: sticky; top: calc(#{$header-h} + 32px); display: flex; flex-direction: column; align-items: flex-start; align-self: start; gap: 16px; }
   &__fig .c-plan { width: 100%; }
+  &__fig .p-plans__photos { width: 100%; margin-top: 8px; }  // この階の写真は図面の下に
   // 図面そのものをクリックしても、間取りポップアップ(部屋名つき)が開く。キーボードは下の「拡大して見る」ボタンで操作する
   &__fig .c-plan--zoom { cursor: zoom-in; transition: opacity .3s; &:hover { opacity: .85; } }
   &__tagline { margin-top: 12px; font-size: fluid(18, 22); line-height: 1.6; letter-spacing: .06em; [data-lang="en"] { font-family: $f-en; font-size: fluid(20, 26); letter-spacing: 0; } }  // 375px(18) → 1440px(22)
@@ -59,9 +60,18 @@
     align-items: flex-start;
     gap: 12px;
     margin-top: 12px;
-    padding-bottom: 4px;
     overflow-x: auto;
-    scrollbar-width: thin;
+    padding-bottom: 10px;
+    // スクロールバーは常に見えて、つかんで動かせる太さに(Safari は ::-webkit-scrollbar、Chrome/Firefox は scrollbar-color)
+    scrollbar-color: rgba($c-sumi, .45) rgba($c-sumi, .08);
+    &::-webkit-scrollbar { height: 8px; }
+    &::-webkit-scrollbar-track { background: rgba($c-sumi, .08); }
+    &::-webkit-scrollbar-thumb { background: rgba($c-sumi, .45); border-radius: 4px; }
+    // 写真そのものもドラッグで送れる(main.js)
+    cursor: grab;
+    user-select: none;
+    &.is-dragging { cursor: grabbing; }
+    img { -webkit-user-drag: none; }
   }
   &__thumb-item { flex: none; }
   &__thumb { margin: 0; }
