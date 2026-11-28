@@ -11,7 +11,7 @@
   overflow: hidden;
   pointer-events: none;
   // 文字と紛れないよう、「あるとわかる」程度にごく薄く
-  .l-sec--light & { color: rgba($c-sumi, .055); }
+  .l-sec--light & { color: rgba(#9C8456, .09); }  // 灰色に見えないよう、生成色に近い温かい茶で
   .l-sec--dark & { color: rgba($c-kinari, .05); }
   // 「間」の章だけは白い砂紋(クライアント指定)
   .p-ma & { color: rgba(#F5F2ED, .7); }  // 白に生成色を少し混ぜた色(白45%+生成色)。浮きすぎないように

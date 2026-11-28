@@ -69,7 +69,12 @@
   &__more { margin-top: fluid(28, 40); text-align: center; }  // リンクも概要の塊に合わせて中央に
 
   // 現在の現場(3列の段違い。真ん中の列を 64px 下げる)
-  &__site { margin-top: fluid(72, 120); }  // 375px(72) → 1440px(120)
+  // 現在の現場: 枯山水の下で区切り、和紙のような白の帯に(全幅・セクションの下端まで)
+  &__site {
+    margin: fluid(72, 120) calc(var(--gutter) * -1) calc(#{fluid(96, 160)} * -1);  // 下はセクションの下余白(96→160)を打ち消す
+    padding: fluid(64, 104) var(--gutter) fluid(80, 140);  // 375px(64/80) → 1440px(104/140)
+    background: #F5F1E8 url("../img/washi.webp") 0 0 / 800px auto;  // 和紙の繊維のテクスチャ(継ぎ目なしの 800px タイル)
+  }
   &__site-title {
     font-family: $f-sans;
     font-size: 11px;
