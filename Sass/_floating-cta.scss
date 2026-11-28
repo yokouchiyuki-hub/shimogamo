@@ -68,35 +68,44 @@ html:has(.p-planmodal[open]) .l-fixed { display: none; }
 }
 
 // SP: 画面下に追従する、横いっぱいのバー(生成色の帯の中に、墨色のボタン)
+// 作りは pr-h.net/catalog/ の下端バーに合わせる:
+//  - viewport-fit=cover + bottom で画面の一番下に付け、帯の高さにホームバーの安全領域(env)を含めて、色を画面の端まで届かせる
+//  - iOS Safari の下のツールバーが出ている間は、見えている範囲の下端との差(--vv-bottom、main.js)だけ持ち上げて隠れないようにする
 @include mq(768) {
   .l-fixed {
-    left: calc(15px + env(safe-area-inset-left));
-    right: calc(15px + env(safe-area-inset-right));
-    bottom: calc(15px + env(safe-area-inset-bottom));  // viewport-fit=cover で、ホームバー・Safari のツールバーの上に置く
+    left: 0;
+    right: 0;
+    bottom: var(--vv-bottom, 0px);
     align-items: stretch;
-    gap: 30px;  // TOP は帯(ボタンの上 15px)より上に出す
+    gap: 12px;
   }
-  // TOP: 写真の上でも読めるよう、生成色の小さな面を敷く
+  // TOP: 帯の上の右端。写真の上でも読めるよう、生成色の小さな面を敷く
   .p-pagetop {
     align-self: flex-end;
     width: 48px;
     height: 48px;
+    margin-right: calc(15px + env(safe-area-inset-right));
     background: rgba($c-kinari, .9);
     &::after { inset: 0; }
   }
+  // 帯そのもの(押せる範囲は帯全体)。中の文字の箱が墨色のボタン
   .p-floating-cta {
     min-width: 0;
-    height: 48px;
-    padding: 0 16px;
-    justify-content: center;
+    align-items: stretch;  // 中の墨色のボタンを横いっぱいに
+    padding: 15px calc(15px + env(safe-area-inset-right)) calc(15px + env(safe-area-inset-bottom)) calc(15px + env(safe-area-inset-left));
     border: 0;
-    // 帯: ボタンのまわり 15px と、その下を画面の外まで生成色で埋める。
-    // iOS Safari は下のツールバーの裏にもページが透けて見えるため、帯を下へ長く伸ばして写真が覗かないようにする
-    box-shadow:
-      0 0 0 15px $c-kinari,
-      0 160px 0 15px $c-kinari,
-      0 -14px 14px 12px rgba($c-sumi, .07);
-    &:hover { background: $c-sumi; color: $c-kinari; }
-    &__ja { font-size: 14px; letter-spacing: .2em; }
+    background: $c-kinari;
+    box-shadow: 0 -8px 16px rgba($c-sumi, .07);
+    &:hover { background: $c-kinari; color: $c-kinari; }
+    &__ja {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      background: $c-sumi;
+      color: $c-kinari;
+      font-size: 14px;
+      letter-spacing: .2em;
+    }
   }
 }

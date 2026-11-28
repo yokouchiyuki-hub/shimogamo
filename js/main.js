@@ -829,4 +829,25 @@
     fForm.querySelector('[data-form-back]').addEventListener('click', function () { setStep(1); });
     fForm.addEventListener('submit', function (e) { e.preventDefault(); });  // 送信の仕組みは未設定
   }
+
+  /* ---------- SP: iOS Safari の下のツールバーに追従 CTA が隠れないよう持ち上げる(pr-h.net/catalog/ と同じ方法) ---------- */
+  // 見えている範囲(visualViewport)の下端と、ページの枠の下端との差を --vv-bottom に入れる。
+  // 120px を超える差はキーボードなどなので持ち上げない
+  if (window.visualViewport) {
+    var vv = window.visualViewport, vvRaf = 0;
+    var updateVv = function () {
+      vvRaf = 0;
+      var gap = 0;
+      if (window.innerWidth <= 768) {
+        gap = Math.round(doc.documentElement.clientHeight - (vv.offsetTop + vv.height));
+        if (gap < 0 || gap > 120) gap = 0;
+      }
+      if (root.style.getPropertyValue('--vv-bottom') !== gap + 'px') root.style.setProperty('--vv-bottom', gap + 'px');
+    };
+    var queueVv = function () { if (!vvRaf) vvRaf = requestAnimationFrame(updateVv); };
+    vv.addEventListener('resize', queueVv);
+    vv.addEventListener('scroll', queueVv);
+    addEventListener('scroll', queueVv, { passive: true });
+    updateVv();
+  }
 })();
